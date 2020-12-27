@@ -1,4 +1,4 @@
-package com.vem.atsecserver.entity.product;
+package com.vem.atsecserver.entity.rawproduct;
 
 /**
  * @author volkanulutas

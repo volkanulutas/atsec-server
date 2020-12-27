@@ -16,17 +16,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(Product pPram) {
-        Product product = new Product();
-        product.setName(pPram.getName());
-        product.setDefinition(pPram.getDefinition());
-        product.setDonor(pPram.getDonor());
-        product.setExpirationDate(pPram.getExpirationDate());
-        product.setInformation(pPram.getInformation());
-        product.setSecCode(pPram.getSecCode());
-        product.setStatus(pPram.getStatus());
-        product.setSplitLength(pPram.getSplitLength());
-        product.setType(pPram.getType());
-        return productRepository.save(product);
+        Product entity = new Product();
+        entity.setDefinition(pPram.getDefinition());
+        entity.setName(pPram.getName());
+        entity.setInformation(pPram.getInformation());
+        entity.setSecCode(pPram.getSecCode());
+        entity.setStatus(pPram.getStatus());
+        entity.setSplitLength(pPram.getSplitLength());
+        entity.setType(pPram.getType());
+        return productRepository.save(entity);
     }
 
     @Override
@@ -34,12 +32,10 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> byId = productRepository.findById(productPar.getId());
         if (byId.isPresent()) {
             Product product = byId.get();
-            product.setName(productPar.getName());
             product.setDefinition(productPar.getDefinition());
-            product.setExpirationDate(productPar.getExpirationDate());
+            product.setName(productPar.getName());
             product.setInformation(productPar.getInformation());
             product.setSecCode(productPar.getSecCode());
-            product.setDonor(productPar.getDonor());
             product.setStatus(productPar.getStatus());
             product.setSplitLength(productPar.getSplitLength());
             product.setType(productPar.getType());

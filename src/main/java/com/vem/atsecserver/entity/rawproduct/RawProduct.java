@@ -1,8 +1,7 @@
-package com.vem.atsecserver.entity.product;
+package com.vem.atsecserver.entity.rawproduct;
 
 import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductType;
+import com.vem.atsecserver.entity.DonorInstitute;
 import com.vem.atsecserver.entity.sales.Customer;
 
 import javax.persistence.*;
@@ -10,17 +9,14 @@ import java.io.Serializable;
 
 /**
  * @author volkanulutas
- * @since 25.12.2020
+ * @since 12.12.2020
  */
-@Entity(name = "Product")
-@Table(name = "Product")
-public class Product implements Serializable {
+@Entity(name = "Raw_Product")
+@Table(name = "Raw_Product")
+public class RawProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column
-    private String name;
 
     @Column
     private EnumRawProductStatus status;
@@ -33,22 +29,22 @@ public class Product implements Serializable {
     private String definition;
 
     @Column
-    private long expirationDate;
+    private String location;
 
     @Column
-    private int splitLength;
+    private long acceptanceDate;
 
     @Column
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
-    @Column(unique = true)
-    private String secCode;
-
     @ManyToOne(fetch = FetchType.EAGER)
-    private Donor donor;
+    private DonorInstitute donorInstitute;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Donor donor;
 
     @Column
     private boolean deleted;
@@ -57,7 +53,7 @@ public class Product implements Serializable {
 
     // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
 
-    public Product() {
+    public RawProduct() {
         // default constructor.
     }
 
@@ -69,12 +65,12 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLocation() {
+        return location;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Donor getDonor() {
@@ -85,20 +81,20 @@ public class Product implements Serializable {
         this.donor = donor;
     }
 
+    public DonorInstitute getDonorInstitute() {
+        return donorInstitute;
+    }
+
+    public void setDonorInstitute(DonorInstitute donorInstitute) {
+        this.donorInstitute = donorInstitute;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public String getSecCode() {
-        return secCode;
-    }
-
-    public void setSecCode(String secCode) {
-        this.secCode = secCode;
     }
 
     public EnumRawProductStatus getStatus() {
@@ -125,20 +121,12 @@ public class Product implements Serializable {
         this.definition = definition;
     }
 
-    public long getExpirationDate() {
-        return expirationDate;
+    public long getAcceptanceDate() {
+        return acceptanceDate;
     }
 
-    public void setExpirationDate(long expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public int getSplitLength() {
-        return splitLength;
-    }
-
-    public void setSplitLength(int splitLength) {
-        this.splitLength = splitLength;
+    public void setAcceptanceDate(long acceptanceDate) {
+        this.acceptanceDate = acceptanceDate;
     }
 
     public String getInformation() {

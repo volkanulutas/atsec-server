@@ -1,4 +1,6 @@
-package com.vem.atsecserver.entity.product;
+package com.vem.atsecserver.entity;
+
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,8 +17,11 @@ public class Donor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String identityNumber;
+    @Column(unique = true, length = 8)
+    private String code;
+
+    @Column(unique = true, length = 11)
+    private String citizenshipNumber;
 
     @Column
     private String name;
@@ -30,11 +35,12 @@ public class Donor implements Serializable {
     @Column
     private String address;
 
-    //TODO: registerDate
+    @Column
+    private long registeredDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "donor_id")
-    private List<Product> products;
+    private List<RawProduct> rawProducts;
 
     @Lob
     private byte[] bloodTestPdfFile;
@@ -54,12 +60,20 @@ public class Donor implements Serializable {
         this.id = id;
     }
 
-    public String getIdentityNumber() {
-        return identityNumber;
+    public String getCode() {
+        return code;
     }
 
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCitizenshipNumber() {
+        return citizenshipNumber;
+    }
+
+    public void setCitizenshipNumber(String citizenshipNumber) {
+        this.citizenshipNumber = citizenshipNumber;
     }
 
     public String getName() {
@@ -94,12 +108,12 @@ public class Donor implements Serializable {
         this.address = address;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<RawProduct> getRawProducts() {
+        return rawProducts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setRawProducts(List<RawProduct> rawProducts) {
+        this.rawProducts = rawProducts;
     }
 
     public byte[] getBloodTestPdfFile() {
@@ -110,6 +124,13 @@ public class Donor implements Serializable {
         this.bloodTestPdfFile = bloodTestPdfFile;
     }
 
+    public long getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(long registeredDate) {
+        this.registeredDate = registeredDate;
+    }
 
     public Boolean isDeleted() {
         return deleted;

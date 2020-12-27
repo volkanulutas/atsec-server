@@ -31,9 +31,11 @@ public class UserConverter {
         user.setSurname(request.getSurname());
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
-        Role roleById = roleService.findRoleById(Long.parseLong(request.getRole()));
-        if (roleById != null) {
-            user.setRole(roleById);
+        if (request.getRole() != null) {
+            Role roleById = roleService.findRoleById(Long.parseLong(request.getRole()));
+            if (roleById != null) {
+                user.setRole(roleById);
+            }
         }
         return user;
     }

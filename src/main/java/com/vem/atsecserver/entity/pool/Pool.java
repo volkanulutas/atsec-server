@@ -1,4 +1,7 @@
-package com.vem.atsecserver.entity.product;
+package com.vem.atsecserver.entity.pool;
+
+import com.vem.atsecserver.entity.rawproduct.EnumPoolStatus;
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +23,7 @@ public class Pool implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "patient_id")
-    private List<Product> products;
+    private List<RawProduct> products;
 
     @Column
     private long generationDate;

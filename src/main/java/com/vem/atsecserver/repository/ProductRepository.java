@@ -1,6 +1,7 @@
 package com.vem.atsecserver.repository;
 
 import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
