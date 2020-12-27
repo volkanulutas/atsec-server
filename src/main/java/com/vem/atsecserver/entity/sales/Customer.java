@@ -1,6 +1,6 @@
 package com.vem.atsecserver.entity.sales;
 
-import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,7 +25,7 @@ public class Customer {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id")
-    private List<Product> products;
+    private List<RawProduct> rawProducts;
 
     @Column
     private String definition;
@@ -102,12 +102,12 @@ public class Customer {
         this.telephone = telephone;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<RawProduct> getRawProducts() {
+        return rawProducts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setRawProducts(List<RawProduct> rawProducts) {
+        this.rawProducts = rawProducts;
     }
 
     public boolean isDeleted() {

@@ -1,11 +1,11 @@
 package com.vem.atsecserver.service;
 
-import com.vem.atsecserver.entity.product.Donor;
+import com.vem.atsecserver.entity.Donor;
 
 import java.util.List;
 
 public interface DonorService {
-    boolean existsByIdentityNumber(String identityNumber);
+    Boolean existsByCode(String code);
 
     Donor create(Donor donorRequest);
 
@@ -15,5 +15,7 @@ public interface DonorService {
 
     Donor delete(Long id);
 
-    Donor findDonorById(Long id);
+    Donor findDonorByCode(String code);
+
+    Donor findDonorById(long parseLong);
 }

@@ -1,10 +1,10 @@
-package com.vem.atsecserver.entity.product;
+package com.vem.atsecserver.entity.rawproduct;
 
 /**
  * @author volkanulutas
  * @since 12.12.2020
  */
-public enum EnumProductStatus {
+public enum EnumRawProductStatus {
     QUARANTINE("Karantina"),
     STOCK("Stok"),
     SAMPLE("Numune"),
@@ -13,7 +13,7 @@ public enum EnumProductStatus {
 
     private final String name;
 
-    EnumProductStatus(String status) {
+    EnumRawProductStatus(String status) {
         this.name = status;
     }
 
@@ -21,8 +21,8 @@ public enum EnumProductStatus {
         return name;
     }
 
-    public static EnumProductStatus findByName(String name) {
-        for (EnumProductStatus s : EnumProductStatus.values()) {
+    public static EnumRawProductStatus findByName(String name) {
+        for (EnumRawProductStatus s : EnumRawProductStatus.values()) {
             if (s.getName().equals(name)) {
                 return s;
             }

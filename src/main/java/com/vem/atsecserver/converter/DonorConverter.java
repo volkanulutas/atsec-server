@@ -1,7 +1,7 @@
 package com.vem.atsecserver.converter;
 
-import com.vem.atsecserver.entity.product.Donor;
-import com.vem.atsecserver.payload.product.DonorRequest;
+import com.vem.atsecserver.entity.Donor;
+import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,14 +20,15 @@ public class DonorConverter {
         entity.setAddress(request.getAddress());
         entity.setName(request.getName());
         entity.setSurname(request.getSurname());
-        entity.setIdentityNumber(request.getIdentityNumber());
-        entity.setDeleted(request.isDeleted());
+        entity.setCode(request.getCode());
+        entity.setCitizenshipNumber(request.getCitizenshipNumber());
+        entity.setDeleted(request.getDeleted());
         entity.setBloodTestPdfFile(request.getBloodTestPdfFile());
         if (request.getId() != null) {
             entity.setId(request.getId());
         }
         if (request.getProducts() != null) {
-            entity.setProducts(request.getProducts());
+            entity.setRawProducts(request.getProducts());
         }
         return entity;
     }
@@ -42,12 +43,13 @@ public class DonorConverter {
         request.setAddress(entity.getAddress());
         request.setName(entity.getName());
         request.setSurname(entity.getSurname());
-        request.setIdentityNumber(entity.getIdentityNumber());
+        request.setCitizenshipNumber(request.getCitizenshipNumber());
+        request.setCode(entity.getCode());
         request.setDeleted(entity.isDeleted());
         request.setBloodTestPdfFile(entity.getBloodTestPdfFile());
         request.setId(entity.getId());
-        if (entity.getProducts() != null) {
-            request.setProducts(entity.getProducts());
+        if (entity.getRawProducts() != null) {
+            request.setProducts(entity.getRawProducts());
         }
         return request;
     }

@@ -1,10 +1,10 @@
 package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.DonorConverter;
-import com.vem.atsecserver.entity.product.Donor;
+import com.vem.atsecserver.entity.Donor;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
-import com.vem.atsecserver.payload.product.DonorRequest;
+import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import com.vem.atsecserver.service.DonorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class DonorController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody DonorRequest donorRequest) {
-        if (donorService.existsByIdentityNumber(donorRequest.getIdentityNumber())) {
+        if (donorService.existsByCode(donorRequest.getCode())) {
             return new ResponseEntity<>(new ApiResponse(false, "Donor identity number is already taken!"), HttpStatus.BAD_REQUEST);
         }
         Donor donor = donorService.create(donorConverter.toEntity(donorRequest));

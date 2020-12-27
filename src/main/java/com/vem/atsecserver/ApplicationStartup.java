@@ -1,17 +1,19 @@
 package com.vem.atsecserver;
 
-import com.vem.atsecserver.entity.product.Donor;
-import com.vem.atsecserver.entity.product.EnumProductStatus;
-import com.vem.atsecserver.entity.product.EnumProductType;
-import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.Donor;
+import com.vem.atsecserver.entity.DonorInstitute;
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductType;
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.entity.sales.Customer;
 import com.vem.atsecserver.entity.sales.EnumCustomerType;
 import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.entity.user.User;
 import com.vem.atsecserver.service.CustomerService;
+import com.vem.atsecserver.service.DonorInstituteService;
 import com.vem.atsecserver.service.DonorService;
-import com.vem.atsecserver.service.ProductService;
+import com.vem.atsecserver.service.RawProductService;
 import com.vem.atsecserver.service.user.PermissionService;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
@@ -50,7 +52,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     private CustomerService customerService;
 
     @Autowired
-    private ProductService productService;
+    private RawProductService rawProductService;
+
+    @Autowired
+    private DonorInstituteService donorInstituteService;
 
     @Override
     @Transactional
@@ -78,16 +83,16 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         userService.save(user);
 
 
-        Product product = new Product();
-        product.setName("Test Ürünü");
-        product.setDefinition("Ürün Açıklaması");
-        product.setExpirationDate(System.currentTimeMillis());
-        product.setInformation("Ek Bilgi");
-        product.setStatus(EnumProductStatus.QUARANTINE);
-        product.setType(EnumProductType.NONE);
-        product.setSecCode("Sec Kodu");
-        product.setDeleted(false);
-        product = productService.create(product);
+        RawProduct raw = new RawProduct();
+        raw.setDefinition("Ürün Açıklaması");
+        raw.setLocation("A-1");
+        raw.setAcceptanceDate(System.currentTimeMillis());
+        raw.setInformation("Ek Bilgi");
+        raw.setStatus(EnumRawProductStatus.QUARANTINE);
+        raw.setType(EnumRawProductType.NONE);
+        raw.setAcceptanceDate(System.currentTimeMillis());
+        raw.setDeleted(false);
+        raw = rawProductService.create(raw);
 
         Customer customer = new Customer();
         customer.setIdentityNumber("1");
@@ -97,22 +102,27 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         customer.setName("Test A.Ş.");
         customer.setTelephone("+90(352)3261615");
         customer.setDeleted(false);
-        customer.setProducts(Arrays.asList(product));
+        customer.setRawProducts(Arrays.asList(raw));
         customer = customerService.create(customer);
 
         Donor donor = new Donor();
         donor.setDeleted(false);
-        donor.setIdentityNumber("1");
+        donor.setCode("1");
         donor.setAddress("Donor Adresi");
         donor.setName("Ali");
         donor.setSurname("Koca");
         donor.setTelephone("+90(532)3261615");
-        donor.setProducts(Arrays.asList(product));
+        donor.setRawProducts(Arrays.asList(raw));
         donor = donorService.create(donor);
 
-        product.setCustomer(customer);
-        product.setDonor(donor);
-        productService.update(product);
+        raw.setCustomer(customer);
+        raw.setDonor(donor);
+        rawProductService.update(raw);
+
+        DonorInstitute donorInstitute = new DonorInstitute();
+        donorInstitute.setCode("HAC01");
+        donorInstitute.setName("Hacettepe Üniversitesi");
+        donorInstitute = donorInstituteService.create(donorInstitute);
 
         alreadySetup = true;
     }

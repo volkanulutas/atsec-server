@@ -1,7 +1,7 @@
-package com.vem.atsecserver.payload.product;
+package com.vem.atsecserver.payload.rawproduct;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -15,7 +15,9 @@ public class DonorRequest {
     private Long id;
 
     @NotNull
-    private String identityNumber;
+    private String code;
+
+    private String citizenshipNumber;
 
     private String name;
 
@@ -26,7 +28,7 @@ public class DonorRequest {
     private String address;
 
     @JsonIgnore
-    private List<Product> products;
+    private List<RawProduct> products;
 
     private byte[] bloodTestPdfFile;
 
@@ -40,12 +42,24 @@ public class DonorRequest {
         return id;
     }
 
-    public String getIdentityNumber() {
-        return identityNumber;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCitizenshipNumber() {
+        return citizenshipNumber;
+    }
+
+    public void setCitizenshipNumber(String citizenshipNumber) {
+        this.citizenshipNumber = citizenshipNumber;
     }
 
     public String getName() {
@@ -80,11 +94,11 @@ public class DonorRequest {
         this.address = address;
     }
 
-    public List<Product> getProducts() {
+    public List<RawProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<RawProduct> products) {
         this.products = products;
     }
 
@@ -96,11 +110,7 @@ public class DonorRequest {
         this.bloodTestPdfFile = bloodTestPdfFile;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean isDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 

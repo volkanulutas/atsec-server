@@ -1,4 +1,4 @@
-package com.vem.atsecserver.payload.product;
+package com.vem.atsecserver.payload.rawproduct;
 
 import javax.validation.constraints.NotNull;
 
@@ -6,33 +6,29 @@ import javax.validation.constraints.NotNull;
  * @author volkanulutas
  * @since 12.12.2020
  */
-public class ProductRequest {
+public class RawProductRequest {
     @NotNull
     private Long id;
 
-    private String name;
-
-    private String secCode;
+    private String donorCode;
 
     private String status;
 
     private String type;
 
+    private String location;
+
     private String definition;
 
-    private long expirationDate;
-
-    private int splitLength;
+    private long acceptanceDate;
 
     private String information;
 
     private Boolean isDeleted;
 
-    private String donorId;
-
     private String customerId;
 
-    public ProductRequest() {
+    public RawProductRequest() {
         // default constructor.
     }
 
@@ -44,20 +40,12 @@ public class ProductRequest {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLocation() {
+        return location;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSecCode() {
-        return secCode;
-    }
-
-    public void setSecCode(String secCode) {
-        this.secCode = secCode;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getStatus() {
@@ -66,6 +54,14 @@ public class ProductRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getAcceptanceDate() {
+        return acceptanceDate;
+    }
+
+    public void setAcceptanceDate(long acceptanceDate) {
+        this.acceptanceDate = acceptanceDate;
     }
 
     public String getType() {
@@ -84,22 +80,6 @@ public class ProductRequest {
         this.definition = definition;
     }
 
-    public long getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(long expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public int getSplitLength() {
-        return splitLength;
-    }
-
-    public void setSplitLength(int splitLength) {
-        this.splitLength = splitLength;
-    }
-
     public String getInformation() {
         return information;
     }
@@ -108,12 +88,12 @@ public class ProductRequest {
         this.information = information;
     }
 
-    public String getDonorId() {
-        return donorId;
+    public String getDonorCode() {
+        return donorCode;
     }
 
-    public void setDonorId(String donorId) {
-        this.donorId = donorId;
+    public void setDonorCode(String donorCode) {
+        this.donorCode = donorCode;
     }
 
     public String getCustomerId() {

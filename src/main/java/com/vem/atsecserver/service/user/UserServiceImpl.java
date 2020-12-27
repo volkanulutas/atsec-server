@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user = new User(); // update
             user.setPassword(passwordEncoder.encode(userParam.getPassword()));
         } else {
-            if (!userParam.getPassword().equals("")) {
+            if (!userParam.getPassword().equals("")) { //TODO: review et
                 user.setPassword(passwordEncoder.encode(userParam.getPassword()));
             }
         }
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsernameIgnoreCase(username);
     }
 
     @Override
@@ -85,7 +85,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return UserPrincipal.create(user);
     }
 
-    private User findUserByUsername(String username) {
+    @Override
+    public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }
