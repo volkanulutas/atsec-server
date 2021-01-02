@@ -1,6 +1,7 @@
 package com.vem.atsecserver.service.user;
 
 import com.vem.atsecserver.entity.user.Role;
+import com.vem.atsecserver.entity.user.User;
 import com.vem.atsecserver.repository.user.RoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +12,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class RoleServiceImpl implements RoleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
+
+    private final static String ADMIN_ROLE = "ADMIN_ROLE";
 
     @Autowired
     private RoleRepository roleRepository;
@@ -40,7 +47,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> getAllRoles() {
-        return roleRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return roleRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override
@@ -60,9 +67,15 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findRoleById(Long id) {
         Optional<Role> roleOpt = roleRepository.findById(id);
-        if (roleOpt.isPresent() && !roleOpt.get().isDeleted()) {
+        if (roleOpt.isPresent() && !roleOpt.get().getDeleted()) {
             return roleOpt.get();
         }
         return null;
+    }
+
+    @Override
+    public List<User> getAdminRoleUsers() {
+        Role role = roleRepository.findByName(ADMIN_ROLE);
+        return (List<User>) role.getUsers();
     }
 }

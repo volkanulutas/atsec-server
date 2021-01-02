@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 

@@ -33,16 +33,10 @@ public class RawProductController {
     @Autowired
     private RawProductConverter rawProductConverter;
 
-    @GetMapping("/location")
-    public ResponseEntity<List<String>> getProductLocations() {
-        return ResponseEntity.ok(Optional.ofNullable(rawProductService.getRawProductLocations())
-                .orElseThrow(() -> new ResourceNotFoundException("Product locations not exists", "")));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<RawProductRequest> getRawProductById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Optional.ofNullable(rawProductConverter.toRequest(rawProductService.findRawProductById(id)))
-                .orElseThrow(() -> new ResourceNotFoundException("Product not exists with id", id + "")));
+                .orElseThrow(() -> new ResourceNotFoundException("Raw Product not exists with id", id + "")));
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
@@ -62,7 +56,7 @@ public class RawProductController {
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Product created successfully."));
+                .body(new ApiResponse(true, "Raw Product created successfully."));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
@@ -72,7 +66,7 @@ public class RawProductController {
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Product updated successfully."));
+                .body(new ApiResponse(true, "Raw Product updated successfully."));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -83,6 +77,6 @@ public class RawProductController {
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Product deleted successfully."));
+                .body(new ApiResponse(true, "Raw Product deleted successfully."));
     }
 }

@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Controller
 @SpringBootApplication
 public class SecServerApplication {

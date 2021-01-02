@@ -132,7 +132,7 @@ public class Donor implements Serializable {
         this.registeredDate = registeredDate;
     }
 
-    public Boolean isDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 

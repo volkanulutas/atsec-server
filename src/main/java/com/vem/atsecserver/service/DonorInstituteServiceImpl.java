@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class DonorInstituteServiceImpl implements DonorInstituteService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DonorInstituteServiceImpl.class);
@@ -43,7 +47,7 @@ public class DonorInstituteServiceImpl implements DonorInstituteService {
 
     @Override
     public List<DonorInstitute> getAllDonorInstitutes() {
-        return donorInstituteRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return donorInstituteRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override
@@ -62,7 +66,7 @@ public class DonorInstituteServiceImpl implements DonorInstituteService {
     @Override
     public DonorInstitute findDonorInstituteById(Long id) {
         Optional<DonorInstitute> dIOpt = donorInstituteRepository.findById(id);
-        if (dIOpt.isPresent() && !dIOpt.get().isDeleted()) {
+        if (dIOpt.isPresent() && !dIOpt.get().getDeleted()) {
             return dIOpt.get();
         }
         return null;

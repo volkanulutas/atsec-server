@@ -1,11 +1,19 @@
 package com.vem.atsecserver.service.user;
 
+import com.vem.atsecserver.data.mail.Email;
 import com.vem.atsecserver.entity.auth.ConfirmationToken;
 import com.vem.atsecserver.entity.user.User;
 import com.vem.atsecserver.service.ConfirmationTokenService;
+import com.vem.atsecserver.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -15,6 +23,12 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
 
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     @Override
     public Boolean changeUserPassword(String token, String password) {
         ConfirmationToken confirmationToken = confirmationTokenService.findByConfirmationToken(token);
@@ -23,11 +37,19 @@ public class AuthServiceImpl implements AuthService {
             user.setPassword(password);
             user = userService.save(user);
             confirmationToken.setValidity(false);
+            sendInformationMailToAdminRole(confirmationToken);
             confirmationTokenService.save(confirmationToken);
-            System.out.println("***** --> true");
             return true;
         }
-        System.out.println("***** --> false");
         return false;
+    }
+
+    private void sendInformationMailToAdminRole(ConfirmationToken confirmationToken) {
+        List<User> adminRoleUsers = roleService.getAdminRoleUsers();
+        for (User user : adminRoleUsers) {
+            Email email = new Email(user.getUsername(), "Kullanıcı Şifre Değiştirme Bildirimi", "Aşağıdaki kullanıcı şifresini değiştirmiştir: \n"
+                    + confirmationToken.getUser());
+            emailSenderService.sendEmail(email);
+        }
     }
 }

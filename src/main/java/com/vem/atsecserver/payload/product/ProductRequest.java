@@ -26,11 +26,11 @@ public class ProductRequest {
 
     private String information;
 
-    private Boolean isDeleted;
-
     private String donorId;
 
     private String customerId;
+
+    private Boolean deleted;
 
     public ProductRequest() {
         // default constructor.
@@ -124,11 +124,11 @@ public class ProductRequest {
         this.customerId = customerId;
     }
 
-    public Boolean isDeleted() {
-        return isDeleted;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
     }
 }

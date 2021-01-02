@@ -1,15 +1,17 @@
 package com.vem.atsecserver.entity.rawproduct;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author volkanulutas
  * @since 12.12.2020
  */
 public enum EnumRawProductStatus {
     QUARANTINE("Karantina"),
-    STOCK("Stok"),
-    SAMPLE("Numune"),
-    CASUALTY("Zaiyat"),
-    RECALL("Geri Çağrılmış");
+    REJECT("Red"),
+    ACCEPTING("Kabul"),
+    NO_STATUS("Atanmamış");
 
     private final String name;
 

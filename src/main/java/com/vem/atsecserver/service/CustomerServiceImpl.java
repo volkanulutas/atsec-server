@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -47,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return customerRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override

@@ -31,6 +31,8 @@ public class Pool implements Serializable {
     @Column
     private EnumPoolStatus status;
 
+    @Column
+    private Boolean deleted;
 
     public Pool() {
         // default constructor.

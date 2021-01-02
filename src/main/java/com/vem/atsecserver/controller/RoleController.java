@@ -40,7 +40,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
-    public List<RoleRequest> getAllProducts() {
+    public List<RoleRequest> getAllRoles() {
         List<RoleRequest> result = new ArrayList<>();
         List<Role> all = roleService.getAllRoles();
         for (Role role : all) {

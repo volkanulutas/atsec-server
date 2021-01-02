@@ -62,7 +62,7 @@ public class DonorInstituteConverter {
         result.setRawProducts(resultList);
 
          */
-        result.setDeleted(entity.isDeleted());
+        result.setDeleted(entity.getDeleted());
         return result;
     }
 }

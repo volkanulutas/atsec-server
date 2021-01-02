@@ -2,12 +2,17 @@ package com.vem.atsecserver.entity.user;
 
 import javax.persistence.*;
 import java.util.Collection;
+
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Entity
 @Table(name = "Permission")
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String name;
@@ -19,7 +24,7 @@ public class Permission {
     private Collection<Role> roles;
 
     @Column
-    private Boolean isDeleted;
+    private Boolean deleted;
 
     public Permission() {
         // Default constructor.
@@ -30,11 +35,11 @@ public class Permission {
         this.definition = definition;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,11 +67,11 @@ public class Permission {
         this.roles = roles;
     }
 
-    public Boolean isDeleted() {
-        return isDeleted;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
     }
 }

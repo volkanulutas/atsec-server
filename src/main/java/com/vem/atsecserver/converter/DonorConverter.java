@@ -6,6 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Component
 public class DonorConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(DonorConverter.class);
@@ -45,7 +49,7 @@ public class DonorConverter {
         request.setSurname(entity.getSurname());
         request.setCitizenshipNumber(request.getCitizenshipNumber());
         request.setCode(entity.getCode());
-        request.setDeleted(entity.isDeleted());
+        request.setDeleted(entity.getDeleted());
         request.setBloodTestPdfFile(entity.getBloodTestPdfFile());
         request.setId(entity.getId());
         if (entity.getRawProducts() != null) {

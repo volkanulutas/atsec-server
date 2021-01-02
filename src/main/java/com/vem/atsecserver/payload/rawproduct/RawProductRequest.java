@@ -1,32 +1,43 @@
 package com.vem.atsecserver.payload.rawproduct;
 
+import com.vem.atsecserver.entity.Donor;
+import com.vem.atsecserver.entity.DonorInstitute;
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
+import com.vem.atsecserver.entity.rawproduct.Location;
+import com.vem.atsecserver.entity.rawproduct.TissueType;
+import com.vem.atsecserver.payload.DonorInstituteRequest;
+import com.vem.atsecserver.payload.TissueTypeRequest;
+
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author volkanulutas
  * @since 12.12.2020
  */
-public class RawProductRequest {
+public class RawProductRequest implements Serializable {
     @NotNull
     private Long id;
 
-    private String donorCode;
+    private DonorRequest donor;
 
-    private String status;
+    private DonorInstituteRequest donorInstitute;
 
-    private String type;
+    private long issueTissueDate; // Doku çıkarım tarihi
 
-    private String location;
+    private long arrivalDate; // Merkeze geliş tarihi
+
+    private TissueTypeRequest tissueType;
+
+    private Location location;
+
+    private EnumRawProductStatus status;
 
     private String definition;
 
-    private long acceptanceDate;
+    private String information; // NOTE: recall prosedüründe kullanılabilir.
 
-    private String information;
-
-    private Boolean isDeleted;
-
-    private String customerId;
+    private Boolean deleted;
 
     public RawProductRequest() {
         // default constructor.
@@ -40,36 +51,60 @@ public class RawProductRequest {
         this.id = id;
     }
 
-    public String getLocation() {
+    public DonorRequest getDonor() {
+        return donor;
+    }
+
+    public void setDonor(DonorRequest donor) {
+        this.donor = donor;
+    }
+
+    public DonorInstituteRequest getDonorInstitute() {
+        return donorInstitute;
+    }
+
+    public void setDonorInstitute(DonorInstituteRequest donorInstitute) {
+        this.donorInstitute = donorInstitute;
+    }
+
+    public long getIssueTissueDate() {
+        return issueTissueDate;
+    }
+
+    public void setIssueTissueDate(long issueTissueDate) {
+        this.issueTissueDate = issueTissueDate;
+    }
+
+    public long getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(long arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public TissueTypeRequest getTissueType() {
+        return tissueType;
+    }
+
+    public void setTissueType(TissueTypeRequest tissueType) {
+        this.tissueType = tissueType;
+    }
+
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
-    public String getStatus() {
+    public EnumRawProductStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(EnumRawProductStatus status) {
         this.status = status;
-    }
-
-    public long getAcceptanceDate() {
-        return acceptanceDate;
-    }
-
-    public void setAcceptanceDate(long acceptanceDate) {
-        this.acceptanceDate = acceptanceDate;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getDefinition() {
@@ -88,27 +123,11 @@ public class RawProductRequest {
         this.information = information;
     }
 
-    public String getDonorCode() {
-        return donorCode;
-    }
-
-    public void setDonorCode(String donorCode) {
-        this.donorCode = donorCode;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public Boolean isDeleted() {
-        return isDeleted;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
     }
 }

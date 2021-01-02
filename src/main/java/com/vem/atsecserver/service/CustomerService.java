@@ -4,6 +4,10 @@ import com.vem.atsecserver.entity.sales.Customer;
 
 import java.util.List;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 public interface CustomerService {
     Customer create(Customer customer);
 

@@ -61,7 +61,7 @@ public class DonorInstitute {
         this.rawProducts = rawProducts;
     }
 
-    public Boolean isDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 

@@ -1,16 +1,16 @@
-package com.vem.atsecserver.entity.rawproduct;
+package com.vem.atsecserver.entity.product;
 
 /**
  * @author volkanulutas
  * @since 12.12.2020
  */
-public enum EnumRawProductType {
+public enum EnumProductType {
 
     NONE("None");
     // TODO: lookup table AB sisteminde dirsek kemiğininin türünü belirler.
     private String name;
 
-    EnumRawProductType(String name) {
+    EnumProductType(String name) {
         this.name = name;
     }
 
@@ -18,8 +18,8 @@ public enum EnumRawProductType {
         return name;
     }
 
-    public static EnumRawProductType findByName(String name) {
-        for (EnumRawProductType t : EnumRawProductType.values()) {
+    public static EnumProductType findByName(String name) {
+        for (EnumProductType t : EnumProductType.values()) {
             if (t.getName().equals(name)) {
                 return t;
             }

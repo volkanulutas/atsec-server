@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Component
 public class UserConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserConverter.class);
@@ -51,8 +55,8 @@ public class UserConverter {
         request.setSurname(entity.getSurname());
         request.setUsername(entity.getUsername());
         request.setPassword(entity.getPassword());
-        request.setDeleted(entity.isDeleted());
-        request.setEnabled(entity.isEnabled());
+        request.setDeleted(entity.getDeleted());
+        request.setEnabled(entity.getDeleted());
         if (entity.getRole() != null) {
             request.setRole(entity.getRole().getId() + "");
         }

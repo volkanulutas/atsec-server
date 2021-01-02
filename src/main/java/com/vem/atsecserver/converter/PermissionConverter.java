@@ -6,6 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Component
 public class PermissionConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(PermissionConverter.class);
@@ -34,7 +38,7 @@ public class PermissionConverter {
         request.setId(entity.getId());
         request.setName(entity.getName());
         request.setDefinition(entity.getDefinition());
-        request.setDeleted(entity.isDeleted());
+        request.setDeleted(entity.getDeleted());
         return request;
     }
 }

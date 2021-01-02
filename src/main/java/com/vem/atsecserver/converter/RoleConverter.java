@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Component
 public class RoleConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleConverter.class);
@@ -40,9 +44,9 @@ public class RoleConverter {
         RoleRequest request = new RoleRequest();
         request.setName(entity.getName());
         request.setDefinition(entity.getDefinition());
-        request.setDeleted(entity.isDeleted());
+        request.setDeleted(entity.getDeleted());
         request.setId(entity.getId());
-        request.setDeleted(entity.isDeleted());
+        request.setDeleted(entity.getDeleted());
 
         /*
         List<UserRequest> users = new ArrayList<>();

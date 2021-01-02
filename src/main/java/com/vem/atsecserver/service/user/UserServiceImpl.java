@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setSurname(userParam.getSurname());
         user.setUsername(userParam.getUsername());
         user.setRole(userParam.getRole());
-        user.setEnabled(userParam.isEnabled());
+        user.setEnabled(userParam.getEnabled());
         user.setDeleted(false);
         return userRepository.save(user);
     }
@@ -55,7 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return userRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override

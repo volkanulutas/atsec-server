@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class DonorServiceImpl implements DonorService {
     @Autowired
@@ -61,7 +65,7 @@ public class DonorServiceImpl implements DonorService {
 
     @Override
     public List<Donor> getAllDonors() {
-        return donorRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return donorRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override

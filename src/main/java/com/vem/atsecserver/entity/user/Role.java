@@ -12,7 +12,7 @@ import java.util.Collection;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String name;
@@ -24,7 +24,7 @@ public class Role {
     private Collection<User> users;
 
     @Column
-    private Boolean isDeleted;
+    private Boolean deleted;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -44,11 +44,11 @@ public class Role {
         this.definition = definition;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -84,12 +84,12 @@ public class Role {
         this.permissions = permissions;
     }
 
-    public Boolean isDeleted() {
-        return isDeleted;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class Role {
                 ", name='" + name + '\'' +
                 ", definition='" + definition + '\'' +
                 ", users=" + users +
-                ", isDeleted=" + isDeleted +
+                ", isDeleted=" + deleted +
                 ", permissions=" + permissions +
                 '}';
     }

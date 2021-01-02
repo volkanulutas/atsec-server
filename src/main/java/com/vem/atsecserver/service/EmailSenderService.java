@@ -1,7 +1,8 @@
 package com.vem.atsecserver.service;
 
+import com.vem.atsecserver.data.mail.Email;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Service;
  */
 @Service("emailSenderService")
 public class EmailSenderService {
+
+    @Value("spring.mail.from.email")
+    private String from;
+
     private JavaMailSender javaMailSender;
 
     @Autowired
@@ -20,7 +25,8 @@ public class EmailSenderService {
     }
 
     @Async
-    public void sendEmail(SimpleMailMessage email) {
-        javaMailSender.send(email);
+    public void sendEmail(Email email) {
+        email.setFrom(this.from);
+        javaMailSender.send(email.getMail());
     }
 }

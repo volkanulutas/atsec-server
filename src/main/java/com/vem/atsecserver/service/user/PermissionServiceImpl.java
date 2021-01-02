@@ -39,7 +39,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> getAllPermissions() {
-        return permissionRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return permissionRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override

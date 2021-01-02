@@ -1,5 +1,6 @@
 package com.vem.atsecserver.service;
 
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.repository.RawProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,44 +11,50 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Service
 public class RawProductServiceImpl implements RawProductService {
     @Autowired
     private RawProductRepository rawProductRepository;
 
     @Override
-    public RawProduct create(RawProduct pPram) {
+    public RawProduct create(RawProduct parameter) {
         RawProduct entity = new RawProduct();
-        entity.setDefinition(pPram.getDefinition());
-        entity.setLocation(pPram.getLocation());
-        entity.setDonor(pPram.getDonor());
-        entity.setAcceptanceDate(pPram.getAcceptanceDate());
-        entity.setInformation(pPram.getInformation());
-        entity.setStatus(pPram.getStatus());
-        entity.setType(pPram.getType());
+        entity.setIssueTissueDate(parameter.getIssueTissueDate());
+        entity.setArrivalDate(parameter.getArrivalDate());
+        entity.setLocation(parameter.getLocation());
+        entity.setInformation(parameter.getInformation());
+        entity.setStatus(parameter.getStatus());
+        entity.setTissueType(parameter.getTissueType());
+        entity.setDonorInstitute(parameter.getDonorInstitute());
+        entity.setDeleted(false);
         return rawProductRepository.save(entity);
     }
 
     @Override
-    public RawProduct update(RawProduct productPar) {
-        Optional<RawProduct> byId = rawProductRepository.findById(productPar.getId());
+    public RawProduct update(RawProduct parameter) {
+        Optional<RawProduct> byId = rawProductRepository.findById(parameter.getId());
         if (byId.isPresent()) {
-            RawProduct raw = byId.get();
-            raw.setDonor(productPar.getDonor());
-            raw.setLocation(productPar.getLocation());
-            raw.setDefinition(productPar.getDefinition());
-            raw.setAcceptanceDate(productPar.getAcceptanceDate());
-            raw.setInformation(productPar.getInformation());
-            raw.setStatus(productPar.getStatus());
-            raw.setType(productPar.getType());
-            return rawProductRepository.save(raw);
+            RawProduct entity = byId.get();
+            entity.setIssueTissueDate(parameter.getIssueTissueDate());
+            entity.setArrivalDate(parameter.getArrivalDate());
+            entity.setLocation(parameter.getLocation());
+            entity.setInformation(parameter.getInformation());
+            entity.setStatus(parameter.getStatus());
+            entity.setTissueType(parameter.getTissueType());
+            entity.setDonorInstitute(parameter.getDonorInstitute());
+            entity.setDeleted(false);
+            return rawProductRepository.save(entity);
         }
         return null;
     }
 
     @Override
     public List<RawProduct> getAllRawProducts() {
-        return rawProductRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+        return rawProductRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
     }
 
     @Override
@@ -64,11 +71,5 @@ public class RawProductServiceImpl implements RawProductService {
     @Override
     public RawProduct findRawProductById(Long id) {
         return rawProductRepository.findById(id).get(); // TODO: get()
-    }
-
-    @Override
-    public List<String> getRawProductLocations() {
-        // TODO: read from file.
-        return Arrays.asList(new String[]{"A-1", "A-2"});
     }
 }
