@@ -1,8 +1,6 @@
 package com.vem.atsecserver.entity.product;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductType;
+import com.vem.atsecserver.entity.rawproduct.Donor;
 import com.vem.atsecserver.entity.sales.Customer;
 
 import javax.persistence.*;
@@ -23,11 +21,11 @@ public class Product implements Serializable {
     private String name;
 
     @Column
-    private EnumRawProductStatus status;
+    private EnumProductStatus status;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
-    private EnumRawProductType type; // TODO: Kemiğin türü Product Code lookup type.
+    private EnumProductType type; // TODO: Kemiğin türü Product Code lookup type.
 
     @Column
     private String definition;
@@ -51,7 +49,7 @@ public class Product implements Serializable {
     private Customer customer;
 
     @Column
-    private boolean deleted;
+    private Boolean deleted;
 
     // TODO: sec e özgü bilgiler yer alacak.
 
@@ -101,19 +99,19 @@ public class Product implements Serializable {
         this.secCode = secCode;
     }
 
-    public EnumRawProductStatus getStatus() {
+    public EnumProductStatus getStatus() {
         return status;
     }
 
-    public void setStatus(EnumRawProductStatus status) {
+    public void setStatus(EnumProductStatus status) {
         this.status = status;
     }
 
-    public EnumRawProductType getType() {
+    public EnumProductType getType() {
         return type;
     }
 
-    public void setType(EnumRawProductType type) {
+    public void setType(EnumProductType type) {
         this.type = type;
     }
 
@@ -149,11 +147,11 @@ public class Product implements Serializable {
         this.information = information;
     }
 
-    public boolean isDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 }

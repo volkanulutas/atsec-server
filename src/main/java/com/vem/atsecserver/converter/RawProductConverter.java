@@ -1,12 +1,10 @@
 package com.vem.atsecserver.converter;
 
-import com.vem.atsecserver.entity.Donor;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductType;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
-import com.vem.atsecserver.service.CustomerService;
-import com.vem.atsecserver.service.DonorService;
+import com.vem.atsecserver.service.sales.CustomerService;
+import com.vem.atsecserver.service.rawproduct.DonorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +24,33 @@ public class RawProductConverter {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private TissueConverter tissueConverter;
+
+    @Autowired
+    private DonorConverter donorConverter;
+
+    @Autowired
+    private DonorInstituteConverter donorInstituteConverter;
+
     public RawProduct toEntity(RawProductRequest request) {
         if (request == null) {
             LOGGER.error("Error is occurred while converting raw product.");
             return null;
         }
-        RawProduct raw = new RawProduct();
-        Donor donorById = donorService.findDonorByCode(request.getDonorCode());
-        raw.setDonor(donorById);
-        if (request.getId() != null) {
-            raw.setId(request.getId());
-        }
-        raw.setType(EnumRawProductType.findByName(request.getType()));
-        raw.setLocation(request.getLocation());
-        raw.setStatus(EnumRawProductStatus.findByName(request.getStatus()));
-        raw.setInformation(request.getInformation());
-        raw.setAcceptanceDate(request.getAcceptanceDate());
-        if (request.getCustomerId() != null) {
-            raw.setCustomer(customerService.findCustomerById(Long.parseLong(request.getCustomerId())));
-        }
-        raw.setDeleted(request.isDeleted());
-        raw.setDefinition(request.getDefinition());
-        return raw;
+        RawProduct entity = new RawProduct();
+        entity.setId(request.getId());
+        entity.setArrivalDate(request.getArrivalDate());
+        entity.setIssueTissueDate(request.getIssueTissueDate());
+        entity.setTissueType(tissueConverter.toEntity(request.getTissueType()));
+        entity.setLocation(request.getLocation());
+        entity.setDefinition(request.getDefinition());
+        entity.setDonor(donorConverter.toEntity(request.getDonor()));
+        entity.setInformation(request.getInformation());
+        entity.setStatus(EnumRawProductStatus.findByName(request.getStatusName()));
+        entity.setDonorInstitute(donorInstituteConverter.toEntity(request.getDonorInstitute()));
+        entity.setDeleted(request.getDeleted());
+        return entity;
     }
 
     public RawProductRequest toRequest(RawProduct entity) {
@@ -57,21 +60,15 @@ public class RawProductConverter {
         }
         RawProductRequest request = new RawProductRequest();
         request.setId(entity.getId());
-        request.setDonorCode(entity.getDonor().getCode());
-        if (entity.getType() != null) {
-            request.setType(entity.getType().getName());
-        }
-        if (entity.getStatus() != null) {
-            request.setStatus(entity.getStatus().getName());
-        }
-        request.setDefinition(entity.getDefinition());
-        request.setInformation(entity.getInformation());
+        request.setIssueTissueDate(entity.getIssueTissueDate());
+        request.setArrivalDate(entity.getArrivalDate());
         request.setLocation(entity.getLocation());
-        request.setAcceptanceDate(entity.getAcceptanceDate());
-        if (entity.getCustomer() != null) {
-            request.setCustomerId(entity.getCustomer().getId() + "");
-        }
-        request.setDeleted(entity.isDeleted());
+        request.setStatusName(entity.getStatus().getName());
+        request.setDonor(donorConverter.toRequest(entity.getDonor()));
+        request.setDonorInstitute(donorInstituteConverter.toRequest(entity.getDonorInstitute()));
+        request.setTissueType(tissueConverter.toRequest(entity.getTissueType()));
+        request.setDefinition(entity.getDefinition());
+        request.setDeleted(request.getDeleted());
         return request;
     }
 }

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author volkanulutas
  * @since 12.12.2020
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
-@RequestMapping("/api/test")
 @Transactional
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/api/test")
 public class TestController {
     @GetMapping("/all")
     public String allAccess() {

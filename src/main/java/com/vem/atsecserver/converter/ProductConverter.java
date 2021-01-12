@@ -1,16 +1,20 @@
 package com.vem.atsecserver.converter;
 
+import com.vem.atsecserver.entity.product.EnumProductStatus;
+import com.vem.atsecserver.entity.product.EnumProductType;
 import com.vem.atsecserver.entity.product.Product;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductType;
 import com.vem.atsecserver.payload.product.ProductRequest;
-import com.vem.atsecserver.service.CustomerService;
-import com.vem.atsecserver.service.DonorService;
+import com.vem.atsecserver.service.sales.CustomerService;
+import com.vem.atsecserver.service.rawproduct.DonorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Component
 public class ProductConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductConverter.class);
@@ -31,9 +35,9 @@ public class ProductConverter {
         if (request.getId() != null) {
             product.setId(request.getId());
         }
-        product.setType(EnumRawProductType.findByName(request.getType()));
+        product.setType(EnumProductType.findByName(request.getType()));
         product.setSplitLength(request.getSplitLength());
-        product.setStatus(EnumRawProductStatus.findByName(request.getStatus()));
+        product.setStatus(EnumProductStatus.findByName(request.getStatus()));
         product.setSecCode(request.getSecCode());
         product.setInformation(request.getInformation());
         product.setExpirationDate(request.getExpirationDate());
@@ -43,7 +47,7 @@ public class ProductConverter {
         if (request.getCustomerId() != null) {
             product.setCustomer(customerService.findCustomerById(Long.parseLong(request.getCustomerId())));
         }
-        product.setDeleted(request.isDeleted());
+        product.setDeleted(request.getDeleted());
         product.setDefinition(request.getDefinition());
         return product;
     }
@@ -73,7 +77,7 @@ public class ProductConverter {
         if (entity.getCustomer() != null) {
             request.setCustomerId(entity.getCustomer().getId() + "");
         }
-        request.setDeleted(entity.isDeleted());
+        request.setDeleted(entity.getDeleted());
         return request;
     }
 }

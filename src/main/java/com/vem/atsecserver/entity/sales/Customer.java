@@ -1,5 +1,6 @@
 package com.vem.atsecserver.entity.sales;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 
 import javax.persistence.*;
@@ -23,10 +24,11 @@ public class Customer {
     @Column(length = 60)
     private EnumCustomerType customerType;
 
+    /*
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id")
     private List<RawProduct> rawProducts;
-
+     */
     @Column
     private String definition;
 
@@ -40,7 +42,7 @@ public class Customer {
     private String telephone;
 
     @Column
-    private boolean deleted;
+    private Boolean deleted;
 
     public Customer() {
         // Default constructor.
@@ -102,19 +104,11 @@ public class Customer {
         this.telephone = telephone;
     }
 
-    public List<RawProduct> getRawProducts() {
-        return rawProducts;
-    }
-
-    public void setRawProducts(List<RawProduct> rawProducts) {
-        this.rawProducts = rawProducts;
-    }
-
-    public boolean isDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 }

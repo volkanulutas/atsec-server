@@ -1,11 +1,11 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.DonorInstitute;
-import com.vem.atsecserver.entity.sales.Customer;
+import com.vem.atsecserver.entity.file.FileDB;
+import com.vem.atsecserver.entity.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @author volkanulutas
@@ -16,61 +16,56 @@ import java.io.Serializable;
 public class RawProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Donor donor;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private DonorInstitute donorInstitute;
+
+    @Column
+    private long issueTissueDate; // Doku çıkarım tarihi
+
+    @Column
+    private long arrivalDate; // Merkeze geliş tarihi
+
+    @OneToOne(targetEntity = TissueType.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "tissue_type_id")
+    private TissueType tissueType;
+
+    @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @Column
     private EnumRawProductStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 60)
-    private EnumRawProductType type; // TODO: Kemiğin türü Product Code lookup type.
 
     @Column
     private String definition;
 
     @Column
-    private String location;
-
-    @Column
-    private long acceptanceDate;
-
-    @Column
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private DonorInstitute donorInstitute;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Customer customer;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Donor donor;
-
     @Column
-    private boolean deleted;
+    private Boolean deleted;
 
-    // TODO: sec e özgü bilgiler yer alacak.
-
+    /*
+    @OneToMany(mappedBy = "raw_product")
+    private Collection<FileDB> files;
+*/
     // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
 
     public RawProduct() {
         // default constructor.
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public Donor getDonor() {
@@ -89,12 +84,36 @@ public class RawProduct implements Serializable {
         this.donorInstitute = donorInstitute;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public long getIssueTissueDate() {
+        return issueTissueDate;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setIssueTissueDate(long issueTissueDate) {
+        this.issueTissueDate = issueTissueDate;
+    }
+
+    public long getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(long arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public TissueType getTissueType() {
+        return tissueType;
+    }
+
+    public void setTissueType(TissueType tissueType) {
+        this.tissueType = tissueType;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public EnumRawProductStatus getStatus() {
@@ -105,28 +124,12 @@ public class RawProduct implements Serializable {
         this.status = status;
     }
 
-    public EnumRawProductType getType() {
-        return type;
-    }
-
-    public void setType(EnumRawProductType type) {
-        this.type = type;
-    }
-
     public String getDefinition() {
         return definition;
     }
 
     public void setDefinition(String definition) {
         this.definition = definition;
-    }
-
-    public long getAcceptanceDate() {
-        return acceptanceDate;
-    }
-
-    public void setAcceptanceDate(long acceptanceDate) {
-        this.acceptanceDate = acceptanceDate;
     }
 
     public String getInformation() {
@@ -137,11 +140,12 @@ public class RawProduct implements Serializable {
         this.information = information;
     }
 
-    public boolean isDeleted() {
+
+    public Boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 }

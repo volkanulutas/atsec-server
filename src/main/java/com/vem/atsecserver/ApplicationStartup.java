@@ -1,19 +1,18 @@
 package com.vem.atsecserver;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.DonorInstitute;
+import com.vem.atsecserver.entity.rawproduct.Donor;
+import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductType;
+import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
+import com.vem.atsecserver.entity.rawproduct.TissueType;
 import com.vem.atsecserver.entity.sales.Customer;
 import com.vem.atsecserver.entity.sales.EnumCustomerType;
 import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.entity.user.User;
-import com.vem.atsecserver.service.CustomerService;
-import com.vem.atsecserver.service.DonorInstituteService;
-import com.vem.atsecserver.service.DonorService;
-import com.vem.atsecserver.service.RawProductService;
+import com.vem.atsecserver.service.sales.CustomerService;
+import com.vem.atsecserver.service.rawproduct.*;
 import com.vem.atsecserver.service.user.PermissionService;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
@@ -55,6 +54,12 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     private RawProductService rawProductService;
 
     @Autowired
+    private TissueService tissueService;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
     private DonorInstituteService donorInstituteService;
 
     @Override
@@ -82,15 +87,34 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         user.setEnabled(true);
         userService.save(user);
 
+        TissueType tissueType1 = new TissueType("Femur Başı", "Femur Başı");
+        tissueType1 = tissueService.create(tissueType1);
+        TissueType tissueType2 = new TissueType("Diskol Femur", "Diskol Femur");
+        tissueType2 = tissueService.create(tissueType2);
+
+        Location location = new Location("A1", "A1");
+        location = locationService.create(location);
+        Location location2 = new Location("A2", "A2");
+        location2 = locationService.create(location2);
+        Location location3 = new Location("B1", "B1");
+        location3 = locationService.create(location3);
+        Location location4 = new Location("B2", "B2");
+        location4 = locationService.create(location4);
+
+        DonorInstitute donorInstitute = new DonorInstitute();
+        donorInstitute.setCode("HAC01");
+        donorInstitute.setName("Hacettepe Üniversitesi");
+        donorInstitute = donorInstituteService.create(donorInstitute);
 
         RawProduct raw = new RawProduct();
-        raw.setDefinition("Ürün Açıklaması");
-        raw.setLocation("A-1");
-        raw.setAcceptanceDate(System.currentTimeMillis());
+        raw.setDefinition("Açıklama");
+        raw.setStatus(EnumRawProductStatus.REJECT);
         raw.setInformation("Ek Bilgi");
-        raw.setStatus(EnumRawProductStatus.QUARANTINE);
-        raw.setType(EnumRawProductType.NONE);
-        raw.setAcceptanceDate(System.currentTimeMillis());
+        raw.setLocation(location);
+        raw.setTissueType(tissueType1);
+        raw.setArrivalDate(System.currentTimeMillis());
+        raw.setIssueTissueDate(System.currentTimeMillis());
+        raw.setDonorInstitute(donorInstitute);
         raw.setDeleted(false);
         raw = rawProductService.create(raw);
 
@@ -102,7 +126,6 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         customer.setName("Test A.Ş.");
         customer.setTelephone("+90(352)3261615");
         customer.setDeleted(false);
-        customer.setRawProducts(Arrays.asList(raw));
         customer = customerService.create(customer);
 
         Donor donor = new Donor();
@@ -115,14 +138,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         donor.setRawProducts(Arrays.asList(raw));
         donor = donorService.create(donor);
 
-        raw.setCustomer(customer);
         raw.setDonor(donor);
         rawProductService.update(raw);
 
-        DonorInstitute donorInstitute = new DonorInstitute();
-        donorInstitute.setCode("HAC01");
-        donorInstitute.setName("Hacettepe Üniversitesi");
-        donorInstitute = donorInstituteService.create(donorInstitute);
+
 
         alreadySetup = true;
     }

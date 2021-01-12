@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Collection;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 public class RoleRequest {
 
     private Long id;

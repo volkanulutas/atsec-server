@@ -6,10 +6,9 @@ package com.vem.atsecserver.entity.rawproduct;
  */
 public enum EnumRawProductStatus {
     QUARANTINE("Karantina"),
-    STOCK("Stok"),
-    SAMPLE("Numune"),
-    CASUALTY("Zaiyat"),
-    RECALL("Geri Çağrılmış");
+    REJECT("Red"),
+    ACCEPTING("Kabul"),
+    NO_STATUS("Atanmamış");
 
     private final String name;
 

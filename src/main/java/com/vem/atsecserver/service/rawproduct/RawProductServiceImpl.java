@@ -1,0 +1,73 @@
+package com.vem.atsecserver.service.rawproduct;
+
+import com.vem.atsecserver.entity.rawproduct.RawProduct;
+import com.vem.atsecserver.repository.rawproduct.RawProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
+@Service
+public class RawProductServiceImpl implements RawProductService {
+    @Autowired
+    private RawProductRepository rawProductRepository;
+
+    @Override
+    public RawProduct create(RawProduct parameter) {
+        RawProduct entity = new RawProduct();
+        entity.setIssueTissueDate(parameter.getIssueTissueDate());
+        entity.setArrivalDate(parameter.getArrivalDate());
+        entity.setLocation(parameter.getLocation());
+        entity.setInformation(parameter.getInformation());
+        entity.setStatus(parameter.getStatus());
+        entity.setTissueType(parameter.getTissueType());
+        entity.setDonorInstitute(parameter.getDonorInstitute());
+        entity.setDeleted(false);
+        return rawProductRepository.save(entity);
+    }
+
+    @Override
+    public RawProduct update(RawProduct parameter) {
+        Optional<RawProduct> byId = rawProductRepository.findById(parameter.getId());
+        if (byId.isPresent()) {
+            RawProduct entity = byId.get();
+            entity.setIssueTissueDate(parameter.getIssueTissueDate());
+            entity.setArrivalDate(parameter.getArrivalDate());
+            entity.setLocation(parameter.getLocation());
+            entity.setInformation(parameter.getInformation());
+            entity.setStatus(parameter.getStatus());
+            entity.setTissueType(parameter.getTissueType());
+            entity.setDonorInstitute(parameter.getDonorInstitute());
+            entity.setDeleted(false);
+            return rawProductRepository.save(entity);
+        }
+        return null;
+    }
+
+    @Override
+    public List<RawProduct> getAllRawProducts() {
+        return rawProductRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
+    }
+
+    @Override
+    public RawProduct delete(Long id) {
+        Optional<RawProduct> byId = rawProductRepository.findById(id);
+        if (byId.isPresent()) {
+            byId.get().setDeleted(true);
+            rawProductRepository.save(byId.get());
+            return byId.get();
+        }
+        return null;
+    }
+
+    @Override
+    public RawProduct findRawProductById(Long id) {
+        return rawProductRepository.findById(id).get(); // TODO: get()
+    }
+}

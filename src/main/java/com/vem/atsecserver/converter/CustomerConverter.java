@@ -2,11 +2,15 @@ package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.sales.Customer;
 import com.vem.atsecserver.entity.sales.EnumCustomerType;
-import com.vem.atsecserver.payload.CustomerRequest;
+import com.vem.atsecserver.payload.sales.CustomerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author volkanulutas
+ * @since 01.01.2021
+ */
 @Component
 public class CustomerConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerConverter.class);
@@ -39,7 +43,7 @@ public class CustomerConverter {
         request.setName(entity.getName());
         request.setTelephone(entity.getTelephone());
         request.setIdentityNumber(entity.getIdentityNumber());
-        request.setDeleted(entity.isDeleted());
+        request.setDeleted(entity.getDeleted());
         request.setCustomerType(entity.getCustomerType().getName());
         request.setDefinition(entity.getDefinition());
         request.setAddress(entity.getAddress());

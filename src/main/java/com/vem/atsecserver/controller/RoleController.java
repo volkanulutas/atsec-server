@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,8 @@ import java.util.Optional;
  * @since 12.12.2020
  */
 @RestController
+@Transactional
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/role")
 public class RoleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
@@ -40,7 +43,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
-    public List<RoleRequest> getAllProducts() {
+    public List<RoleRequest> getAllRoles() {
         List<RoleRequest> result = new ArrayList<>();
         List<Role> all = roleService.getAllRoles();
         for (Role role : all) {

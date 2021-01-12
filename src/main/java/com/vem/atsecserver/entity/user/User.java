@@ -27,10 +27,10 @@ public class User implements Serializable {
     private String surname;
 
     @Column
-    private boolean enabled;
+    private Boolean enabled;
 
     @Column
-    private boolean isDeleted;
+    private Boolean deleted;
 
     /*
     @JsonIgnore
@@ -111,19 +111,19 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public boolean isEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
