@@ -1,10 +1,11 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.DonorInstitute;
+import com.vem.atsecserver.entity.file.FileDB;
+import com.vem.atsecserver.entity.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @author volkanulutas
@@ -49,6 +50,10 @@ public class RawProduct implements Serializable {
     @Column
     private Boolean deleted;
 
+    /*
+    @OneToMany(mappedBy = "raw_product")
+    private Collection<FileDB> files;
+*/
     // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
 
     public RawProduct() {
@@ -134,6 +139,7 @@ public class RawProduct implements Serializable {
     public void setInformation(String information) {
         this.information = information;
     }
+
 
     public Boolean getDeleted() {
         return deleted;

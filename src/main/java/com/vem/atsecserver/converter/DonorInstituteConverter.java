@@ -1,16 +1,11 @@
 package com.vem.atsecserver.converter;
 
-import com.vem.atsecserver.entity.DonorInstitute;
-import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import com.vem.atsecserver.payload.DonorInstituteRequest;
-import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
+import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
+import com.vem.atsecserver.payload.rawproduct.DonorInstituteRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author volkanulutas

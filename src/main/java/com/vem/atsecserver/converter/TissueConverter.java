@@ -1,7 +1,7 @@
 package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.rawproduct.TissueType;
-import com.vem.atsecserver.payload.TissueTypeRequest;
+import com.vem.atsecserver.payload.rawproduct.TissueTypeRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

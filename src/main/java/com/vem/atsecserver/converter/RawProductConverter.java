@@ -1,9 +1,10 @@
 package com.vem.atsecserver.converter;
 
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
-import com.vem.atsecserver.service.CustomerService;
-import com.vem.atsecserver.service.DonorService;
+import com.vem.atsecserver.service.sales.CustomerService;
+import com.vem.atsecserver.service.rawproduct.DonorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class RawProductConverter {
         entity.setDefinition(request.getDefinition());
         entity.setDonor(donorConverter.toEntity(request.getDonor()));
         entity.setInformation(request.getInformation());
-        entity.setStatus(request.getStatus());
+        entity.setStatus(EnumRawProductStatus.findByName(request.getStatusName()));
         entity.setDonorInstitute(donorInstituteConverter.toEntity(request.getDonorInstitute()));
         entity.setDeleted(request.getDeleted());
         return entity;
@@ -62,7 +63,7 @@ public class RawProductConverter {
         request.setIssueTissueDate(entity.getIssueTissueDate());
         request.setArrivalDate(entity.getArrivalDate());
         request.setLocation(entity.getLocation());
-        request.setStatus(entity.getStatus());
+        request.setStatusName(entity.getStatus().getName());
         request.setDonor(donorConverter.toRequest(entity.getDonor()));
         request.setDonorInstitute(donorInstituteConverter.toRequest(entity.getDonorInstitute()));
         request.setTissueType(tissueConverter.toRequest(entity.getTissueType()));

@@ -2,7 +2,7 @@ package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.sales.Customer;
 import com.vem.atsecserver.entity.sales.EnumCustomerType;
-import com.vem.atsecserver.payload.CustomerRequest;
+import com.vem.atsecserver.payload.sales.CustomerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

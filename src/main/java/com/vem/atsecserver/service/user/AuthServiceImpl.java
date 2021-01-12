@@ -3,7 +3,7 @@ package com.vem.atsecserver.service.user;
 import com.vem.atsecserver.data.mail.Email;
 import com.vem.atsecserver.entity.auth.ConfirmationToken;
 import com.vem.atsecserver.entity.user.User;
-import com.vem.atsecserver.service.ConfirmationTokenService;
+import com.vem.atsecserver.service.auth.ConfirmationTokenService;
 import com.vem.atsecserver.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

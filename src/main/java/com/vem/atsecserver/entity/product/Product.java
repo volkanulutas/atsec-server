@@ -1,7 +1,6 @@
 package com.vem.atsecserver.entity.product;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
+import com.vem.atsecserver.entity.rawproduct.Donor;
 import com.vem.atsecserver.entity.sales.Customer;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package com.vem.atsecserver.converter;
 
-import com.vem.atsecserver.entity.Donor;
+import com.vem.atsecserver.entity.rawproduct.Donor;
 import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

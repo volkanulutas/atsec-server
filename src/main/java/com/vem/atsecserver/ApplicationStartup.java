@@ -1,7 +1,7 @@
 package com.vem.atsecserver;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.DonorInstitute;
+import com.vem.atsecserver.entity.rawproduct.Donor;
+import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
@@ -11,7 +11,8 @@ import com.vem.atsecserver.entity.sales.EnumCustomerType;
 import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.entity.user.User;
-import com.vem.atsecserver.service.*;
+import com.vem.atsecserver.service.sales.CustomerService;
+import com.vem.atsecserver.service.rawproduct.*;
 import com.vem.atsecserver.service.user.PermissionService;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
@@ -107,7 +108,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
         RawProduct raw = new RawProduct();
         raw.setDefinition("Açıklama");
-        raw.setStatus(EnumRawProductStatus.NO_STATUS);
+        raw.setStatus(EnumRawProductStatus.REJECT);
         raw.setInformation("Ek Bilgi");
         raw.setLocation(location);
         raw.setTissueType(tissueType1);

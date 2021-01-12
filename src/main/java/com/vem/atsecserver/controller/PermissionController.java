@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,8 @@ import java.util.Optional;
  * @since 12.12.2020
  */
 @RestController
+@Transactional
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/permission")
 public class PermissionController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);

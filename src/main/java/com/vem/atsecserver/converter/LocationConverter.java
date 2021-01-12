@@ -1,7 +1,7 @@
 package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.rawproduct.Location;
-import com.vem.atsecserver.payload.LocationRequest;
+import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -83,20 +83,15 @@
 		</dependency>
 
 
-		<!--
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
--->
 
-		<!-- In-Memory database used for local development & testing -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
+
 	</dependencies>
 
 

@@ -2,14 +2,15 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.LocationConverter;
 import com.vem.atsecserver.entity.rawproduct.Location;
-import com.vem.atsecserver.payload.LocationRequest;
+import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
-import com.vem.atsecserver.service.LocationService;
+import com.vem.atsecserver.service.rawproduct.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,8 @@ import java.util.Optional;
  * @since 02.01.2021
  */
 @RestController
+@Transactional
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/location")
 public class LocationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocationController.class);

@@ -1,12 +1,7 @@
 package com.vem.atsecserver.payload.rawproduct;
 
-import com.vem.atsecserver.entity.Donor;
-import com.vem.atsecserver.entity.DonorInstitute;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.Location;
-import com.vem.atsecserver.entity.rawproduct.TissueType;
-import com.vem.atsecserver.payload.DonorInstituteRequest;
-import com.vem.atsecserver.payload.TissueTypeRequest;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -31,7 +26,7 @@ public class RawProductRequest implements Serializable {
 
     private Location location;
 
-    private EnumRawProductStatus status;
+    private String statusName;
 
     private String definition;
 
@@ -99,12 +94,12 @@ public class RawProductRequest implements Serializable {
         this.location = location;
     }
 
-    public EnumRawProductStatus getStatus() {
-        return status;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setStatus(EnumRawProductStatus status) {
-        this.status = status;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public String getDefinition() {

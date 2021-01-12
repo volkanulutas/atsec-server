@@ -12,7 +12,7 @@ import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.auth.response.JwtResponse;
 import com.vem.atsecserver.payload.exception.EmailNotFoundException;
 import com.vem.atsecserver.payload.user.UserRequest;
-import com.vem.atsecserver.service.ConfirmationTokenService;
+import com.vem.atsecserver.service.auth.ConfirmationTokenService;
 import com.vem.atsecserver.service.EmailSenderService;
 import com.vem.atsecserver.service.user.AuthService;
 import com.vem.atsecserver.service.user.RoleService;
@@ -23,6 +23,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,8 +34,9 @@ import java.util.stream.Collectors;
  * @author volkanulutas
  * @since 12.12.2020
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Transactional
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
