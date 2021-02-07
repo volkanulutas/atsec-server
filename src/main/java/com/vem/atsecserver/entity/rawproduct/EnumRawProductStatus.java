@@ -8,7 +8,9 @@ public enum EnumRawProductStatus {
     QUARANTINE("Karantina"),
     REJECT("Red"),
     ACCEPTING("Kabul"),
-    NO_STATUS("Atanmamış");
+    NO_STATUS("Atanmamış"),
+    PRE_PROCESSING("Ön İşlem"), // artık Raw product listesinde gözükmesin.
+    MEDICAL_WASTE("Tibbi Atık");
 
     private final String name;
 

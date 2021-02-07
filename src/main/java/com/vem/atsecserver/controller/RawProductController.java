@@ -3,6 +3,7 @@ package com.vem.atsecserver.controller;
 import com.vem.atsecserver.converter.RawProductConverter;
 import com.vem.atsecserver.entity.file.EnumFileDBType;
 import com.vem.atsecserver.entity.file.FileDB;
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
@@ -64,6 +65,16 @@ public class RawProductController {
         return result;
     }
 
+    @GetMapping(value = "/rejectarchives", produces = "application/json")
+    public List<RawProductRequest> getRejectArchivesRawProducts() {
+        List<RawProductRequest> result = new ArrayList<>();
+        List<RawProduct> all = rawProductService.getRawProductsByStatus(EnumRawProductStatus.MEDICAL_WASTE);
+        for (RawProduct product : all) {
+            result.add(rawProductConverter.toRequest(product));
+        }
+        return result;
+    }
+
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody RawProductRequest productRequest) {
         RawProduct product = rawProductService.create(rawProductConverter.toEntity(productRequest));
@@ -101,10 +112,10 @@ public class RawProductController {
         String message = "";
         try {
             fileService.store(file, fileType);
-            message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            message = "Dosya başarılı bir şekilde yüklendi: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
         } catch (Exception e) {
-            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            message = "Dosya yüklemesi başarısız oldu: " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse(message));
         }
     }

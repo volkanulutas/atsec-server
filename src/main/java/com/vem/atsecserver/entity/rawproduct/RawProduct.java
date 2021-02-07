@@ -1,18 +1,21 @@
 package com.vem.atsecserver.entity.rawproduct;
 
 import com.vem.atsecserver.entity.file.FileDB;
+import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author volkanulutas
  * @since 12.12.2020
  */
-@Entity(name = "Raw_Product")
-@Table(name = "Raw_Product")
+@Entity(name = "RawProduct")
+@Table(name = "rawproduct")
 public class RawProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,11 +53,11 @@ public class RawProduct implements Serializable {
     @Column
     private Boolean deleted;
 
-    /*
-    @OneToMany(mappedBy = "raw_product")
-    private Collection<FileDB> files;
-*/
-    // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "rawproduct_file",
+            joinColumns = @JoinColumn(name = "rawproduct_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_id"))
+    private List<FileDB> files = new ArrayList<>();
 
     public RawProduct() {
         // default constructor.
@@ -147,5 +150,13 @@ public class RawProduct implements Serializable {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public List<FileDB> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileDB> files) {
+        this.files = files;
     }
 }

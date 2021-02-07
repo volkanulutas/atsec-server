@@ -1,12 +1,13 @@
 package com.vem.atsecserver.entity.file;
 
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import com.vem.atsecserver.entity.user.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "Files")
+@Entity(name = "File")
+@Table(name = "file")
 public class FileDB {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +21,8 @@ public class FileDB {
 
     private String type;
 
-    /*
-    @ManyToOne
-    @JoinColumn(name = "raw_product_id")
-    private RawProduct rawProduct;
-
-     */
+    @ManyToMany(mappedBy = "files")
+    private List<RawProduct> rawProducts = new ArrayList<>();
 
     @Lob
     private byte[] data;
@@ -79,5 +76,13 @@ public class FileDB {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public List<RawProduct> getRawProducts() {
+        return rawProducts;
+    }
+
+    public void setRawProducts(List<RawProduct> rawProducts) {
+        this.rawProducts = rawProducts;
     }
 }

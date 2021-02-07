@@ -1,5 +1,6 @@
 package com.vem.atsecserver.service.rawproduct;
 
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.repository.rawproduct.RawProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,11 @@ public class RawProductServiceImpl implements RawProductService {
 
     @Override
     public List<RawProduct> getAllRawProducts() {
-        return rawProductRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
+        return rawProductRepository.findAll().stream()
+                .filter(e -> !e.getDeleted()
+                        && !e.getStatus().equals(EnumRawProductStatus.PRE_PROCESSING)
+                        && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -69,5 +74,10 @@ public class RawProductServiceImpl implements RawProductService {
     @Override
     public RawProduct findRawProductById(Long id) {
         return rawProductRepository.findById(id).get(); // TODO: get()
+    }
+
+    @Override
+    public List<RawProduct> getRawProductsByStatus(EnumRawProductStatus status) {
+        return rawProductRepository.findByStatus(status);
     }
 }

@@ -1,5 +1,6 @@
 package com.vem.atsecserver.service.rawproduct;
 
+import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface RawProductService {
     RawProduct delete(Long id);
 
     RawProduct findRawProductById(Long id);
+
+    List<RawProduct> getRawProductsByStatus(EnumRawProductStatus status);
 }
