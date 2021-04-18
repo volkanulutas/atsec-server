@@ -42,7 +42,7 @@ public class Customer {
     private String telephone;
 
     @Column
-    private Boolean deleted;
+    private boolean deleted;
 
     public Customer() {
         // Default constructor.

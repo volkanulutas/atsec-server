@@ -47,6 +47,24 @@ public class SecBarcodeGeneratorService {
     private static String destFileName = "report.pdf";
 
 
+    public byte[] getBarcode() throws FileNotFoundException, JRException {
+        System.out.println("generating jasper report...");
+
+        // 1. compile template ".jrxml" file
+        JasperReport jasperReport = getJasperReport();
+
+        // 2. parameters "empty"
+        Map<String, Object> parameters = getParameters();
+
+        // 3. datasource "java object"
+        JRDataSource dataSource = getDataSource();
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        byte[] file = JasperExportManager.exportReportToPdf(jasperPrint);
+        return file;
+    }
+
+
     public static void main(String[] args) throws FileNotFoundException, JRException {
 
         System.out.println("generating jasper report...");
@@ -61,8 +79,8 @@ public class SecBarcodeGeneratorService {
         JRDataSource dataSource = getDataSource();
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-        JasperExportManager.exportReportToPdfFile(jasperPrint, destFileName);
 
+        JasperExportManager.exportReportToPdfFile(jasperPrint, destFileName);
     }
 
     private static JasperReport getJasperReport() throws FileNotFoundException, JRException {

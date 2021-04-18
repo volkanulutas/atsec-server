@@ -20,7 +20,9 @@ public enum EnumFileDBType {
 
     QUARANTINE_ACCEPTANCE_FORM("Karantina Kabul Formu"),
 
-    QUARANTINE_EXTRA_FILES("Karantina Ek Formlar");
+    QUARANTINE_EXTRA_FILES("Karantina Ek Formlar"),
+
+    RESULT_FILE_STICKER("Etiket");
 
     private String name;
 

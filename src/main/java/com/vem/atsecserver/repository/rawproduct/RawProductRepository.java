@@ -14,4 +14,6 @@ import java.util.List;
 @Repository
 public interface RawProductRepository extends JpaRepository<RawProduct, Long> {
     List<RawProduct> findByStatus(EnumRawProductStatus status);
+
+    RawProduct getById(long rawProductId);
 }

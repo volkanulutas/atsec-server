@@ -1,6 +1,7 @@
 package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.ProductConverter;
+import com.vem.atsecserver.entity.product.EnumProductPreProcessingType;
 import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
@@ -42,7 +43,7 @@ public class ProductController {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not exists with id", id + "")));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public List<ProductRequest> getAllProducts() {
         List<ProductRequest> result = new ArrayList<>();
         List<Product> all = productService.getAllProducts();
@@ -52,7 +53,7 @@ public class ProductController {
         return result;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody ProductRequest productRequest) {
         Product product = productService.create(productConverter.toEntity(productRequest));
         URI location = ServletUriComponentsBuilder
@@ -62,7 +63,7 @@ public class ProductController {
                 .body(new ApiResponse(true, "Product created successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody ProductRequest productRequest) {
         Product product = productService.update(productConverter.toEntity(productRequest));
         URI location = ServletUriComponentsBuilder
@@ -81,5 +82,10 @@ public class ProductController {
                 .buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "Product deleted successfully."));
+    }
+
+    @GetMapping(value = "/preprocessingtypelist", produces = "application/json")
+    public List<String> getPreProcessingTypeList() {
+        return EnumProductPreProcessingType.valuesByName();
     }
 }

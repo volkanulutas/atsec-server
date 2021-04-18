@@ -5,6 +5,7 @@ import com.vem.atsecserver.entity.sales.Customer;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author volkanulutas
@@ -15,13 +16,16 @@ import java.io.Serializable;
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column
-    private String name;
+    @Column(name = "id")
+    private Long id;
 
     @Column
     private EnumProductStatus status;
+
+    @ElementCollection(targetClass = EnumProductPreProcessingType.class)
+    @CollectionTable
+    @Enumerated(EnumType.STRING)
+    private List<EnumProductPreProcessingType> preProcessingType;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
@@ -29,12 +33,6 @@ public class Product implements Serializable {
 
     @Column
     private String definition;
-
-    @Column
-    private long expirationDate;
-
-    @Column
-    private int splitLength;
 
     @Column
     private String information; // NOTE: recall prosedüründe kullanılabilir.
@@ -49,9 +47,7 @@ public class Product implements Serializable {
     private Customer customer;
 
     @Column
-    private Boolean deleted;
-
-    // TODO: sec e özgü bilgiler yer alacak.
+    private boolean deleted;
 
     // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
 
@@ -59,44 +55,12 @@ public class Product implements Serializable {
         // default constructor.
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Donor getDonor() {
-        return donor;
-    }
-
-    public void setDonor(Donor donor) {
-        this.donor = donor;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public String getSecCode() {
-        return secCode;
-    }
-
-    public void setSecCode(String secCode) {
-        this.secCode = secCode;
     }
 
     public EnumProductStatus getStatus() {
@@ -105,6 +69,14 @@ public class Product implements Serializable {
 
     public void setStatus(EnumProductStatus status) {
         this.status = status;
+    }
+
+    public List<EnumProductPreProcessingType> getPreProcessingType() {
+        return preProcessingType;
+    }
+
+    public void setPreProcessingType(List<EnumProductPreProcessingType> preProcessingType) {
+        this.preProcessingType = preProcessingType;
     }
 
     public EnumProductType getType() {
@@ -123,22 +95,6 @@ public class Product implements Serializable {
         this.definition = definition;
     }
 
-    public long getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(long expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public int getSplitLength() {
-        return splitLength;
-    }
-
-    public void setSplitLength(int splitLength) {
-        this.splitLength = splitLength;
-    }
-
     public String getInformation() {
         return information;
     }
@@ -147,11 +103,35 @@ public class Product implements Serializable {
         this.information = information;
     }
 
-    public Boolean getDeleted() {
+    public String getSecCode() {
+        return secCode;
+    }
+
+    public void setSecCode(String secCode) {
+        this.secCode = secCode;
+    }
+
+    public Donor getDonor() {
+        return donor;
+    }
+
+    public void setDonor(Donor donor) {
+        this.donor = donor;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public boolean isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 }

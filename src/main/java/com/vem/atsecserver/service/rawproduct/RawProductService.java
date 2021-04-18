@@ -21,4 +21,6 @@ public interface RawProductService {
     RawProduct findRawProductById(Long id);
 
     List<RawProduct> getRawProductsByStatus(EnumRawProductStatus status);
+
+    RawProduct getRawProductById(long rawProductId);
 }

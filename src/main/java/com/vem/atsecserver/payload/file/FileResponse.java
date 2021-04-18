@@ -9,16 +9,18 @@ public class FileResponse {
     private String url;
     private String type;
     private long size;
+    private String responseMessage;
 
     public FileResponse() {
         // Default constructor.
     }
 
-    public FileResponse(String name, String url, String type, long size) {
+    public FileResponse(String name, String url, String type, long size, String responseMessage) {
         this.name = name;
         this.url = url;
         this.type = type;
         this.size = size;
+        this.responseMessage = responseMessage;
     }
 
     public String getName() {
@@ -51,5 +53,13 @@ public class FileResponse {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public String getResponseMessage() {
+        return responseMessage;
+    }
+
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
     }
 }

@@ -2,27 +2,36 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.RawProductConverter;
 import com.vem.atsecserver.entity.file.EnumFileDBType;
-import com.vem.atsecserver.entity.file.FileDB;
+import com.vem.atsecserver.entity.file.File;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
 import com.vem.atsecserver.payload.file.FileResponse;
-import com.vem.atsecserver.payload.file.MessageResponse;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
 import com.vem.atsecserver.service.FileService;
+import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService;
 import com.vem.atsecserver.service.rawproduct.RawProductService;
+import com.vem.atsecserver.service.report.rawproduct.RawProductReportService;
+import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +57,17 @@ public class RawProductController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private RawProductReportService rawProductReportService;
+
+    @Autowired
+    private SecBarcodeGeneratorService barcodeGeneratorService;
+
+    @GetMapping("/report/{id}")
+    public void generateReport(@PathVariable String id) throws FileNotFoundException, JRException {
+        rawProductReportService.exportReport(Long.parseLong(id));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<RawProductRequest> getRawProductById(@PathVariable("id") Long id) {
@@ -107,16 +127,26 @@ public class RawProductController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<MessageResponse> uploadApproveFiles(@RequestParam("file") MultipartFile file,
-                                                              @RequestParam("fileType") EnumFileDBType fileType) {
-        String message = "";
+    public ResponseEntity<FileResponse> uploadApproveFiles(@RequestParam("file") MultipartFile file,
+                                                           @RequestParam("fileType") EnumFileDBType fileType) {
         try {
-            fileService.store(file, fileType);
-            message = "Dosya başarılı bir şekilde yüklendi: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
+            File dbFile = fileService.store(file, fileType);
+
+            String fileDownloadUri = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/upload/")
+                    .path(dbFile.getId() + "")
+                    .toUriString();
+
+            FileResponse fileResponse = new FileResponse(
+                    dbFile.getName(),
+                    fileDownloadUri,
+                    dbFile.getType(),
+                    dbFile.getData().length,
+                    "Dosya başaralı bir şekilde yüklendi.");
+            return ResponseEntity.status(HttpStatus.OK).body(fileResponse);
         } catch (Exception e) {
-            message = "Dosya yüklemesi başarısız oldu: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse(message));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
         }
     }
 
@@ -133,15 +163,16 @@ public class RawProductController {
                     dbFile.getName(),
                     fileDownloadUri,
                     dbFile.getType(),
-                    dbFile.getData().length);
+                    dbFile.getData().length, "");
         }).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
+    @ResponseBody
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
-        FileDB fileDB = fileService.getFile(id);
+        File fileDB = fileService.getFile(id);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
@@ -150,4 +181,28 @@ public class RawProductController {
 
     // TODO: Barcode generate
     // TODO: barcode view as pdf
+    @RequestMapping(value = "/barcode", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> download() throws IOException, JRException {
+
+        byte[] barcode = barcodeGeneratorService.getBarcode();
+
+        InputStream pdfFile = new ByteArrayInputStream(barcode);
+
+        // ClassPathResource pdfFile = new ClassPathResource("downloads/" + fileName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        /*
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT");
+        headers.add("Access-Control-Allow-Headers", "Content-Type");
+        headers.add("Content-Disposition", "filename=" + fileName);
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+         */
+        headers.setContentLength(barcode.length);
+        ResponseEntity<InputStreamResource> response = new ResponseEntity<InputStreamResource>(
+                new InputStreamResource(pdfFile), headers, HttpStatus.OK);
+        return response;
+    }
 }

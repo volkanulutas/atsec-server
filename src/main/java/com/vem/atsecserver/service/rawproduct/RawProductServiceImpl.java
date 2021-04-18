@@ -80,4 +80,9 @@ public class RawProductServiceImpl implements RawProductService {
     public List<RawProduct> getRawProductsByStatus(EnumRawProductStatus status) {
         return rawProductRepository.findByStatus(status);
     }
+
+    @Override
+    public RawProduct getRawProductById(long rawProductId) {
+        return rawProductRepository.getById(rawProductId);
+    }
 }

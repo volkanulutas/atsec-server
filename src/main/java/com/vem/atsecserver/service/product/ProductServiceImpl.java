@@ -19,16 +19,18 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product create(Product pPram) {
-        Product entity = new Product();
-        entity.setDefinition(pPram.getDefinition());
-        entity.setName(pPram.getName());
-        entity.setInformation(pPram.getInformation());
-        entity.setSecCode(pPram.getSecCode());
-        entity.setStatus(pPram.getStatus());
-        entity.setSplitLength(pPram.getSplitLength());
-        entity.setType(pPram.getType());
-        return productRepository.save(entity);
+    public Product create(Product productPar) {
+        Product product = new Product();
+        product.setDefinition(productPar.getDefinition());
+        product.setInformation(productPar.getInformation());
+        product.setSecCode(productPar.getSecCode());
+        product.setStatus(productPar.getStatus());
+        product.setType(productPar.getType());
+        product.setPreProcessingType(productPar.getPreProcessingType());
+        product.setDonor(productPar.getDonor());
+        product.setCustomer(productPar.getCustomer());
+        product.setDeleted(false);
+        return productRepository.save(product);
     }
 
     @Override
@@ -37,12 +39,14 @@ public class ProductServiceImpl implements ProductService {
         if (byId.isPresent()) {
             Product product = byId.get();
             product.setDefinition(productPar.getDefinition());
-            product.setName(productPar.getName());
             product.setInformation(productPar.getInformation());
             product.setSecCode(productPar.getSecCode());
             product.setStatus(productPar.getStatus());
-            product.setSplitLength(productPar.getSplitLength());
             product.setType(productPar.getType());
+            product.setPreProcessingType(productPar.getPreProcessingType());
+            product.setDonor(product.getDonor());
+            product.setCustomer(productPar.getCustomer());
+            product.setDeleted(false);
             return productRepository.save(product);
         }
         return null;
@@ -50,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
+        return productRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
     }
 
     @Override
