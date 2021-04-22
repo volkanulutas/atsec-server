@@ -1,6 +1,11 @@
 package com.vem.atsecserver.payload.product;
 
+import com.vem.atsecserver.payload.rawproduct.DonorRequest;
+import com.vem.atsecserver.payload.sales.CustomerRequest;
+import com.vem.atsecserver.repository.rawproduct.DonorRepository;
+
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author volkanulutas
@@ -10,27 +15,25 @@ public class ProductRequest {
     @NotNull
     private Long id;
 
-    private String name;
+    private DonorRequest donor;
 
-    private String secCode;
+    private CustomerRequest customer;
 
     private String status;
 
+    private String secCode;
+
     private String type;
+
+    private List<String> preProcessingType;
 
     private String definition;
 
-    private long expirationDate;
-
-    private int splitLength;
-
     private String information;
 
-    private String donorId;
+    private boolean deleted;
 
-    private String customerId;
-
-    private Boolean deleted;
+    // TODO: expiry date
 
     public ProductRequest() {
         // default constructor.
@@ -44,20 +47,20 @@ public class ProductRequest {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public DonorRequest getDonor() {
+        return donor;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDonor(DonorRequest donor) {
+        this.donor = donor;
     }
 
-    public String getSecCode() {
-        return secCode;
+    public CustomerRequest getCustomer() {
+        return customer;
     }
 
-    public void setSecCode(String secCode) {
-        this.secCode = secCode;
+    public void setCustomer(CustomerRequest customer) {
+        this.customer = customer;
     }
 
     public String getStatus() {
@@ -68,12 +71,28 @@ public class ProductRequest {
         this.status = status;
     }
 
+    public String getSecCode() {
+        return secCode;
+    }
+
+    public void setSecCode(String secCode) {
+        this.secCode = secCode;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<String> getPreProcessingType() {
+        return preProcessingType;
+    }
+
+    public void setPreProcessingType(List<String> preProcessingType) {
+        this.preProcessingType = preProcessingType;
     }
 
     public String getDefinition() {
@@ -84,22 +103,6 @@ public class ProductRequest {
         this.definition = definition;
     }
 
-    public long getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(long expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public int getSplitLength() {
-        return splitLength;
-    }
-
-    public void setSplitLength(int splitLength) {
-        this.splitLength = splitLength;
-    }
-
     public String getInformation() {
         return information;
     }
@@ -108,27 +111,11 @@ public class ProductRequest {
         this.information = information;
     }
 
-    public String getDonorId() {
-        return donorId;
-    }
-
-    public void setDonorId(String donorId) {
-        this.donorId = donorId;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public Boolean getDeleted() {
+    public boolean isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 }

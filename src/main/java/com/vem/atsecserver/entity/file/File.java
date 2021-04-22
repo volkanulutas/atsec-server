@@ -1,13 +1,13 @@
 package com.vem.atsecserver.entity.file;
 
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import com.vem.atsecserver.entity.user.Role;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "Files")
-public class FileDB {
+@Table(name = "file")
+public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,21 +20,17 @@ public class FileDB {
 
     private String type;
 
-    /*
-    @ManyToOne
-    @JoinColumn(name = "raw_product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private RawProduct rawProduct;
-
-     */
 
     @Lob
     private byte[] data;
 
-    public FileDB() {
+    public File() {
         // Default constructor.
     }
 
-    public FileDB(String name, EnumFileDBType fileDBType, String type, byte[] data) {
+    public File(String name, EnumFileDBType fileDBType, String type, byte[] data) {
         this.name = name;
         this.fileDBType = fileDBType;
         this.type = type;
@@ -79,5 +75,13 @@ public class FileDB {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public RawProduct getRawProduct() {
+        return rawProduct;
+    }
+
+    public void setRawProduct(RawProduct rawProduct) {
+        this.rawProduct = rawProduct;
     }
 }

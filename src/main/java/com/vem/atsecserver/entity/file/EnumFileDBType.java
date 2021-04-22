@@ -14,7 +14,15 @@ public enum EnumFileDBType {
 
     RAW_EXTRA_FILES("Ek Formlar"),
 
-    RAW_BARCODE("Ham Ürün Barkodu");
+    RAW_BARCODE("Ham Ürün Barkodu"),
+
+    QUARANTINE_TEST_RESULT("Karantina Test Sonucu"),
+
+    QUARANTINE_ACCEPTANCE_FORM("Karantina Kabul Formu"),
+
+    QUARANTINE_EXTRA_FILES("Karantina Ek Formlar"),
+
+    RESULT_FILE_STICKER("Etiket");
 
     private String name;
 

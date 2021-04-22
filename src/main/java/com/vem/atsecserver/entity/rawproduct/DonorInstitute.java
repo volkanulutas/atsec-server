@@ -1,7 +1,5 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import com.vem.atsecserver.entity.rawproduct.RawProduct;
-
 import javax.persistence.*;
 import java.util.List;
 

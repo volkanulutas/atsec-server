@@ -1,10 +1,6 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import com.vem.atsecserver.entity.user.Permission;
-import com.vem.atsecserver.entity.user.User;
-
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
  * @author volkanulutas

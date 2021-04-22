@@ -5,7 +5,6 @@ package com.vem.atsecserver.entity.product;
  * @since 12.12.2020
  */
 public enum EnumProductType {
-
     NONE("None");
     // TODO: lookup table AB sisteminde dirsek kemiğininin türünü belirler.
     private String name;

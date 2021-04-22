@@ -7,8 +7,10 @@ package com.vem.atsecserver.entity.rawproduct;
 public enum EnumRawProductStatus {
     QUARANTINE("Karantina"),
     REJECT("Red"),
-    ACCEPTING("Kabul"),
-    NO_STATUS("Atanmamış");
+    ACCEPTED("Kabul"),
+    NO_STATUS("Atanmamış"),
+    PRE_PROCESSING("Ön İşlem"), // artık Raw product listesinde gözükmesin. product oluşacak buradan sonra...
+    MEDICAL_WASTE("Tibbi Atık");
 
     private final String name;
 

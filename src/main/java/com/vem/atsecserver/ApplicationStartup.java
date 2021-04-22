@@ -1,18 +1,18 @@
 package com.vem.atsecserver;
 
-import com.vem.atsecserver.entity.rawproduct.Donor;
-import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
-import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
-import com.vem.atsecserver.entity.rawproduct.Location;
-import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import com.vem.atsecserver.entity.rawproduct.TissueType;
+import com.vem.atsecserver.entity.product.EnumProductPreProcessingType;
+import com.vem.atsecserver.entity.product.EnumProductStatus;
+import com.vem.atsecserver.entity.product.EnumProductType;
+import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.rawproduct.*;
 import com.vem.atsecserver.entity.sales.Customer;
 import com.vem.atsecserver.entity.sales.EnumCustomerType;
 import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.entity.user.User;
-import com.vem.atsecserver.service.sales.CustomerService;
+import com.vem.atsecserver.service.product.ProductService;
 import com.vem.atsecserver.service.rawproduct.*;
+import com.vem.atsecserver.service.sales.CustomerService;
 import com.vem.atsecserver.service.user.PermissionService;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
@@ -52,6 +52,9 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
     @Autowired
     private RawProductService rawProductService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private TissueService tissueService;
@@ -106,17 +109,18 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         donorInstitute.setName("Hacettepe Üniversitesi");
         donorInstitute = donorInstituteService.create(donorInstitute);
 
-        RawProduct raw = new RawProduct();
-        raw.setDefinition("Açıklama");
-        raw.setStatus(EnumRawProductStatus.REJECT);
-        raw.setInformation("Ek Bilgi");
-        raw.setLocation(location);
-        raw.setTissueType(tissueType1);
-        raw.setArrivalDate(System.currentTimeMillis());
-        raw.setIssueTissueDate(System.currentTimeMillis());
-        raw.setDonorInstitute(donorInstitute);
-        raw.setDeleted(false);
-        raw = rawProductService.create(raw);
+        RawProduct raw1 = new RawProduct();
+        raw1.setDefinition("Açıklama");
+        raw1.setStatus(EnumRawProductStatus.ACCEPTED);
+        raw1.setInformation("Ek Bilgiler");
+        raw1.setLocation(location);
+        raw1.setTissueType(tissueType1);
+        raw1.setArrivalDate(System.currentTimeMillis());
+        raw1.setIssueTissueDate(System.currentTimeMillis());
+        raw1.setDonorInstitute(donorInstitute);
+        raw1.setCheckedOutBy(user);
+        raw1.setDeleted(false);
+        raw1 = rawProductService.create(raw1);
 
         Customer customer = new Customer();
         customer.setIdentityNumber("1");
@@ -128,19 +132,35 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         customer.setDeleted(false);
         customer = customerService.create(customer);
 
-        Donor donor = new Donor();
-        donor.setDeleted(false);
-        donor.setCode("1");
-        donor.setAddress("Donor Adresi");
-        donor.setName("Ali");
-        donor.setSurname("Koca");
-        donor.setTelephone("+90(532)3261615");
-        donor.setRawProducts(Arrays.asList(raw));
-        donor = donorService.create(donor);
+        Donor donor1 = new Donor();
+        donor1.setCitizenshipNumber("20403320954");
+        donor1.setDeleted(false);
+        donor1.setCode("1");
+        donor1.setAddress("Donor Adresi");
+        donor1.setName("Ali");
+        donor1.setSurname("Koca");
+        donor1.setTelephone("+90(532)3261615");
+        donor1.setRawProducts(Arrays.asList(raw1));
+        donor1 = donorService.create(donor1);
 
-        raw.setDonor(donor);
-        rawProductService.update(raw);
+        raw1.setDonor(donor1);
+        rawProductService.update(raw1);
 
+
+        Product product = new Product();
+        product.setDeleted(false);
+        product.setDonor(donor1);
+        product.setPreProcessingType(Arrays.asList(EnumProductPreProcessingType.CUTTING,
+                EnumProductPreProcessingType.TAKING_CARTILAGE,
+                EnumProductPreProcessingType.WASHING));
+        product.setCustomer(customer);
+        product.setSecCode("12345");
+        product.setType(EnumProductType.NONE);
+        product.setStatus(EnumProductStatus.COURSE_GRINDING);
+        product.setDefinition("Ürün 1");
+        product.setStatus(EnumProductStatus.PRE_PROCESSING);
+        product.setInformation("Ürün Bilgisi");
+        productService.create(product);
 
 
         alreadySetup = true;

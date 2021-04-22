@@ -5,8 +5,19 @@ package com.vem.atsecserver.entity.product;
  * @since 12.12.2020
  */
 public enum EnumProductStatus {
-    QUARANTINE("Karantina"),
-    STOCK("Stok"),
+    PRE_PROCESSING("Ön İşlem"), // artık Raw product listesinde gözükmesin. product oluşacak buradan sonra...
+    PRE_PROCESSING_ACCEPTED("Ön İşlem - Kabul"),
+    FREEZING_AFTER_PRE("Dondurma (Pre)"),
+    COURSE_GRINDING("Kaba Öğütme"),
+    FREEZING_AFTER_COURSE("Dondurma (Course)"),
+    FINE_GRINDING("İnce Öğütme"),
+    DELIPIDATION("Yıkama"),
+    FREEZING_AFTER_DELIPIDATION("Dondurma (Yıkama)"),
+    STERILIZATION("Sterilizasyon"),
+
+
+
+    // Alttakiler teyit edilecektir.
     SAMPLE("Numune"),
     CASUALTY("Zaiyat"),
     RECALL("Geri Çağrılmış");

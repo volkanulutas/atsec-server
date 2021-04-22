@@ -1,25 +1,30 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import com.vem.atsecserver.entity.file.FileDB;
+import com.vem.atsecserver.entity.file.File;
 import com.vem.atsecserver.entity.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author volkanulutas
  * @since 12.12.2020
  */
-@Entity(name = "Raw_Product")
-@Table(name = "Raw_Product")
+@Table(name = "rawproduct")
+@Entity
 public class RawProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Donor donor;
+
+    @OneToOne(targetEntity = TissueType.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "tissue_type_id")
+    private TissueType tissueType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private DonorInstitute donorInstitute;
@@ -30,16 +35,20 @@ public class RawProduct implements Serializable {
     @Column
     private long arrivalDate; // Merkeze geliş tarihi
 
-    @OneToOne(targetEntity = TissueType.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "tissue_type_id")
-    private TissueType tissueType;
-
     @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "secuser_id")
+    private User checkedOutBy;
+
     @Column
     private EnumRawProductStatus status;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="file_id")
+    private List <File> files;
 
     @Column
     private String definition;
@@ -49,12 +58,6 @@ public class RawProduct implements Serializable {
 
     @Column
     private Boolean deleted;
-
-    /*
-    @OneToMany(mappedBy = "raw_product")
-    private Collection<FileDB> files;
-*/
-    // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
 
     public RawProduct() {
         // default constructor.
@@ -147,5 +150,21 @@ public class RawProduct implements Serializable {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public User getCheckedOutBy() {
+        return checkedOutBy;
+    }
+
+    public void setCheckedOutBy(User checkedOutBy) {
+        this.checkedOutBy = checkedOutBy;
+    }
+
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
     }
 }
