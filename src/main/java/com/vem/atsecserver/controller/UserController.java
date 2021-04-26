@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/user")
+// @Secured("USER_PAGE_PERMISSION")
 public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -55,13 +57,13 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User not exists with id", id + "")));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes =  "application/json")
+    @PutMapping(value = "/{id}", produces = "application/json", consumes =  "application/json")
     public ResponseEntity<UserRequest> updateUser(@PathVariable("id") Long id, @RequestBody UserRequest userParam) {
         User save = userService.save(userConverter.toEntity(userParam));
         return ResponseEntity.ok(userConverter.toRequest(save));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes =  "application/json")
+    @PostMapping(value = "/", produces = "application/json", consumes =  "application/json")
     public @ResponseBody ResponseEntity<?> create(/*@Valid*/ @RequestBody UserRequest userRequest) {
         if (userService.existsByUsername(userRequest.getUsername())) {
             return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"), HttpStatus.BAD_REQUEST);
@@ -73,8 +75,7 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponse(true, "User registered successfully!"), HttpStatus.OK);
     }
 
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userConverter.toRequest(userService.delete(id)));

@@ -2,19 +2,23 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.auth.security.JwtTokenProvider;
 import com.vem.atsecserver.auth.security.UserPrincipal;
+import com.vem.atsecserver.converter.PermissionConverter;
 import com.vem.atsecserver.converter.UserConverter;
 import com.vem.atsecserver.data.mail.Email;
 import com.vem.atsecserver.entity.auth.ConfirmationToken;
+import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.User;
 import com.vem.atsecserver.payload.auth.request.ChangePasswordRequest;
 import com.vem.atsecserver.payload.auth.request.LoginRequest;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.auth.response.JwtResponse;
 import com.vem.atsecserver.payload.exception.EmailNotFoundException;
+import com.vem.atsecserver.payload.user.PermissionRequest;
 import com.vem.atsecserver.payload.user.UserRequest;
 import com.vem.atsecserver.service.auth.ConfirmationTokenService;
 import com.vem.atsecserver.service.EmailSenderService;
 import com.vem.atsecserver.service.user.AuthService;
+import com.vem.atsecserver.service.user.PermissionService;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +63,12 @@ public class AuthController {
     private RoleService roleService;
 
     @Autowired
+    private PermissionService permissionService;
+
+    @Autowired
+    private  PermissionConverter permissionConverter;
+
+    @Autowired
     private JwtTokenProvider jwtUtils;
 
     @Autowired
@@ -72,19 +83,23 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
-        List<String> roles = null;
+        List<PermissionRequest> permissionReqList = new ArrayList<>();
         if (userDetails.getAuthorities() != null) {
-            roles = userDetails.getAuthorities().stream()
+            List<String> permissions = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
+            for (String per: permissions) {
+                Permission permissionByName = permissionService.findPermissionByName(per);
+                permissionReqList.add(permissionConverter.toRequest(permissionByName));
+            }
         }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                roles));
+                permissionReqList));
     }
 
-    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
+    @PostMapping(value = "/change-password")
     public ResponseEntity<?> changeUserPassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         return ResponseEntity.ok(authService.changeUserPassword(changePasswordRequest.getToken(), changePasswordRequest.getPassword()));
     }
@@ -92,7 +107,7 @@ public class AuthController {
     /**
      * Receive email of the user, create token and send it via email to the user
      */
-    @RequestMapping(value = "/forget-password", method = RequestMethod.POST)
+    @PostMapping(value = "/forget-password")
     public ResponseEntity<?> forgotUserPassword(@RequestBody UserRequest userRequest) {
         User user = userService.findUserByUsername(userRequest.getUsername());
         if (user != null) {
@@ -107,7 +122,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/confirm-reset", method = RequestMethod.POST)
+    @PostMapping(value = "/confirm-reset")
     public ResponseEntity<?> validateResetToken(@RequestParam("token") String confirmationToken) {
         ConfirmationToken token = confirmationTokenService.findByConfirmationToken(confirmationToken);
         if (token != null && token.getValidity()) {

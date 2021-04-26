@@ -18,4 +18,6 @@ public interface PermissionService {
     Permission delete(Long id);
 
     Permission findPermissionById(Long id);
+
+    Permission findPermissionByName(String name);
 }

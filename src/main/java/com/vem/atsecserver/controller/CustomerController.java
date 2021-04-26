@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/customer")
+// @Secured("CUSTOMER_PAGE_PERMISSION")
 public class CustomerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
@@ -45,7 +47,7 @@ public class CustomerController {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not exists with id", id + "")));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public List<CustomerRequest> getAllCustomers() {
         List<CustomerRequest> result = new ArrayList<>();
         List<Customer> all = customerService.getAllCustomers();
@@ -55,7 +57,7 @@ public class CustomerController {
         return result;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody CustomerRequest customerRequest) {
         Customer customer = customerService.create(customerConverter.toEntity(customerRequest));
         URI location = ServletUriComponentsBuilder
@@ -65,7 +67,7 @@ public class CustomerController {
                 .body(new ApiResponse(true, "Customer created successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(@Valid @RequestBody CustomerRequest customerRequest) {
         Customer customer = customerService.update(customerConverter.toEntity(customerRequest));
         URI location = ServletUriComponentsBuilder
@@ -75,7 +77,7 @@ public class CustomerController {
                 .body(new ApiResponse(true, "Customer updated successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         CustomerRequest request = customerConverter.toRequest(customerService.delete(id));

@@ -19,6 +19,8 @@ public class PermissionRequest {
     @Size(min = 3)
     private String name;
 
+    private String menu;
+
     @JsonIgnore
     private Collection<RoleRequest> roles;
 
@@ -49,6 +51,14 @@ public class PermissionRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 
     public String getDefinition() {

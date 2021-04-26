@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/donorinstitute")
+// @Secured("DONORINSTITUTE_PAGE_PERMISSION")
 public class DonorInstituteController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DonorInstituteController.class);
 
@@ -43,7 +45,7 @@ public class DonorInstituteController {
                .orElseThrow( ()->new ResourceNotFoundException("Donor Institute not exists with id", id + "") ));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public List<DonorInstituteRequest> getAllDonorInstitutes() {
         List<DonorInstituteRequest> result = new ArrayList<>();
         List<DonorInstitute> all = donorInstituteService.getAllDonorInstitutes();
@@ -53,7 +55,7 @@ public class DonorInstituteController {
         return result;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody DonorInstituteRequest donorRequest) {
         System.out.println(donorRequest.toString());
 
@@ -68,7 +70,7 @@ public class DonorInstituteController {
                 .body(new ApiResponse(true, "Donor Institute created successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody DonorInstituteRequest donorInstituteRequest) {
         DonorInstitute donorInstitute = donorInstituteService.update(donorInstituteConverter.toEntity(donorInstituteRequest));
         URI location = ServletUriComponentsBuilder
@@ -78,7 +80,7 @@ public class DonorInstituteController {
                 .body(new ApiResponse(true, "Donor Institute updated successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         DonorInstitute donor = donorInstituteService.delete(id);

@@ -71,6 +71,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
         if (alreadySetup)
             return;
+
+        /*
         Permission readPrivilege
                 = createPrivilegeIfNotFound("READ_PRIVILEGE", "READ_PRIVILEGE");
         Permission writePrivilege
@@ -79,16 +81,26 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         List<Permission> adminPrivileges = Arrays.asList(readPrivilege, writePrivilege);
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", "ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_USER", "ROLE_USER", Arrays.asList(readPrivilege));
-
+*/
+        createRoles();
 
         User user = new User();
-        user.setName("Volkan");
-        user.setSurname("Ulutaş");
+        user.setName("Ela");
+        user.setSurname("Esmer");
         user.setPassword("123");
-        user.setUsername("volkanulutas@gmail.com");
-        user.setRole(adminRole);
+        user.setUsername("elaesmer@gmail.com");
+        user.setRole(roleService.findRoleByName("ROLE_ADMIN"));
         user.setEnabled(true);
         userService.save(user);
+
+        User user2 = new User();
+        user2.setName("Volkan");
+        user2.setSurname("Ulutaş");
+        user2.setPassword("123");
+        user2.setUsername("volkanulutas@gmail.com");
+        user2.setRole(roleService.findRoleByName("ROLE_USER"));
+        user2.setEnabled(true);
+        userService.save(user2);
 
         TissueType tissueType1 = new TissueType("Femur Başı", "Femur Başı");
         tissueType1 = tissueService.create(tissueType1);
@@ -167,8 +179,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     }
 
     @Transactional
-    private Permission createPrivilegeIfNotFound(String name, String definition) {
-        return permissionService.create(new Permission(name, definition));
+    private Permission createPrivilegeIfNotFound(String name, String definition, String menu) {
+        return permissionService.create(new Permission(name, definition, menu));
     }
 
     @Transactional
@@ -176,5 +188,29 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         Role role = new Role(name, definition);
         role.setPermissions(privileges);
         return roleService.create(role);
+    }
+
+    public void createRoles() {
+        Permission userPage = createPrivilegeIfNotFound("USER_PAGE_PERMISSION", "USER_PERMISSION", "USER_MENU_PERMISSION");
+        Permission rolePage = createPrivilegeIfNotFound("ROLE_PAGE_PERMISSION", "ROLE_PAGE_PERMISSION","USER_MENU_PERMISSION");
+        Permission permissionPage = createPrivilegeIfNotFound("PERMISSION_PAGE_PERMISSION", "PERMISSION_PAGE_PERMISSION","USER_MENU_PERMISSION");
+
+        Permission rawProductPage = createPrivilegeIfNotFound("RAWPRODUCT_PAGE_PERMISSION", "RAWPRODUCT_PAGE_PERMISSION","RAWPRODUCT_MENU_PERMISSION");
+        Permission rawProductRejectPage = createPrivilegeIfNotFound("RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
+        Permission donorPage = createPrivilegeIfNotFound("DONOR_PAGE_PERMISSION", "DONOR_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
+        Permission donorInstitutePage = createPrivilegeIfNotFound("DONORINSTITUTE_PAGE_PERMISSION", "DONORINSTITUTE_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
+        Permission locationPage = createPrivilegeIfNotFound("LOCATION_PAGE_PERMISSION", "LOCATION_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
+        Permission tissueTypePage = createPrivilegeIfNotFound("TISSUETYPE_PAGE_PERMISSION", "TISSUETYPE_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
+
+        Permission productPage = createPrivilegeIfNotFound("PRODUCT_PAGE_PERMISSION", "PRODUCT_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
+        Permission customerPage = createPrivilegeIfNotFound("CUSTOMER_PAGE_PERMISSION", "CUSTOMER_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
+
+
+        List<Permission> adminPrivileges = Arrays.asList(userPage, rolePage, permissionPage,
+                rawProductPage, rawProductRejectPage, donorPage, donorInstitutePage, locationPage, tissueTypePage,
+                productPage, customerPage);
+        List<Permission> userPrivileges = Arrays.asList(productPage, rolePage, userPage);
+        createRoleIfNotFound("ROLE_ADMIN", "ROLE_ADMIN", adminPrivileges);
+        createRoleIfNotFound("ROLE_USER", "ROLE_USER", userPrivileges);
     }
 }

@@ -1,5 +1,8 @@
 package com.vem.atsecserver.payload.auth.response;
 
+import com.vem.atsecserver.entity.user.Permission;
+import com.vem.atsecserver.payload.user.PermissionRequest;
+
 import java.util.List;
 
 /**
@@ -11,29 +14,29 @@ public class JwtResponse {
     private String type = "Bearer";
     private Long id;
     private String username;
-    private List<String> roles;
+    private List<PermissionRequest> permissions;
 
-    public JwtResponse(String accessToken, Long id, String username, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String username, List<PermissionRequest> permissions) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
-        this.roles = roles;
+        this.permissions = permissions;
     }
 
-    public String getAccessToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.token = accessToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public String getTokenType() {
+    public String getType() {
         return type;
     }
 
-    public void setTokenType(String tokenType) {
-        this.type = tokenType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getId() {
@@ -52,8 +55,11 @@ public class JwtResponse {
         this.username = username;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public List<PermissionRequest> getPermissions() {
+        return permissions;
     }
 
+    public void setPermissions(List<PermissionRequest> permissions) {
+        this.permissions = permissions;
+    }
 }

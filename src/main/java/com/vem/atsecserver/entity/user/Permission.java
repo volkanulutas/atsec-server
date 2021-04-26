@@ -14,11 +14,14 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique=true)
     private String name;
 
     @Column
     private String definition;
+
+    @Column
+    private String menu;
 
     @ManyToMany(mappedBy = "permissions", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Collection<Role> roles;
@@ -30,9 +33,10 @@ public class Permission {
         // Default constructor.
     }
 
-    public Permission(String name, String definition) {
+    public Permission(String name, String definition, String menu) {
         this.name = name;
         this.definition = definition;
+        this.menu = menu;
     }
 
     public Long getId() {
@@ -65,6 +69,14 @@ public class Permission {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 
     public Boolean getDeleted() {

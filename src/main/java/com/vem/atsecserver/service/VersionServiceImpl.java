@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class VersionServiceImpl implements VersionService {
 
-
     @Value("${app.version:0.0.0}")
     private String appVersion;
 

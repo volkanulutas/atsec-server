@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/donor")
+// @Secured("DONOR_PAGE_PERMISSION")
 public class DonorController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DonorController.class);
 
@@ -43,7 +45,7 @@ public class DonorController {
                 .orElseThrow(() -> new ResourceNotFoundException("Donor not exists with id", id + "")));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public List<DonorRequest> getAllDonors() {
         List<DonorRequest> result = new ArrayList<>();
         List<Donor> all = donorService.getAllDonors();
@@ -53,7 +55,7 @@ public class DonorController {
         return result;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody DonorRequest donorRequest) {
         if (donorService.existsByCode(donorRequest.getCode())) {
             return new ResponseEntity<>(new ApiResponse(false, "Donor identity number is already taken!"), HttpStatus.BAD_REQUEST);
@@ -66,7 +68,7 @@ public class DonorController {
                 .body(new ApiResponse(true, "Donor created successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody DonorRequest donorRequest) {
         Donor donor = donorService.update(donorConverter.toEntity(donorRequest));
         URI location = ServletUriComponentsBuilder
@@ -76,7 +78,7 @@ public class DonorController {
                 .body(new ApiResponse(true, "Donor updated successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         Donor donor = donorService.delete(id);

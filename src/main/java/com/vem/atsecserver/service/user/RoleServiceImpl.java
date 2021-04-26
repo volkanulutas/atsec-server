@@ -74,6 +74,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Role findRoleByName(String name) {
+        Role role = roleRepository.findByName(name);
+        if (role != null && !role.getDeleted()) {
+            return role;
+        }
+        return null;
+    }
+
+    @Override
     public List<User> getAdminRoleUsers() {
         Role role = roleRepository.findByName(ADMIN_ROLE);
         return (List<User>) role.getUsers();

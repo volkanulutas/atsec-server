@@ -23,6 +23,7 @@ public class PermissionConverter {
         if (request.getId() != null) {
             entity.setId(request.getId());
         }
+        entity.setMenu(request.getMenu());
         entity.setDeleted(request.isDeleted());
         entity.setName(request.getName());
         entity.setDefinition(request.getDefinition());
@@ -38,6 +39,7 @@ public class PermissionConverter {
         request.setId(entity.getId());
         request.setName(entity.getName());
         request.setDefinition(entity.getDefinition());
+        request.setMenu(entity.getMenu());
         request.setDeleted(entity.getDeleted());
         return request;
     }

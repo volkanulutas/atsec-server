@@ -20,5 +20,7 @@ public interface RoleService {
 
     Role findRoleById(Long id);
 
+    Role findRoleByName(String name);
+
     List<User> getAdminRoleUsers();
 }

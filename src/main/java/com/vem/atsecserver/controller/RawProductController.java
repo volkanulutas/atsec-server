@@ -23,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/rawproduct")
+// @Secured("RAWPRODUCT_PAGE_PERMISSION")
 public class RawProductController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RawProductController.class);
 
@@ -115,7 +117,7 @@ public class RawProductController {
                 .body(new ApiResponse(true, "Raw Product updated successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         RawProduct product = rawProductService.delete(id);
@@ -181,7 +183,7 @@ public class RawProductController {
 
     // TODO: Barcode generate
     // TODO: barcode view as pdf
-    @RequestMapping(value = "/barcode", method = RequestMethod.GET, produces = "application/pdf")
+    @GetMapping(value = "/barcode", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> download() throws IOException, JRException {
 
         byte[] barcode = barcodeGeneratorService.getBarcode();

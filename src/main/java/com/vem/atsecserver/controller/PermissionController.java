@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/permission")
+@Secured("PERMISSION_PAGE_PERMISSION")
 public class PermissionController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);
 
@@ -42,7 +44,7 @@ public class PermissionController {
                 .orElseThrow(() -> new ResourceNotFoundException("Permission not exists with id", id + "")));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public List<PermissionRequest> getAllPermissions() {
         List<PermissionRequest> result = new ArrayList<>();
         List<Permission> all = permissionService.getAllPermissions();
@@ -52,7 +54,7 @@ public class PermissionController {
         return result;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody PermissionRequest permissionRequest) {
         Permission permission = permissionService.create(permissionConverter.toEntity(permissionRequest));
         URI location = ServletUriComponentsBuilder
@@ -62,7 +64,7 @@ public class PermissionController {
                 .body(new ApiResponse(true, "Permission created successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody PermissionRequest permissionRequest) {
         Permission permission = permissionService.update(permissionConverter.toEntity(permissionRequest));
         URI location = ServletUriComponentsBuilder
@@ -72,7 +74,7 @@ public class PermissionController {
                 .body(new ApiResponse(true, "Permission updated successfully."));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         Permission permission = permissionService.delete(id);

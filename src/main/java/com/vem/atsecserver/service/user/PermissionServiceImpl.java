@@ -20,7 +20,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission create(Permission permissionPar) {
-        Permission permission = new Permission(permissionPar.getName(), permissionPar.getDefinition());
+        Permission permission = new Permission(permissionPar.getName(),
+                permissionPar.getDefinition(), permissionPar.getMenu());
         permission.setDeleted(false);
         return permissionRepository.save(permission);
     }
@@ -56,4 +57,11 @@ public class PermissionServiceImpl implements PermissionService {
     public Permission findPermissionById(Long id) {
         return permissionRepository.findById(id).get(); // TODO: get()
     }
+
+    @Override
+    public Permission findPermissionByName(String name) {
+        return permissionRepository.findByName(name);
+    }
+
+
 }
