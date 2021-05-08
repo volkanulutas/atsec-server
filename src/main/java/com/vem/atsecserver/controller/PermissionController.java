@@ -28,7 +28,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/permission")
-@Secured("PERMISSION_PAGE_PERMISSION")
+// @Secured("PERMISSION_PAGE_PERMISSION")
 public class PermissionController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);
 

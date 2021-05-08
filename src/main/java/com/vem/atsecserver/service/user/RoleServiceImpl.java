@@ -1,5 +1,6 @@
 package com.vem.atsecserver.service.user;
 
+import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.entity.user.User;
 import com.vem.atsecserver.repository.user.RoleRepository;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,12 +25,20 @@ public class RoleServiceImpl implements RoleService {
     private final static String ADMIN_ROLE = "ADMIN_ROLE";
 
     @Autowired
+    private PermissionService permissionService;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Override
     public Role create(Role roleRequest) {
         Role role = new Role(roleRequest.getName(), roleRequest.getDefinition());
-        role.setPermissions(roleRequest.getPermissions());
+
+        List<Permission> permissionList = new ArrayList<>();
+        for (Permission p :roleRequest.getPermissions()) {
+          permissionList.add(  permissionService.findPermissionByName(p.getName()));
+        }
+        role.setPermissions(permissionList);
         role.setDeleted(false);
         return roleRepository.save(role);
     }
