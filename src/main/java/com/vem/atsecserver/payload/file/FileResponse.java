@@ -8,6 +8,7 @@ public class FileResponse {
     private String name;
     private String url;
     private String type;
+    private String dataType;
     private long size;
     private String responseMessage;
 
@@ -15,12 +16,22 @@ public class FileResponse {
         // Default constructor.
     }
 
-    public FileResponse(String name, String url, String type, long size, String responseMessage) {
+    public FileResponse(String name, String url, String type, long size, String responseMessage,
+    String dataType) {
         this.name = name;
         this.url = url;
         this.type = type;
         this.size = size;
         this.responseMessage = responseMessage;
+        this.dataType = dataType;
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 
     public String getName() {

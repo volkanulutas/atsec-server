@@ -1,6 +1,7 @@
 package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
+import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
 import com.vem.atsecserver.service.sales.CustomerService;
@@ -31,6 +32,9 @@ public class RawProductConverter {
     private DonorConverter donorConverter;
 
     @Autowired
+    private LocationConverter locationConverter;
+
+    @Autowired
     private DonorInstituteConverter donorInstituteConverter;
 
     public RawProduct toEntity(RawProductRequest request) {
@@ -42,14 +46,30 @@ public class RawProductConverter {
         entity.setId(request.getId());
         entity.setArrivalDate(request.getArrivalDate());
         entity.setIssueTissueDate(request.getIssueTissueDate());
-        entity.setTissueType(tissueConverter.toEntity(request.getTissueType()));
-        entity.setLocation(request.getLocation());
-        entity.setDefinition(request.getDefinition());
-        entity.setDonor(donorConverter.toEntity(request.getDonor()));
-        entity.setInformation(request.getInformation());
-        entity.setStatus(EnumRawProductStatus.findByName(request.getStatusName()));
-        entity.setDonorInstitute(donorInstituteConverter.toEntity(request.getDonorInstitute()));
-        entity.setDeleted(request.getDeleted());
+        if (request.getTissueType() != null) {
+            entity.setTissueType(tissueConverter.toEntity(request.getTissueType()));
+        }
+        if (request.getDonor() != null) {
+            entity.setDonor(donorConverter.toEntity(request.getDonor()));
+        }
+        if (request.getDonorInstitute() != null) {
+            entity.setDonorInstitute(donorInstituteConverter.toEntity(request.getDonorInstitute()));
+        }
+        if (request.getLocation() != null) {
+            entity.setLocation(locationConverter.toEntity(request.getLocation()));
+        }
+        if (request.getDefinition() != null) {
+            entity.setDefinition(request.getDefinition());
+        }
+        if (request.getInformation() != null) {
+            entity.setInformation(request.getInformation());
+        }
+        if (request.getStatusName() != null) {
+            entity.setStatus(EnumRawProductStatus.findByName(request.getStatusName()));
+        }
+        if (request.getDeleted() != null) {
+            entity.setDeleted(request.getDeleted());
+        }
         return entity;
     }
 
@@ -62,11 +82,19 @@ public class RawProductConverter {
         request.setId(entity.getId());
         request.setIssueTissueDate(entity.getIssueTissueDate());
         request.setArrivalDate(entity.getArrivalDate());
-        request.setLocation(entity.getLocation());
-        request.setStatusName(entity.getStatus().getName());
-        request.setDonor(donorConverter.toRequest(entity.getDonor()));
-        request.setDonorInstitute(donorInstituteConverter.toRequest(entity.getDonorInstitute()));
-        request.setTissueType(tissueConverter.toRequest(entity.getTissueType()));
+        request.setLocation(locationConverter.toRequest(entity.getLocation()));
+        if (entity.getStatus() != null) {
+            request.setStatusName(entity.getStatus().getName());
+        }
+        if (entity.getDonor() != null) {
+            request.setDonor(donorConverter.toRequest(entity.getDonor()));
+        }
+        if (entity.getDonorInstitute() != null) {
+            request.setDonorInstitute(donorInstituteConverter.toRequest(entity.getDonorInstitute()));
+        }
+        if (entity.getTissueType() != null) {
+            request.setTissueType(tissueConverter.toRequest(entity.getTissueType()));
+        }
         request.setDefinition(entity.getDefinition());
         request.setDeleted(request.getDeleted());
         return request;

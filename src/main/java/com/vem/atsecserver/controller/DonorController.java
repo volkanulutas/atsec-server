@@ -47,6 +47,7 @@ public class DonorController {
 
     @GetMapping(value = "/", produces = "application/json")
     public List<DonorRequest> getAllDonors() {
+        System.out.println("requested...");
         List<DonorRequest> result = new ArrayList<>();
         List<Donor> all = donorService.getAllDonors();
         for (Donor donor : all) {
@@ -57,6 +58,7 @@ public class DonorController {
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody DonorRequest donorRequest) {
+        System.out.println("create raw...");
         if (donorService.existsByCode(donorRequest.getCode())) {
             return new ResponseEntity<>(new ApiResponse(false, "Donor identity number is already taken!"), HttpStatus.BAD_REQUEST);
         }
@@ -70,6 +72,7 @@ public class DonorController {
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody DonorRequest donorRequest) {
+        System.out.println("update raw...");
         Donor donor = donorService.update(donorConverter.toEntity(donorRequest));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{donorId}")

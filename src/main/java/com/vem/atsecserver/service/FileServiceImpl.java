@@ -22,16 +22,9 @@ public class FileServiceImpl implements FileService {
     private FileDBRepository fileDBRepository;
 
     @Override
-    public File store(byte[] file, EnumFileDBType fileType, RawProduct rawProduct) {
-        File FileDB = new File(rawProduct.getId() + "", fileType, "pdf", file);
-        return fileDBRepository.save(FileDB);
-    }
-
-    // TODO: raw product ile ilişkilendir.
-    @Override
-    public File store(MultipartFile file, EnumFileDBType fileType) throws IOException {
+    public File store(MultipartFile file, EnumFileDBType fileType,  RawProduct rawProduct) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        File FileDB = new File(fileName, fileType, file.getContentType(), file.getBytes());
+        File FileDB = new File(fileName, fileType, file.getContentType(), file.getBytes(), rawProduct);
         return fileDBRepository.save(FileDB);
     }
 
@@ -43,5 +36,10 @@ public class FileServiceImpl implements FileService {
     @Override
     public Stream<File> getAllFilesByFileType(EnumFileDBType fileDBType) {
         return fileDBRepository.findByFileDBType(fileDBType).stream();
+    }
+
+    @Override
+    public Stream<File> getAllFilesByRawProduct(RawProduct rawProduct) {
+        return fileDBRepository.findByRawProduct(rawProduct);
     }
 }

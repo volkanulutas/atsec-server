@@ -122,6 +122,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         donorInstitute = donorInstituteService.create(donorInstitute);
 
         RawProduct raw1 = new RawProduct();
+        raw1.setId(System.currentTimeMillis());
         raw1.setDefinition("Açıklama");
         raw1.setStatus(EnumRawProductStatus.ACCEPTED);
         raw1.setInformation("Ek Bilgiler");
@@ -198,17 +199,13 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         Permission rawProductPage = createPrivilegeIfNotFound("RAWPRODUCT_PAGE_PERMISSION", "RAWPRODUCT_PAGE_PERMISSION","RAWPRODUCT_MENU_PERMISSION");
         Permission rawProductRejectPage = createPrivilegeIfNotFound("RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
         Permission donorPage = createPrivilegeIfNotFound("DONOR_PAGE_PERMISSION", "DONOR_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
-        Permission donorInstitutePage = createPrivilegeIfNotFound("DONORINSTITUTE_PAGE_PERMISSION", "DONORINSTITUTE_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
-        Permission locationPage = createPrivilegeIfNotFound("LOCATION_PAGE_PERMISSION", "LOCATION_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
-        Permission tissueTypePage = createPrivilegeIfNotFound("TISSUETYPE_PAGE_PERMISSION", "TISSUETYPE_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
 
         Permission productPage = createPrivilegeIfNotFound("PRODUCT_PAGE_PERMISSION", "PRODUCT_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
         Permission customerPage = createPrivilegeIfNotFound("CUSTOMER_PAGE_PERMISSION", "CUSTOMER_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
 
 
         List<Permission> adminPrivileges = Arrays.asList(userPage, rolePage, permissionPage,
-                rawProductPage, rawProductRejectPage, donorPage, donorInstitutePage, locationPage, tissueTypePage,
-                productPage, customerPage);
+                rawProductPage, rawProductRejectPage, donorPage, productPage, customerPage);
         List<Permission> userPrivileges = Arrays.asList(productPage, rolePage, userPage);
         createRoleIfNotFound("ROLE_ADMIN", "ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_USER", "ROLE_USER", userPrivileges);

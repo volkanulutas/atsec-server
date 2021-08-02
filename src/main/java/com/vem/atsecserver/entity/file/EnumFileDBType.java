@@ -6,13 +6,13 @@ package com.vem.atsecserver.entity.file;
  */
 public enum EnumFileDBType {
 
-    RAW_APPROVE_FILES("Onam Formları"),
+    RAW_CONFIRMATION_FILES("Onam Formu"),
 
-    RAW_TRANSFER_FILES("Transfer Formları"),
+    RAW_TRANSFER_FILES("Transfer Formu"),
 
-    RAW_TRANSPORTATION_FILES("Taşıma Formları"),
+    RAW_TRANSPORTATION_FILES("Taşıma Formu"),
 
-    RAW_EXTRA_FILES("Ek Formlar"),
+    RAW_EXTRA_FILES("Ek Form"),
 
     RAW_BARCODE("Ham Ürün Barkodu"),
 
@@ -32,6 +32,15 @@ public enum EnumFileDBType {
 
     public String getName() {
         return name;
+    }
+
+    public static EnumFileDBType find(String name){
+        for (EnumFileDBType t : EnumFileDBType.values()) {
+            if (t.toString().equals(name)) {
+                return t;
+            }
+        }
+        return null;
     }
 
     public static EnumFileDBType findByName(String name) {

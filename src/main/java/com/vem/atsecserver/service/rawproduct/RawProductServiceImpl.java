@@ -28,6 +28,7 @@ public class RawProductServiceImpl implements RawProductService {
         entity.setInformation(parameter.getInformation());
         entity.setStatus(parameter.getStatus());
         entity.setTissueType(parameter.getTissueType());
+        entity.setDonor(parameter.getDonor());
         entity.setDonorInstitute(parameter.getDonorInstitute());
         entity.setDeleted(false);
         return rawProductRepository.save(entity);
@@ -55,8 +56,8 @@ public class RawProductServiceImpl implements RawProductService {
     public List<RawProduct> getAllRawProducts() {
         return rawProductRepository.findAll().stream()
                 .filter(e -> !e.getDeleted()
-                        && !e.getStatus().equals(EnumRawProductStatus.PRE_PROCESSING)
-                        && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE))
+                        && (e.getStatus() !=null && !e.getStatus().equals(EnumRawProductStatus.PRE_PROCESSING) )
+                        && (e.getStatus() !=null && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE)))
                 .collect(Collectors.toList());
     }
 

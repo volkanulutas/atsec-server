@@ -3,14 +3,19 @@ package com.vem.atsecserver.controller;
 import com.vem.atsecserver.converter.RawProductConverter;
 import com.vem.atsecserver.entity.file.EnumFileDBType;
 import com.vem.atsecserver.entity.file.File;
+import com.vem.atsecserver.entity.rawproduct.Donor;
+import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
+import com.vem.atsecserver.payload.file.FileRequest;
 import com.vem.atsecserver.payload.file.FileResponse;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
 import com.vem.atsecserver.service.FileService;
 import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService;
+import com.vem.atsecserver.service.rawproduct.DonorInstituteService;
+import com.vem.atsecserver.service.rawproduct.DonorService;
 import com.vem.atsecserver.service.rawproduct.RawProductService;
 import com.vem.atsecserver.service.report.rawproduct.RawProductReportService;
 import net.sf.jasperreports.engine.JRException;
@@ -64,6 +69,12 @@ public class RawProductController {
     private RawProductReportService rawProductReportService;
 
     @Autowired
+    private DonorService donorService;
+
+    @Autowired
+    private DonorInstituteService donorInstituteService;
+
+    @Autowired
     private SecBarcodeGeneratorService barcodeGeneratorService;
 
     @GetMapping("/report/{id}")
@@ -98,23 +109,18 @@ public class RawProductController {
     }
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> create(/*@Valid*/ @RequestBody RawProductRequest productRequest) {
-        RawProduct product = rawProductService.create(rawProductConverter.toEntity(productRequest));
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{productId}")
-                .buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Raw Product created successfully."));
+    public RawProductRequest create(@RequestBody RawProductRequest productRequest) {
+        RawProduct entity = rawProductConverter.toEntity(productRequest);
+        entity = rawProductService.create(entity);
+        RawProductRequest rawProductRequest = rawProductConverter.toRequest(entity);
+        System.err.println(rawProductRequest.getId());
+        return rawProductRequest;
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> update(/*@Valid*/ @RequestBody RawProductRequest productRequest) {
+    public RawProductRequest update(/*@Valid*/ @RequestBody RawProductRequest productRequest) {
         RawProduct product = rawProductService.update(rawProductConverter.toEntity(productRequest));
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{productId}")
-                .buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Raw Product updated successfully."));
+        return rawProductConverter.toRequest(product);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -129,10 +135,16 @@ public class RawProductController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<FileResponse> uploadApproveFiles(@RequestParam("file") MultipartFile file,
-                                                           @RequestParam("fileType") EnumFileDBType fileType) {
+    public ResponseEntity<FileResponse> uploadFile2(@RequestParam("file") MultipartFile file,
+                                                   @RequestParam("fileType") String fileTypeStr,
+                                                   @RequestParam("rawProductId") String rawProductId) {
         try {
-            File dbFile = fileService.store(file, fileType);
+            System.err.println("Filllleeeee");
+            EnumFileDBType fileType = EnumFileDBType.find(fileTypeStr);
+
+            RawProduct rawProductById = rawProductService.getRawProductById(Long.parseLong(rawProductId));
+
+            File dbFile = fileService.store(file, fileType, rawProductById);
 
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
@@ -145,15 +157,20 @@ public class RawProductController {
                     fileDownloadUri,
                     dbFile.getType(),
                     dbFile.getData().length,
-                    "Dosya başaralı bir şekilde yüklendi.");
+                    "Dosya başaralı bir şekilde yüklendi.",
+                    dbFile.getFileDBType().getName());
+
+            System.err.println("Dosya yükleme basarili.");
             return ResponseEntity.status(HttpStatus.OK).body(fileResponse);
         } catch (Exception e) {
+            System.err.println("Dosya yükleme BASARISIZ.");
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
         }
     }
 
     @GetMapping("/getFiles/{fileType}")
-    public ResponseEntity<List<FileResponse>> getListFiles(@PathVariable("fileType") EnumFileDBType fileType) {
+    public ResponseEntity<List<FileResponse>> getListFiles(@PathVariable("fileType") String fileTypeStr) {
+        EnumFileDBType fileType = EnumFileDBType.findByName(fileTypeStr);
         List<FileResponse> files = fileService.getAllFilesByFileType(fileType).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
@@ -165,10 +182,41 @@ public class RawProductController {
                     dbFile.getName(),
                     fileDownloadUri,
                     dbFile.getType(),
-                    dbFile.getData().length, "");
+                    dbFile.getData().length, "",
+                    dbFile.getFileDBType().getName());
         }).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(files);
+    }
+
+    @GetMapping("/getFilesByRawProduct/{rawProductId}")
+    public ResponseEntity<List<FileResponse>> getListFilesByRawProduct(@PathVariable("rawProductId") String rawProductId) {
+
+        System.err.println("gggggg");
+        try {
+            RawProduct rawProductById = rawProductService.getRawProductById(Long.parseLong(rawProductId));
+            List<FileResponse> files = fileService.getAllFilesByRawProduct(rawProductById).map(dbFile -> {
+                String fileDownloadUri = ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("/files/")
+                        .path(dbFile.getId() + "")
+                        .toUriString();
+
+                return new FileResponse(
+                        dbFile.getName(),
+                        fileDownloadUri,
+                        dbFile.getType(),
+                        dbFile.getData().length, "",
+                        dbFile.getFileDBType().getName());
+            }).collect(Collectors.toList());
+
+            return ResponseEntity.status(HttpStatus.OK).body(files);
+
+
+        } catch (Exception ex) {
+            System.err.println("sss");
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @ResponseBody

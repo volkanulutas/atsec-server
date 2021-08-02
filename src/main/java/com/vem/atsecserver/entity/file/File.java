@@ -30,11 +30,12 @@ public class File {
         // Default constructor.
     }
 
-    public File(String name, EnumFileDBType fileDBType, String type, byte[] data) {
+    public File(String name, EnumFileDBType fileDBType, String type, byte[] data, RawProduct rawProduct) {
         this.name = name;
         this.fileDBType = fileDBType;
         this.type = type;
         this.data = data;
+        this.rawProduct = rawProduct;
     }
 
     public Long getId() {

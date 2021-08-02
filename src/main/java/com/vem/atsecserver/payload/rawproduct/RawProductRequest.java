@@ -24,7 +24,7 @@ public class RawProductRequest implements Serializable {
 
     private TissueTypeRequest tissueType;
 
-    private Location location;
+    private LocationRequest location;
 
     private String statusName;
 
@@ -86,11 +86,11 @@ public class RawProductRequest implements Serializable {
         this.tissueType = tissueType;
     }
 
-    public Location getLocation() {
+    public LocationRequest getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationRequest location) {
         this.location = location;
     }
 

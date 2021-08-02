@@ -6,6 +6,7 @@ import com.vem.atsecserver.entity.user.User;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author volkanulutas
@@ -23,7 +24,7 @@ public class RawProduct implements Serializable {
     private Donor donor;
 
     @OneToOne(targetEntity = TissueType.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "tissue_type_id")
+    @JoinColumn(name = "tissue_type_id")
     private TissueType tissueType;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -39,7 +40,7 @@ public class RawProduct implements Serializable {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "secuser_id")
     private User checkedOutBy;
 
@@ -166,5 +167,18 @@ public class RawProduct implements Serializable {
 
     public void setFiles(List<File> files) {
         this.files = files;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RawProduct that = (RawProduct) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

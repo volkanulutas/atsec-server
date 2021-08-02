@@ -40,8 +40,9 @@ public class LocationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<LocationRequest> getLocationById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(Optional.ofNullable(locationConverter.toRequest(locationService.findLocationById(id)))
+        ResponseEntity<LocationRequest> res = ResponseEntity.ok(Optional.ofNullable(locationConverter.toRequest(locationService.findLocationById(id)))
                 .orElseThrow(() -> new ResourceNotFoundException("Location not exists with id", id + "")));
+        return res;
     }
 
     @GetMapping(value = "/", produces = "application/json")

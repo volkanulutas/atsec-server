@@ -53,8 +53,9 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserRequest> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(Optional.ofNullable(userConverter.toRequest(userService.findUserById(id)))
+        ResponseEntity<UserRequest> res = ResponseEntity.ok(Optional.ofNullable(userConverter.toRequest(userService.findUserById(id)))
                 .orElseThrow(() -> new ResourceNotFoundException("User not exists with id", id + "")));
+        return res;
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes =  "application/json")

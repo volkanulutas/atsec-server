@@ -13,11 +13,10 @@ import java.util.stream.Stream;
  * @since 03.01.2021
  */
 public interface FileService {
-    File store(byte[] file, EnumFileDBType fileType, RawProduct rawProduct) throws IOException;
-
-    File store(MultipartFile file, EnumFileDBType fileDBType) throws IOException;
+    File store(MultipartFile file, EnumFileDBType fileDBType, RawProduct rawProduct) throws IOException;
 
     File getFile(Long id);
 
     Stream<File> getAllFilesByFileType(EnumFileDBType fileDBType);
+    Stream<File> getAllFilesByRawProduct(RawProduct rawProduct);
 }

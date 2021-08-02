@@ -69,6 +69,7 @@ com/vem/atsecserver/service/user/AuthServiceImpl.class
 com/vem/atsecserver/entity/sales/Customer.class
 com/vem/atsecserver/entity/auth/ConfirmationToken.class
 com/vem/atsecserver/controller/DonorController.class
+com/vem/atsecserver/payload/file/FileRequest.class
 com/vem/atsecserver/repository/rawproduct/DonorRepository.class
 com/vem/atsecserver/entity/rawproduct/TissueType.class
 com/vem/atsecserver/controller/VersionController.class
