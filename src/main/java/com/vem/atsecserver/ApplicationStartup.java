@@ -169,7 +169,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         product.setCustomer(customer);
         product.setSecCode("12345");
         product.setType(EnumProductType.NONE);
-        product.setStatus(EnumProductStatus.COURSE_GRINDING);
+        product.setStatus(EnumProductStatus.COURSE_GRINDING_ACCEPTED);
         product.setDefinition("Ürün 1");
         product.setStatus(EnumProductStatus.PRE_PROCESSING);
         product.setInformation("Ürün Bilgisi");

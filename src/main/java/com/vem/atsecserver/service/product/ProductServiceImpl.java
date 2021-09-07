@@ -1,5 +1,6 @@
 package com.vem.atsecserver.service.product;
 
+import com.vem.atsecserver.entity.product.EnumProductStatus;
 import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.repository.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> getAllPackingProducts() {
+        return productRepository.findAll().stream().filter(e -> !e.isDeleted()
+                && EnumProductStatus.PACKING.equals(e.getStatus())).collect(Collectors.toList());
     }
 
     @Override

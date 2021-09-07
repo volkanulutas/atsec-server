@@ -2,6 +2,7 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.ProductConverter;
 import com.vem.atsecserver.entity.product.EnumProductPreProcessingType;
+import com.vem.atsecserver.entity.product.EnumWashingType;
 import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
@@ -55,6 +56,16 @@ public class ProductController {
         return result;
     }
 
+    @GetMapping(value = "/packing", produces = "application/json")
+    public List<ProductRequest> getAllPackingProducts() {
+        List<ProductRequest> result = new ArrayList<>();
+        List<Product> all = productService.getAllProducts();
+        for (Product product : all) {
+            result.add(productConverter.toRequest(product));
+        }
+        return result;
+    }
+
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody ProductRequest productRequest) {
         Product product = productService.create(productConverter.toEntity(productRequest));
@@ -89,5 +100,10 @@ public class ProductController {
     @GetMapping(value = "/preprocessingtypelist", produces = "application/json")
     public List<String> getPreProcessingTypeList() {
         return EnumProductPreProcessingType.valuesByName();
+    }
+
+    @GetMapping(value = "/washingtypelist", produces = "application/json")
+    public List<String> getWashingTypeList() {
+        return EnumWashingType.valuesByName();
     }
 }
