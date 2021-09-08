@@ -17,6 +17,8 @@ public interface ProductService {
 
     List<Product> getAllPackingProducts();
 
+    List<Product> getAllPreProcessingProducts();
+
     Product delete(Long id);
 
     Product findProductById(Long id);

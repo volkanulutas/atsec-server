@@ -167,14 +167,27 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
                 EnumProductPreProcessingType.TAKING_CARTILAGE,
                 EnumProductPreProcessingType.WASHING));
         product.setCustomer(customer);
-        product.setSecCode("12345");
+        product.setSecCode("1");
         product.setType(EnumProductType.NONE);
-        product.setStatus(EnumProductStatus.COURSE_GRINDING_ACCEPTED);
+        product.setType(EnumProductType.NONE);
         product.setDefinition("Ürün 1");
         product.setStatus(EnumProductStatus.PRE_PROCESSING);
         product.setInformation("Ürün Bilgisi");
         productService.create(product);
 
+        Product product2 = new Product();
+        product2.setDeleted(false);
+        product2.setDonor(donor1);
+        product2.setPreProcessingType(Arrays.asList(EnumProductPreProcessingType.CUTTING,
+                EnumProductPreProcessingType.TAKING_CARTILAGE,
+                EnumProductPreProcessingType.WASHING));
+        product2.setCustomer(customer);
+        product2.setSecCode("2");
+        product2.setType(EnumProductType.NONE);
+        product2.setStatus(EnumProductStatus.PACKING);
+        product2.setDefinition("Ürün 2");
+        product2.setInformation("Ürün Bilgisi 2");
+        productService.create(product2);
 
         alreadySetup = true;
     }
@@ -192,9 +205,18 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     }
 
     public void createRoles() {
-        Permission userPage = createPrivilegeIfNotFound("USER_PAGE_PERMISSION", "USER_PERMISSION", "USER_MENU_PERMISSION");
+        Permission userPage = createPrivilegeIfNotFound("USER_PAGE_PERMISSION", "USER_PERMISSION", "USER_PERMISSION");
         Permission rolePage = createPrivilegeIfNotFound("ROLE_PAGE_PERMISSION", "ROLE_PAGE_PERMISSION","USER_MENU_PERMISSION");
         Permission permissionPage = createPrivilegeIfNotFound("PERMISSION_PAGE_PERMISSION", "PERMISSION_PAGE_PERMISSION","USER_MENU_PERMISSION");
+
+
+        Permission userListUpdatePer = createPrivilegeIfNotFound("list-user-update", "list-user-update", "USER_PAGE_PERMISSION");
+        Permission userListDeletePer = createPrivilegeIfNotFound("list-user-delete", "list-user-delete", "USER_PAGE_PERMISSION");
+        Permission roleListUpdatePer = createPrivilegeIfNotFound("list-role-update", "list-role-update", "ROLE_PAGE_PERMISSION");
+        Permission roleListDeletePer = createPrivilegeIfNotFound("list-role-delete", "list-role-delete", "ROLE_PAGE_PERMISSION");
+        Permission permissionListUpdatePer = createPrivilegeIfNotFound("list-permission-update", "list-permission-update", "PERMISSION_PAGE_PERMISSION");
+        Permission permissionListDeletePer = createPrivilegeIfNotFound("list-permission-delete", "list-permission-delete", "PERMISSION_PAGE_PERMISSION");
+
 
         Permission rawProductPage = createPrivilegeIfNotFound("RAWPRODUCT_PAGE_PERMISSION", "RAWPRODUCT_PAGE_PERMISSION","RAWPRODUCT_MENU_PERMISSION");
         Permission rawProductRejectPage = createPrivilegeIfNotFound("RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
@@ -202,10 +224,12 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
         Permission productPage = createPrivilegeIfNotFound("PRODUCT_PAGE_PERMISSION", "PRODUCT_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
         Permission customerPage = createPrivilegeIfNotFound("CUSTOMER_PAGE_PERMISSION", "CUSTOMER_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
-
+        Permission packingPage = createPrivilegeIfNotFound("PACKINGPRODUCT_PAGE_PERMISSION", "PACKINGPRODUCT_PAGE_PERMISSION", "PRODUCT_MENU_PERMISSION");
 
         List<Permission> adminPrivileges = Arrays.asList(userPage, rolePage, permissionPage,
-                rawProductPage, rawProductRejectPage, donorPage, productPage, customerPage);
+                rawProductPage, rawProductRejectPage, donorPage,
+                productPage, customerPage, packingPage,
+                userListDeletePer);
         List<Permission> userPrivileges = Arrays.asList(productPage, rolePage, userPage);
         createRoleIfNotFound("ROLE_ADMIN", "ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_USER", "ROLE_USER", userPrivileges);

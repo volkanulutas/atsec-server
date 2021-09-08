@@ -59,6 +59,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllPreProcessingProducts() {
+        return productRepository.findAll().stream().filter(e -> !e.isDeleted()
+                && !EnumProductStatus.PACKING.equals(e.getStatus())).collect(Collectors.toList());
+    }
+
+    @Override
     public List<Product> getAllPackingProducts() {
         return productRepository.findAll().stream().filter(e -> !e.isDeleted()
                 && EnumProductStatus.PACKING.equals(e.getStatus())).collect(Collectors.toList());

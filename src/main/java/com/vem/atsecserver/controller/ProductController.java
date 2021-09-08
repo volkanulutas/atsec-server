@@ -56,10 +56,22 @@ public class ProductController {
         return result;
     }
 
+
+    @GetMapping(value = "/preprocessing", produces = "application/json")
+    public List<ProductRequest> getAllPreProcessingProducts() {
+        List<ProductRequest> result = new ArrayList<>();
+        List<Product> all = productService.getAllPreProcessingProducts();
+        for (Product product : all) {
+            result.add(productConverter.toRequest(product));
+        }
+        return result;
+    }
+
+
     @GetMapping(value = "/packing", produces = "application/json")
     public List<ProductRequest> getAllPackingProducts() {
         List<ProductRequest> result = new ArrayList<>();
-        List<Product> all = productService.getAllProducts();
+        List<Product> all = productService.getAllPackingProducts();
         for (Product product : all) {
             result.add(productConverter.toRequest(product));
         }
