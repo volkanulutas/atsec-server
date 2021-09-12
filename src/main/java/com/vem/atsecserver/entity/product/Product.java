@@ -37,7 +37,7 @@ public class Product implements Serializable {
     @Column
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
-    @Column(unique = true)
+    // @Column(unique = true) // TODO:
     private String secCode;
 
     @ManyToOne(fetch = FetchType.EAGER)

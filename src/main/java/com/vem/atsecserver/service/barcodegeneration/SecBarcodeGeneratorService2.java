@@ -4,6 +4,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
+import com.vem.atsecserver.data.barcodegeneration.ProductBarcode;
 import com.vem.atsecserver.entity.product.EnumProductType;
 import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.entity.rawproduct.Donor;
@@ -52,7 +53,7 @@ public class SecBarcodeGeneratorService2 {
     private static String destFileName = "report.pdf";
 
 
-    public byte[] getBarcode() throws FileNotFoundException, JRException {
+    public byte[] createBarcode(ProductBarcode productBarcode) throws FileNotFoundException, JRException {
         System.out.println("generating jasper report...");
 
         // 1. compile template ".jrxml" file
@@ -62,13 +63,12 @@ public class SecBarcodeGeneratorService2 {
         Map<String, Object> parameters = getParameters();
 
         // 3. datasource "java object"
-        JRDataSource dataSource = getDataSource();
+        JRDataSource dataSource = getDataSource(productBarcode);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         byte[] file = JasperExportManager.exportReportToPdf(jasperPrint);
         return file;
     }
-
 
     public static void main(String[] args) throws FileNotFoundException, JRException {
 
@@ -80,8 +80,15 @@ public class SecBarcodeGeneratorService2 {
         // 2. parameters "empty"
         Map<String, Object> parameters = getParameters();
 
+        ProductBarcode product = new ProductBarcode();
+        product.setCustomerId("1");
+        product.setDefinition("product açıklaması");
+        product.setDonorId("2");
+        product.setSecCode("3232");
+        product.setStatus("status");
+
         // 3. datasource "java object"
-        JRDataSource dataSource = getDataSource();
+        JRDataSource dataSource = getDataSource(product);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
@@ -89,7 +96,7 @@ public class SecBarcodeGeneratorService2 {
     }
 
     private static JasperReport getJasperReport() throws FileNotFoundException, JRException {
-        File template = ResourceUtils.getFile("classpath:report.jrxml");
+        File template = ResourceUtils.getFile("classpath:reportProduct.jrxml");
         return JasperCompileManager.compileReport(template.getAbsolutePath());
     }
 
@@ -99,28 +106,16 @@ public class SecBarcodeGeneratorService2 {
         return parameters;
     }
 
-    private static JRDataSource getDataSource() {
-
-        List<Product> products = new LinkedList<>();
-
-        Product product = new Product();
-        Customer customer = new Customer();
-        customer.setName("Volkan Ulutaş");
-        customer.setCustomerType(EnumCustomerType.ABROAD_AGENT);
-        customer.setDefinition("Volkan Def");
-        product.setCustomer(customer);
+    private static JRDataSource getDataSource(ProductBarcode productBarcode) {
+        List<ProductBarcode> products = new LinkedList<>();
+        // products.add(productBarcode);
+        ProductBarcode product = new ProductBarcode();
+        product.setCustomerId("1");
         product.setDefinition("product açıklaması");
-        Donor donor = new Donor();
-        donor.setName("Donor1");
-        donor.setId(1L);
-        donor.setSurname("DSurname1");
-        product.setDonor(donor);
+        product.setDonorId("2");
         product.setSecCode("3232");
-        product.setType(EnumProductType.NONE);
-        product.setInformation("Info");
+        product.setStatus("status");
         products.add(product);
-
-
         return new JRBeanCollectionDataSource(products);
     }
 

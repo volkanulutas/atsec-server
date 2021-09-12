@@ -1,12 +1,15 @@
 package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.ProductConverter;
+import com.vem.atsecserver.data.barcodegeneration.ProductBarcode;
 import com.vem.atsecserver.entity.product.EnumProductPreProcessingType;
 import com.vem.atsecserver.entity.product.EnumWashingType;
 import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
 import com.vem.atsecserver.payload.product.ProductRequest;
+import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService;
+import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService2;
 import com.vem.atsecserver.service.product.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +43,9 @@ public class ProductController {
     @Autowired
     private ProductConverter productConverter;
 
+    @Autowired
+    private SecBarcodeGeneratorService2 secBarcodeGeneratorService;
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductRequest> getProductById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Optional.ofNullable(productConverter.toRequest(productService.findProductById(id)))
@@ -55,7 +61,6 @@ public class ProductController {
         }
         return result;
     }
-
 
     @GetMapping(value = "/preprocessing", produces = "application/json")
     public List<ProductRequest> getAllPreProcessingProducts() {
@@ -76,6 +81,30 @@ public class ProductController {
             result.add(productConverter.toRequest(product));
         }
         return result;
+    }
+
+    @PostMapping(value = "/createbarcode", produces = "application/json", consumes = "application/json")
+    public byte[] createBarcode(/*@Valid*/ @RequestBody ProductRequest productRequest) {
+        byte[] barcode = null;
+        Product product = productService.create(productConverter.toEntity(productRequest));
+
+        ProductBarcode productBarcode = new ProductBarcode();
+        productBarcode.setStatus(product.getStatus().toString());
+        productBarcode.setDonorId(product.getDonor().getCode());
+        productBarcode.setDefinition(product.getDefinition());
+        productBarcode.setSecCode(product.getSecCode());
+        productBarcode.setId(product.getId());
+        try {
+           barcode = secBarcodeGeneratorService.createBarcode(productBarcode);
+        }catch (Exception ex){
+            LOGGER.error("Error is occurred while generating sec barcode code.", ex);
+        }
+
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{productId}")
+                .buildAndExpand(product.getId()).toUri();
+        return barcode;
     }
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")

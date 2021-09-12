@@ -112,6 +112,7 @@ com/vem/atsecserver/payload/rawproduct/TissueTypeRequest.class
 com/vem/atsecserver/payload/user/PermissionRequest.class
 com/vem/atsecserver/converter/LocationConverter.class
 com/vem/atsecserver/entity/rawproduct/EnumPoolStatus.class
+com/vem/atsecserver/data/barcodegeneration/ProductBarcode.class
 com/vem/atsecserver/controller/AuthController.class
 com/vem/atsecserver/service/rawproduct/TissueServiceImpl.class
 com/vem/atsecserver/service/rawproduct/LocationService.class
