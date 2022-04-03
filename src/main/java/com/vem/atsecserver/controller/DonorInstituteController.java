@@ -2,16 +2,14 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.DonorInstituteConverter;
 import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
-import com.vem.atsecserver.payload.rawproduct.DonorInstituteRequest;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
+import com.vem.atsecserver.payload.rawproduct.DonorInstituteRequest;
 import com.vem.atsecserver.service.rawproduct.DonorInstituteService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,14 +23,13 @@ import java.util.Optional;
  * @author volkanulutas
  * @since 25.12.2020
  */
+@Slf4j
 @RestController
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/donorinstitute")
 // @Secured("DONORINSTITUTE_PAGE_PERMISSION")
 public class DonorInstituteController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DonorInstituteController.class);
-
     @Autowired
     private DonorInstituteService donorInstituteService;
 

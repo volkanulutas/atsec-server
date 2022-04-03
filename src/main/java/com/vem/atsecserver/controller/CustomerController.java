@@ -2,15 +2,14 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.CustomerConverter;
 import com.vem.atsecserver.entity.sales.Customer;
-import com.vem.atsecserver.payload.sales.CustomerRequest;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
+import com.vem.atsecserver.payload.sales.CustomerRequest;
 import com.vem.atsecserver.service.sales.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,13 +24,13 @@ import java.util.Optional;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Slf4j
 @RestController
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/customer")
 // @Secured("CUSTOMER_PAGE_PERMISSION")
 public class CustomerController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     private CustomerConverter customerConverter;
@@ -59,6 +58,10 @@ public class CustomerController {
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody CustomerRequest customerRequest) {
+        if (customerService.isExistByIdentityNumber(customerRequest.getIdentityNumber())) {
+            return new ResponseEntity<>(new ApiResponse(false, "Customer identityx number is already taken!"), HttpStatus.BAD_REQUEST);
+        }
+
         Customer customer = customerService.create(customerConverter.toEntity(customerRequest));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{customerId}")

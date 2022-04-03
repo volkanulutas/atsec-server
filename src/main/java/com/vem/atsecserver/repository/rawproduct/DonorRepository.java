@@ -13,5 +13,7 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
 
     Donor findTopByOrderByIdDesc();
 
+    Donor findByCitizenshipNumber(String citizenshipNumber);
+
     Donor findByCode(String code);
 }

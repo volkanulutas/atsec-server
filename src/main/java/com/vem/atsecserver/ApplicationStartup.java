@@ -16,6 +16,7 @@ import com.vem.atsecserver.service.sales.CustomerService;
 import com.vem.atsecserver.service.user.PermissionService;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
+import com.vem.atsecserver.service.xml.CityDistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -65,6 +66,9 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Autowired
     private DonorInstituteService donorInstituteService;
 
+    @Autowired
+    private CityDistrictService cityDistrictService;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -107,32 +111,104 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         TissueType tissueType2 = new TissueType("Diskol Femur", "Diskol Femur");
         tissueType2 = tissueService.create(tissueType2);
 
-        Location location = new Location("A1", "A1");
-        location = locationService.create(location);
-        Location location2 = new Location("A2", "A2");
-        location2 = locationService.create(location2);
-        Location location3 = new Location("B1", "B1");
-        location3 = locationService.create(location3);
-        Location location4 = new Location("B2", "B2");
-        location4 = locationService.create(location4);
+        Location locationNormal_1 = new Location("K1", "K1", EnumLocationType.NORMAL);
+        locationNormal_1 = locationService.create(locationNormal_1);
+        Location locationNormal_2 = new Location("K2", "K2", EnumLocationType.NORMAL);
+        locationNormal_2 = locationService.create(locationNormal_2);
+        Location locationNormal_3 = new Location("K3", "K3", EnumLocationType.NORMAL);
+        locationNormal_3 = locationService.create(locationNormal_3);
+        Location locationNormal_4 = new Location("K4", "K4", EnumLocationType.NORMAL);
+        locationNormal_4 = locationService.create(locationNormal_4);
+        Location locationNormal_5 = new Location("K5", "K5", EnumLocationType.NORMAL);
+        locationNormal_5 = locationService.create(locationNormal_5);
+        Location locationNormal_6 = new Location("K6", "K6", EnumLocationType.NORMAL);
+        locationNormal_6 = locationService.create(locationNormal_6);
+
+
+        Location locationReject_1 = new Location("B1", "B1", EnumLocationType.REJECT);
+        locationReject_1 = locationService.create(locationReject_1);
+        Location locationReject_2 = new Location("B2", "B2", EnumLocationType.REJECT);
+        locationReject_2 = locationService.create(locationReject_2);
+        Location locationReject_3 = new Location("B3", "B3", EnumLocationType.REJECT);
+        locationReject_3 = locationService.create(locationReject_3);
+        Location locationReject_4 = new Location("B4", "B4", EnumLocationType.REJECT);
+        locationReject_4 = locationService.create(locationReject_4);
+        Location locationReject_5 = new Location("B5", "B5", EnumLocationType.REJECT);
+        locationReject_5 = locationService.create(locationReject_5);
+        Location locationReject_6 = new Location("B6", "B6", EnumLocationType.REJECT);
+        locationReject_6 = locationService.create(locationReject_6);
+
+
+        Location locationAccept_1 = new Location("A1", "A1", EnumLocationType.ACCEPT);
+        locationAccept_1 = locationService.create(locationAccept_1);
+        Location locationAccept_2 = new Location("A2", "A2", EnumLocationType.ACCEPT);
+        locationAccept_2 = locationService.create(locationAccept_2);
+        Location locationAccept_3 = new Location("A3", "A3", EnumLocationType.ACCEPT);
+        locationAccept_3 = locationService.create(locationAccept_3);
+        Location locationAccept_4 = new Location("A4", "A4", EnumLocationType.ACCEPT);
+        locationAccept_4 = locationService.create(locationAccept_4);
+        Location locationAccept_5 = new Location("A5", "A5", EnumLocationType.ACCEPT);
+        locationAccept_5 = locationService.create(locationAccept_5);
+        Location locationAccept_6 = new Location("A6", "A6", EnumLocationType.ACCEPT);
+        locationAccept_6 = locationService.create(locationAccept_6);
 
         DonorInstitute donorInstitute = new DonorInstitute();
-        donorInstitute.setCode("HAC01");
+        donorInstitute.setCode("H0001");
         donorInstitute.setName("Hacettepe Üniversitesi");
         donorInstitute = donorInstituteService.create(donorInstitute);
+
+        DonorInstitute donorInstitute2 = new DonorInstitute();
+        donorInstitute2.setCode("H0002");
+        donorInstitute2.setName("Ankara Üniversitesi");
+        donorInstitute2 = donorInstituteService.create(donorInstitute2);
+
+        Donor donor1 = new Donor();
+        donor1.setName("Volkan");
+        donor1.setSurname("Ulutaş");
+        donor1.setDonorInstitute(donorInstitute);
+        donor1.setCitizenshipNumber("20603320916");
+        donor1.setTissueNumber(2);
+        donor1.setTissueType("Doku Türü");
+        donor1.setBirthdate(System.currentTimeMillis());
+        donor1.setBloodType(EnumBloodType.A_POSITIVE);
+        donor1.setSex(EnumSex.MALE);
+        donor1.setTelephone("05323423327");
+        donor1.setAddressDistrict("Çankaya");
+        donor1.setAddressCity("Ankara");
+        donor1.setAddress("adres");
+        donor1 = donorService.create(donor1);
+
+        Donor donor2 = new Donor();
+        donor2.setName("Emine");
+        donor2.setSurname("Ulutaş");
+        donor2.setDonorInstitute(donorInstitute);
+        donor2.setCitizenshipNumber("20612320624");
+        donor2.setTissueNumber(2);
+        donor2.setTissueType("Doku Türü");
+        donor2.setBirthdate(System.currentTimeMillis());
+        donor2.setBloodType(EnumBloodType.AB_NEGATIVE);
+        donor2.setSex(EnumSex.FEMALE);
+        donor2.setTelephone("05323423327");
+        donor2.setAddressDistrict("Çankaya");
+        donor2.setAddressCity("Ankara");
+        donor2.setAddress("adres");
+        donor2 = donorService.create(donor2);
 
         RawProduct raw1 = new RawProduct();
         raw1.setId(System.currentTimeMillis());
         raw1.setDefinition("Açıklama");
         raw1.setStatus(EnumRawProductStatus.ACCEPTED);
         raw1.setInformation("Ek Bilgiler");
-        raw1.setLocation(location);
+        raw1.setDoctorName("doctor1");
+        raw1.setLocation(locationNormal_1);
+        raw1.setDoctorName("Orhan Yıldız");
+        raw1.setResponsible("İmzalayıcı");
         raw1.setTissueType(tissueType1);
         raw1.setArrivalDate(System.currentTimeMillis());
         raw1.setIssueTissueDate(System.currentTimeMillis());
-        raw1.setDonorInstitute(donorInstitute);
         raw1.setCheckedOutBy(user);
         raw1.setDeleted(false);
+        raw1.setDonor(donor1);
         raw1 = rawProductService.create(raw1);
 
         Customer customer = new Customer();
@@ -145,24 +221,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         customer.setDeleted(false);
         customer = customerService.create(customer);
 
-        Donor donor1 = new Donor();
-        donor1.setCitizenshipNumber("20403320954");
-        donor1.setDeleted(false);
-        donor1.setCode("1");
-        donor1.setAddress("Donor Adresi");
-        donor1.setName("Ali");
-        donor1.setSurname("Koca");
-        donor1.setTelephone("+90(532)3261615");
-        donor1.setRawProducts(Arrays.asList(raw1));
-        donor1 = donorService.create(donor1);
-
-        raw1.setDonor(donor1);
-        rawProductService.update(raw1);
-
 
         Product product = new Product();
         product.setDeleted(false);
-        product.setDonor(donor1);
+        // product.setDonor(donor1);
         product.setPreProcessingType(Arrays.asList(EnumProductPreProcessingType.CUTTING,
                 EnumProductPreProcessingType.TAKING_CARTILAGE,
                 EnumProductPreProcessingType.WASHING));
@@ -173,22 +235,16 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         product.setDefinition("Ürün 1");
         product.setStatus(EnumProductStatus.PRE_PROCESSING);
         product.setInformation("Ürün Bilgisi");
-        productService.create(product);
+        product.setDonor(donor1);
+        product = productService.create(product);
 
-        Product product2 = new Product();
-        product2.setDeleted(false);
-        product2.setDonor(donor1);
-        product2.setPreProcessingType(Arrays.asList(EnumProductPreProcessingType.CUTTING,
-                EnumProductPreProcessingType.TAKING_CARTILAGE,
-                EnumProductPreProcessingType.WASHING));
-        product2.setCustomer(customer);
-        product2.setSecCode("2");
-        product2.setType(EnumProductType.NONE);
-        product2.setStatus(EnumProductStatus.PACKING);
-        product2.setDefinition("Ürün 2");
-        product2.setInformation("Ürün Bilgisi 2");
-        productService.create(product2);
-
+        cityDistrictService.initialize();
+        /*
+        CityEntity entity = new CityEntity();
+        entity.setName("Ankara");
+        entity.setDistrictEntities(Arrays.asList(new DistrictEntity("Çankaya")));
+        cityDistrictService.save(entity);
+*/
         alreadySetup = true;
     }
 
@@ -205,20 +261,21 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     }
 
     public void createRoles() {
-        Permission userPage = createPrivilegeIfNotFound("USER_PAGE_PERMISSION", "USER_PERMISSION", "USER_PERMISSION");
-        Permission rolePage = createPrivilegeIfNotFound("ROLE_PAGE_PERMISSION", "ROLE_PAGE_PERMISSION","USER_MENU_PERMISSION");
-        Permission permissionPage = createPrivilegeIfNotFound("PERMISSION_PAGE_PERMISSION", "PERMISSION_PAGE_PERMISSION","USER_MENU_PERMISSION");
+        Permission userPage = createPrivilegeIfNotFound("USER_PAGE_PERMISSION", "USER_PAGE_PERMISSION", "USER_MENU_PERMISSION");
+        Permission rolePage = createPrivilegeIfNotFound("ROLE_PAGE_PERMISSION", "ROLE_PAGE_PERMISSION", "USER_MENU_PERMISSION");
+        Permission permissionPage = createPrivilegeIfNotFound("PERMISSION_PAGE_PERMISSION", "PERMISSION_PAGE_PERMISSION", "USER_MENU_PERMISSION");
 
 
         Permission userListUpdatePer = createPrivilegeIfNotFound("list-user-update", "list-user-update", "USER_PAGE_PERMISSION");
+        /*
         Permission userListDeletePer = createPrivilegeIfNotFound("list-user-delete", "list-user-delete", "USER_PAGE_PERMISSION");
         Permission roleListUpdatePer = createPrivilegeIfNotFound("list-role-update", "list-role-update", "ROLE_PAGE_PERMISSION");
         Permission roleListDeletePer = createPrivilegeIfNotFound("list-role-delete", "list-role-delete", "ROLE_PAGE_PERMISSION");
         Permission permissionListUpdatePer = createPrivilegeIfNotFound("list-permission-update", "list-permission-update", "PERMISSION_PAGE_PERMISSION");
         Permission permissionListDeletePer = createPrivilegeIfNotFound("list-permission-delete", "list-permission-delete", "PERMISSION_PAGE_PERMISSION");
+*/
 
-
-        Permission rawProductPage = createPrivilegeIfNotFound("RAWPRODUCT_PAGE_PERMISSION", "RAWPRODUCT_PAGE_PERMISSION","RAWPRODUCT_MENU_PERMISSION");
+        Permission rawProductPage = createPrivilegeIfNotFound("RAWPRODUCT_PAGE_PERMISSION", "RAWPRODUCT_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
         Permission rawProductRejectPage = createPrivilegeIfNotFound("RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCTREJECT_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
         Permission donorPage = createPrivilegeIfNotFound("DONOR_PAGE_PERMISSION", "DONOR_PAGE_PERMISSION", "RAWPRODUCT_MENU_PERMISSION");
 
@@ -228,8 +285,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
         List<Permission> adminPrivileges = Arrays.asList(userPage, rolePage, permissionPage,
                 rawProductPage, rawProductRejectPage, donorPage,
-                productPage, customerPage, packingPage,
-                userListDeletePer);
+                productPage, customerPage, packingPage, userListUpdatePer);
         List<Permission> userPrivileges = Arrays.asList(productPage, rolePage, userPage);
         createRoleIfNotFound("ROLE_ADMIN", "ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_USER", "ROLE_USER", userPrivileges);

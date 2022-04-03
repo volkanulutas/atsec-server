@@ -15,25 +15,19 @@ public enum EnumProductStatus {
 
     FREEZING_2_ACCEPTED("Dondurma 2 Sonrası"),
 
-    FINE_GRINDING_ACCEPTED("İnce Öğütme Sonrası"),
+    DEFATTING_ACCEPTED("Defatting Sonrası"), // -> Sterilazasyon
 
+    FREEZING_3_ACCEPTED("Dondurma 3 Sonrası"),
 
-    DELIPIDATION_ACCEPTED("Delipidation Sonrası"), // -> Sterilazasyon
+    STERILIZATION_ACCEPTED("Kimyasal Sterilizasyon"),
 
+    DRYING("Kurutma"),
 
-    FREEZING_3_ACCEPTED("Dondurma 3 Sonrası"), // -> Sterilazsyoh
+    DETERMINATION_OF_MOISTURE("Nem Tayini"),
 
-    PACKING("Paketleme"),
+    PRE_PACKING("Paketleme Öncesi"),
 
-
-
-    STERILIZATION_ACCEPTED("Sterilizasyon"),
-
-
-    // Alttakiler teyit edilecektir.
-    SAMPLE("Numune"),
-    CASUALTY("Zaiyat"),
-    RECALL("Geri Çağrılmış");
+    PACKING("Paketleme");
 
     private final String name;
 

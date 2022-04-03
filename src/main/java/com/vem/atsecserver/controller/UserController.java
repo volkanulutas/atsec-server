@@ -7,12 +7,10 @@ import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
 import com.vem.atsecserver.payload.user.UserRequest;
 import com.vem.atsecserver.service.user.RoleService;
 import com.vem.atsecserver.service.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +22,13 @@ import java.util.Optional;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Slf4j
 @RestController
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/user")
 // @Secured("USER_PAGE_PERMISSION")
 public class UserController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
     @Autowired
     private UserService userService;
 

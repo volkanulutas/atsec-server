@@ -1,11 +1,16 @@
 package com.vem.atsecserver.entity.rawproduct;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 /**
  * @author volkanulutas
  * @since 02.01.2021
  */
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "Location")
 public class Location {
@@ -20,46 +25,14 @@ public class Location {
     private String definition;
 
     @Column
+    private EnumLocationType locationType;
+
+    @Column
     private Boolean deleted;
 
-    public Location() {
-        // Default constructor.
-    }
-
-    public Location(String name, String definition) {
+    public Location(String name, String definition, EnumLocationType locationType){
         this.name = name;
         this.definition = definition;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
+        this.locationType = locationType;
     }
 }

@@ -2,21 +2,19 @@ package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.rawproduct.TissueType;
 import com.vem.atsecserver.payload.rawproduct.TissueTypeRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * @author volkanulutas
  * @since 02.01.2021
  */
+@Slf4j
 @Component
 public class TissueConverter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TissueConverter.class);
-
     public TissueType toEntity(TissueTypeRequest request) {
         if (request == null) {
-            LOGGER.error("Error is occurred while converting tissue type.");
+            log.error("Error is occurred while converting tissue type.");
             return null;
         }
         TissueType entity = new TissueType();
@@ -31,7 +29,7 @@ public class TissueConverter {
 
     public TissueTypeRequest toRequest(TissueType entity) {
         if (entity == null) {
-            LOGGER.error("Error is occurred while converting tissue type.");
+            log.error("Error is occurred while converting tissue type.");
             return null;
         }
         TissueTypeRequest request = new TissueTypeRequest();

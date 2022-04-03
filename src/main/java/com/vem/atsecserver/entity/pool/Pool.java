@@ -2,6 +2,8 @@ package com.vem.atsecserver.entity.pool;
 
 import com.vem.atsecserver.entity.rawproduct.EnumPoolStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import java.util.List;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@NoArgsConstructor
+@Data
 @Entity(name = "Pool")
 @Table(name = "Pool")
 public class Pool implements Serializable {
@@ -33,8 +37,4 @@ public class Pool implements Serializable {
 
     @Column
     private Boolean deleted;
-
-    public Pool() {
-        // default constructor.
-    }
 }

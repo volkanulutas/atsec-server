@@ -1,16 +1,16 @@
 package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.LocationConverter;
+import com.vem.atsecserver.entity.rawproduct.EnumLocationType;
 import com.vem.atsecserver.entity.rawproduct.Location;
-import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
+import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import com.vem.atsecserver.service.rawproduct.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -49,6 +49,17 @@ public class LocationController {
     public List<LocationRequest> getAllLocations() {
         List<LocationRequest> result = new ArrayList<>();
         List<Location> all = locationService.getAllLocations();
+        for (Location location : all) {
+            result.add(locationConverter.toRequest(location));
+        }
+        return result;
+    }
+
+
+    @GetMapping(value = "/{locationType}", produces = "application/json")
+    public List<LocationRequest> getLocationsByType(@PathVariable("locationType") String locationType) {
+        List<LocationRequest> result = new ArrayList<>();
+        List<Location> all = locationService.getLocationsByType(EnumLocationType.valueOf(locationType));
         for (Location location : all) {
             result.add(locationConverter.toRequest(location));
         }

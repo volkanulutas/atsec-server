@@ -1,9 +1,16 @@
 package com.vem.atsecserver.payload.file;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author volkanulutas
  * @since 03.01.2021
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class FileResponse {
     private String name;
     private String url;
@@ -12,65 +19,11 @@ public class FileResponse {
     private long size;
     private String responseMessage;
 
-    public FileResponse() {
-        // Default constructor.
-    }
-
-    public FileResponse(String name, String url, String type, long size, String responseMessage,
-    String dataType) {
+    public FileResponse(String name, String url, String type, long size, String responseMessage){
         this.name = name;
         this.url = url;
         this.type = type;
         this.size = size;
-        this.responseMessage = responseMessage;
-        this.dataType = dataType;
-    }
-
-    public String getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public String getResponseMessage() {
-        return responseMessage;
-    }
-
-    public void setResponseMessage(String responseMessage) {
         this.responseMessage = responseMessage;
     }
 }

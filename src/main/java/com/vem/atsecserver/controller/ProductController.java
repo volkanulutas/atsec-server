@@ -2,25 +2,24 @@ package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.ProductConverter;
 import com.vem.atsecserver.data.barcodegeneration.ProductBarcode;
+import com.vem.atsecserver.entity.packingproduct.EnumPackingProductSize;
 import com.vem.atsecserver.entity.product.EnumProductPreProcessingType;
 import com.vem.atsecserver.entity.product.EnumWashingType;
 import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
 import com.vem.atsecserver.payload.product.ProductRequest;
-import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService;
 import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService2;
 import com.vem.atsecserver.service.product.ProductService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +28,13 @@ import java.util.Optional;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Slf4j
 @RestController
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/product")
 // @Secured("PRODUCT_PAGE_PERMISSION")
 public class ProductController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
-
     @Autowired
     private ProductService productService;
 
@@ -47,13 +45,13 @@ public class ProductController {
     private SecBarcodeGeneratorService2 secBarcodeGeneratorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductRequest> getProductById(@PathVariable("id") Long id) {
+    public ResponseEntity<ProductRequest> getProductById(@PathVariable("id") Long id) throws ParseException {
         return ResponseEntity.ok(Optional.ofNullable(productConverter.toRequest(productService.findProductById(id)))
                 .orElseThrow(() -> new ResourceNotFoundException("Product not exists with id", id + "")));
     }
 
     @GetMapping(value = "/", produces = "application/json")
-    public List<ProductRequest> getAllProducts() {
+    public List<ProductRequest> getAllProducts() throws ParseException {
         List<ProductRequest> result = new ArrayList<>();
         List<Product> all = productService.getAllProducts();
         for (Product product : all) {
@@ -63,7 +61,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/preprocessing", produces = "application/json")
-    public List<ProductRequest> getAllPreProcessingProducts() {
+    public List<ProductRequest> getAllPreProcessingProducts() throws ParseException {
         List<ProductRequest> result = new ArrayList<>();
         List<Product> all = productService.getAllPreProcessingProducts();
         for (Product product : all) {
@@ -74,7 +72,8 @@ public class ProductController {
 
 
     @GetMapping(value = "/packing", produces = "application/json")
-    public List<ProductRequest> getAllPackingProducts() {
+    public List<ProductRequest> getAllPackingProducts() throws ParseException {
+        System.err.println("packing...");
         List<ProductRequest> result = new ArrayList<>();
         List<Product> all = productService.getAllPackingProducts();
         for (Product product : all) {
@@ -83,10 +82,13 @@ public class ProductController {
         return result;
     }
 
-    @PostMapping(value = "/createbarcode", produces = "application/json", consumes = "application/json")
-    public byte[] createBarcode(/*@Valid*/ @RequestBody ProductRequest productRequest) {
+    @GetMapping("/createbarcode/{productId}")
+    @ResponseBody
+    public byte[] createBarcode(@PathVariable String productId) throws ParseException {
+        ProductRequest productRequest = productConverter.toRequest(productService.findProductById(Long.parseLong(productId)));
+
         byte[] barcode = null;
-        Product product = productService.create(productConverter.toEntity(productRequest));
+        Product product = productService.update(productConverter.toEntity(productRequest));
 
         ProductBarcode productBarcode = new ProductBarcode();
         productBarcode.setStatus(product.getStatus().toString());
@@ -95,12 +97,10 @@ public class ProductController {
         productBarcode.setSecCode(product.getSecCode());
         productBarcode.setId(product.getId());
         try {
-           barcode = secBarcodeGeneratorService.createBarcode(productBarcode);
-        }catch (Exception ex){
-            LOGGER.error("Error is occurred while generating sec barcode code.", ex);
+            barcode = secBarcodeGeneratorService.createBarcode(productBarcode);
+        } catch (Exception ex) {
+            log.error("Error is occurred while generating sec barcode code.", ex);
         }
-
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();
@@ -109,17 +109,27 @@ public class ProductController {
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody ProductRequest productRequest) {
-        Product product = productService.create(productConverter.toEntity(productRequest));
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{productId}")
-                .buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Product created successfully."));
+        try {
+            Product product = productService.create(productConverter.toEntity(productRequest));
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{productId}")
+                    .buildAndExpand(product.getId()).toUri();
+            System.err.println("basari");
+            return ResponseEntity.created(location)
+                    .body(new ApiResponse(true, "Product created successfully."));
+        } catch (Exception ex) {
+            System.err.println("Hata");
+            log.error("Hata oluştu: ", ex);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody ProductRequest productRequest) {
+        System.err.println(productRequest.toString());
+        System.err.println("update");
         Product product = productService.update(productConverter.toEntity(productRequest));
+        System.err.println(product.toString());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();
@@ -146,5 +156,10 @@ public class ProductController {
     @GetMapping(value = "/washingtypelist", produces = "application/json")
     public List<String> getWashingTypeList() {
         return EnumWashingType.valuesByName();
+    }
+
+    @GetMapping(value = "/packingproductsize", produces = "application/json")
+    public List<String> getPackingProductSize() {
+        return EnumPackingProductSize.valuesByCode();
     }
 }

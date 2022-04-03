@@ -2,8 +2,7 @@ package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
 import com.vem.atsecserver.payload.rawproduct.DonorInstituteRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,16 +10,15 @@ import org.springframework.stereotype.Component;
  * @author volkanulutas
  * @since 25.12.2020
  */
+@Slf4j
 @Component
 public class DonorInstituteConverter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DonorInstituteConverter.class);
-
     @Autowired
     private RawProductConverter rawProductConverter;
 
     public DonorInstitute toEntity(DonorInstituteRequest request) {
         if (request == null) {
-            LOGGER.error("Error is occurred while converting donor institute.");
+            log.error("Error is occurred while converting donor institute.");
             return null;
         }
         DonorInstitute result = new DonorInstitute();
@@ -41,7 +39,7 @@ public class DonorInstituteConverter {
 
     public DonorInstituteRequest toRequest(DonorInstitute entity) {
         if (entity == null) {
-            LOGGER.error("Error is occurred while converting  donor institute.");
+            log.error("Error is occurred while converting  donor institute.");
             return null;
         }
         DonorInstituteRequest result = new DonorInstituteRequest();

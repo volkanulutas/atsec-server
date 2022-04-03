@@ -1,8 +1,11 @@
 package com.vem.atsecserver.payload.product;
 
 import com.vem.atsecserver.payload.rawproduct.DonorRequest;
+import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import com.vem.atsecserver.payload.sales.CustomerRequest;
-import com.vem.atsecserver.repository.rawproduct.DonorRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -11,6 +14,9 @@ import java.util.List;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ProductRequest {
     @NotNull
     private Long id;
@@ -20,6 +26,8 @@ public class ProductRequest {
     private CustomerRequest customer;
 
     private String status;
+
+   private  List<ProductStatusDateRequest> productStatusDateRequests;
 
     private String secCode;
 
@@ -33,89 +41,13 @@ public class ProductRequest {
 
     private boolean deleted;
 
+    private List<ProductFileRequest> files;
+
+    private List<String> productFormType;
+
+    private List<String> granulationType;
+
+    private LocationRequest location;
+
     // TODO: expiry date
-
-    public ProductRequest() {
-        // default constructor.
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public DonorRequest getDonor() {
-        return donor;
-    }
-
-    public void setDonor(DonorRequest donor) {
-        this.donor = donor;
-    }
-
-    public CustomerRequest getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(CustomerRequest customer) {
-        this.customer = customer;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getSecCode() {
-        return secCode;
-    }
-
-    public void setSecCode(String secCode) {
-        this.secCode = secCode;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<String> getPreProcessingType() {
-        return preProcessingType;
-    }
-
-    public void setPreProcessingType(List<String> preProcessingType) {
-        this.preProcessingType = preProcessingType;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public String getInformation() {
-        return information;
-    }
-
-    public void setInformation(String information) {
-        this.information = information;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 }

@@ -1,5 +1,7 @@
 package com.vem.atsecserver.service.rawproduct;
 
+import com.vem.atsecserver.converter.DonorConverter;
+import com.vem.atsecserver.data.DonorIdUtil;
 import com.vem.atsecserver.entity.rawproduct.Donor;
 import com.vem.atsecserver.repository.rawproduct.DonorRepository;
 import org.apache.commons.lang3.time.DateUtils;
@@ -21,39 +23,70 @@ public class DonorServiceImpl implements DonorService {
     @Autowired
     private DonorRepository donorRepository;
 
+    @Autowired
+    private DonorConverter donorConverter;
+
     @Override
-    public Boolean existsByCode(String code) {
-        return donorRepository.findByCode(code) != null;
+    public Donor findByCitizenNumber(String citizenshipNumber) {
+        return donorRepository.findByCitizenshipNumber(citizenshipNumber);
     }
 
     @Override
     public Donor create(Donor donorRequest) {
-        Donor donor = new Donor();
-        donor.setRegisteredDate(System.currentTimeMillis());
-        donor.setCode(generateDonorId());
-        donor.setAddress(donorRequest.getAddress());
-        donor.setBloodTestPdfFile(donorRequest.getBloodTestPdfFile());
-        donor.setName(donorRequest.getName());
-        donor.setSurname(donorRequest.getSurname());
-        if (donorRequest.getRawProducts() != null) {
-            donor.setRawProducts(donorRequest.getRawProducts());
+        Donor existence = findByCitizenNumber(donorRequest.getCitizenshipNumber());
+        if (existence == null) { // create
+            Donor donor = new Donor();
+            donor.setRegisteredDate(System.currentTimeMillis());
+
+            donor.setAddress(donorRequest.getAddress());
+            donor.setBloodTestPdfFile(donorRequest.getBloodTestPdfFile());
+            donor.setName(donorRequest.getName());
+            donor.setSurname(donorRequest.getSurname());
+            donor.setDonorInstitute(donorRequest.getDonorInstitute());
+            donor.setBloodType(donorRequest.getBloodType());
+            donor.setSex(donorRequest.getSex());
+            donor.setBirthdate(donorRequest.getBirthdate());
+            donor.setTissueType(donorRequest.getTissueType());
+            donor.setTissueNumber(donorRequest.getTissueNumber());
+            donor.setAddressCity(donorRequest.getAddressCity());
+            donor.setAddressDistrict(donorRequest.getAddressDistrict());
+            donor.setCitizenshipNumber(donorRequest.getCitizenshipNumber());
+            donor.setTelephone(donorRequest.getTelephone());
+
+            donor.setCode(generateDonorId(donor.getDonorInstitute().getCode()));
+            if (donorRequest.getRawProducts() != null) {
+                donor.setRawProducts(donorRequest.getRawProducts());
+            }
+            donor.setTelephone(donorRequest.getTelephone());
+            donor.setDeleted(false);
+            return donorRepository.save(donor);
         }
-        donor.setTelephone(donorRequest.getTelephone());
-        donor.setDeleted(false);
-        return donorRepository.save(donor);
+        return update(donorRequest);
     }
 
     @Override
     public Donor update(Donor donorRequest) {
-        Optional<Donor> byId = donorRepository.findById(donorRequest.getId());
-        if (byId.isPresent()) {
-            Donor donor = byId.get();
+        Donor donor = findByCitizenNumber(donorRequest.getCitizenshipNumber());
+        if (donor != null) {
+            donor.setDeleted(false);
+            donor.setId(donorRequest.getId());
+            System.err.println("update");
+            donor.setCode(donorRequest.getCode());
+            // donor.setRegisteredDate(System.currentTimeMillis());
+            donor.setDonorInstitute(donor.getDonorInstitute());
             donor.setAddress(donorRequest.getAddress());
             donor.setBloodTestPdfFile(donorRequest.getBloodTestPdfFile());
-            donor.setDeleted(false);
-            donor.setCode(donorRequest.getCode());
             donor.setName(donorRequest.getName());
             donor.setSurname(donorRequest.getSurname());
+            donor.setBloodType(donorRequest.getBloodType());
+            donor.setSex(donorRequest.getSex());
+            donor.setBirthdate(donor.getBirthdate());
+            donor.setTissueType(donor.getTissueType());
+            donor.setTissueNumber(donorRequest.getTissueNumber());
+            donor.setAddressCity(donorRequest.getAddressCity());
+            donor.setAddressDistrict(donorRequest.getAddressDistrict());
+            donor.setCitizenshipNumber(donorRequest.getCitizenshipNumber());
+            donor.setTelephone(donorRequest.getTelephone());
             if (donor.getRawProducts() != null) {
                 donor.setRawProducts(donorRequest.getRawProducts());
             }
@@ -69,14 +102,22 @@ public class DonorServiceImpl implements DonorService {
     }
 
     @Override
-    public Donor delete(Long id) {
+    public boolean delete(Long id) {
         Optional<Donor> byId = donorRepository.findById(id);
+
         if (byId.isPresent()) {
+            System.out.println("silindi");
             byId.get().setDeleted(true);
             donorRepository.save(byId.get());
-            return byId.get();
+
+            return true;
         }
-        return null;
+        return false;
+    }
+
+    @Override
+    public Donor findDonorById(Long id) {
+        return donorRepository.findById(id).get();
     }
 
     @Override
@@ -84,32 +125,25 @@ public class DonorServiceImpl implements DonorService {
         return donorRepository.findByCode(code);
     }
 
-    @Override
-    public Donor findDonorById(long id) {
-        return donorRepository.findById(id).get(); // TODO:
-    }
-
-    public String generateDonorId() {
-        Calendar calendar = Calendar.getInstance();
-        StringBuilder builder = new StringBuilder();
+    public String generateDonorId(String donorInstituteCode) {
         Date dateNow = new Date(System.currentTimeMillis());
         Donor donorCurrent = donorRepository.findTopByOrderByIdDesc();
 
-        if (donorCurrent != null) {
-            String identityNumber = donorCurrent.getCode();
+        int year = Calendar.getInstance().get(Calendar.YEAR) % 100;
+        DonorIdUtil donorId = new DonorIdUtil(donorInstituteCode, year + "", 1);
+
+        if (donorCurrent != null && !donorCurrent.getDeleted()) {
             Date dateCurrent = new Date(donorCurrent.getRegisteredDate());
             if (DateUtils.isSameDay(dateNow, dateCurrent)) {
-                char id1 = identityNumber.charAt(4);
-                char id2 = identityNumber.charAt(5);
-                int number = Integer.parseInt(id1 + id2 + "");
-                calendar.setTime(dateCurrent);
-                return builder.append(calendar.get(Calendar.YEAR) % 1000).append(calendar.get(Calendar.MONTH) + 1).append(calendar.get(Calendar.DAY_OF_MONTH)).append((number + 1)).toString();
+                String donorIdCurrent = donorCurrent.getCode();
+                donorId.setDonorId(donorIdCurrent);
+                int donorIdGeneratedValue = donorId.getGeneratedValue() + 1;
+                donorId.setGeneratedValue(donorIdGeneratedValue);
+                return donorId.getDonorId();
             } else {
-                calendar.setTime(dateNow);
-                return builder.append(calendar.get(Calendar.YEAR) % 1000).append(calendar.get(Calendar.MONTH) + 1).append(calendar.get(Calendar.DAY_OF_MONTH)).append("01").toString();
+                return donorId.getDonorId();
             }
         }
-        calendar.setTime(dateNow);
-        return builder.append(calendar.get(Calendar.YEAR) % 1000).append(calendar.get(Calendar.MONTH) + 1).append(calendar.get(Calendar.DAY_OF_MONTH)).append("01").toString();
+        return donorId.getDonorId();
     }
 }

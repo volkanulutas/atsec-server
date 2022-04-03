@@ -4,8 +4,7 @@ import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.payload.user.PermissionRequest;
 import com.vem.atsecserver.payload.user.RoleRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +15,9 @@ import java.util.List;
  * @author volkanulutas
  * @since 01.01.2021
  */
+@Slf4j
 @Component
 public class RoleConverter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleConverter.class);
-
     @Autowired
     private PermissionConverter permissionConverter;
 

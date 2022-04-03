@@ -9,6 +9,9 @@ import java.util.List;
  * @since 01.01.2021
  */
 public interface CustomerService {
+
+    Boolean isExistByIdentityNumber(String identityNumber);
+
     Customer create(Customer customer);
 
     Customer update(Customer customer);

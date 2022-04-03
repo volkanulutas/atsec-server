@@ -2,8 +2,7 @@ package com.vem.atsecserver.service.rawproduct;
 
 import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
 import com.vem.atsecserver.repository.rawproduct.DonorInstituteRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +14,9 @@ import java.util.stream.Collectors;
  * @author volkanulutas
  * @since 01.01.2021
  */
+@Slf4j
 @Service
 public class DonorInstituteServiceImpl implements DonorInstituteService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DonorInstituteServiceImpl.class);
-
     @Autowired
     private DonorInstituteRepository donorInstituteRepository;
 
@@ -58,7 +56,7 @@ public class DonorInstituteServiceImpl implements DonorInstituteService {
             donorInstituteRepository.save(byId.get());
             return byId.get();
         } else {
-            LOGGER.error("Role does not found with id: {}", id);
+            log.error("Role does not found with id: {}", id);
         }
         return null;
     }

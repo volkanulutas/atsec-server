@@ -2,21 +2,19 @@ package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.payload.rawproduct.LocationRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * @author volkanulutas
  * @since 01.01.2021
  */
+@Slf4j
 @Component
 public class LocationConverter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocationConverter.class);
-
     public Location toEntity(LocationRequest request) {
         if (request == null) {
-            LOGGER.error("Error is occurred while converting location.");
+            log.error("Error is occurred while converting location.");
             return null;
         }
         Location entity = new Location();
@@ -31,7 +29,7 @@ public class LocationConverter {
 
     public LocationRequest toRequest(Location entity) {
         if (entity == null) {
-            LOGGER.error("Error is occurred while converting location.");
+            log.error("Error is occurred while converting location.");
             return null;
         }
         LocationRequest request = new LocationRequest();

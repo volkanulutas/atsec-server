@@ -2,10 +2,16 @@ package com.vem.atsecserver.service.product;
 
 import com.vem.atsecserver.entity.product.EnumProductStatus;
 import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.report.product.EnumProductFileDBType;
+import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.repository.product.ProductRepository;
+import com.vem.atsecserver.service.report.product.ProductReportService;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,10 +24,14 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductReportService productReportService;
 
     @Override
     public Product create(Product productPar) {
         Product product = new Product();
+        product.setProductFormType(productPar.getProductFormType());
+        product.setGranulationType(productPar.getGranulationType());
         product.setDefinition(productPar.getDefinition());
         product.setInformation(productPar.getInformation());
         product.setSecCode(productPar.getSecCode());
@@ -31,6 +41,22 @@ public class ProductServiceImpl implements ProductService {
         product.setDonor(productPar.getDonor());
         product.setCustomer(productPar.getCustomer());
         product.setDeleted(false);
+        product.setProductStatusDates(productPar.getProductStatusDates());
+        byte[] file = null;
+        try {
+            file = productReportService.exportReport(product);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+        List<ProductFile> files = new ArrayList<>();
+        ProductFile productFile = new ProductFile("General", EnumProductFileDBType.GENERAL_STICKER, "", file, product);
+        ProductFile savedProductFile = productReportService.save(productFile);
+        files.add(savedProductFile);
+        product.setFiles(files);
+        product.setLocation(productPar.getLocation());
         return productRepository.save(product);
     }
 
@@ -39,6 +65,8 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> byId = productRepository.findById(productPar.getId());
         if (byId.isPresent()) {
             Product product = byId.get();
+            product.setProductFormType(productPar.getProductFormType());
+            product.setGranulationType(productPar.getGranulationType());
             product.setDefinition(productPar.getDefinition());
             product.setInformation(productPar.getInformation());
             product.setSecCode(productPar.getSecCode());
@@ -48,6 +76,8 @@ public class ProductServiceImpl implements ProductService {
             product.setDonor(product.getDonor());
             product.setCustomer(productPar.getCustomer());
             product.setDeleted(false);
+            product.setProductStatusDates(productPar.getProductStatusDates());
+            product.setLocation(productPar.getLocation());
             return productRepository.save(product);
         }
         return null;

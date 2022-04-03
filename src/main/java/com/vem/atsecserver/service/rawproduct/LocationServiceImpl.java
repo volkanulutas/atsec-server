@@ -1,5 +1,6 @@
 package com.vem.atsecserver.service.rawproduct;
 
+import com.vem.atsecserver.entity.rawproduct.EnumLocationType;
 import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.repository.rawproduct.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location create(Location parameter) {
-        Location location = new Location(parameter.getName(), parameter.getDefinition());
+        Location location = new Location(parameter.getName(), parameter.getDefinition(), parameter.getLocationType());
         location.setDeleted(false);
         return locationRepository.save(location);
     }
@@ -31,6 +32,7 @@ public class LocationServiceImpl implements LocationService {
         if (byId.isPresent()) {
             byId.get().setName(parameter.getName());
             byId.get().setDefinition(parameter.getDefinition());
+            byId.get().setLocationType(parameter.getLocationType());
             byId.get().setDeleted(false);
             return locationRepository.save(byId.get());
         }
@@ -55,5 +57,10 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Location findLocationById(Long id) {
         return locationRepository.findById(id).get(); // TODO: get()
+    }
+
+    @Override
+    public List<Location> getLocationsByType(EnumLocationType locationType) {
+        return locationRepository.findByLocationType(locationType);
     }
 }

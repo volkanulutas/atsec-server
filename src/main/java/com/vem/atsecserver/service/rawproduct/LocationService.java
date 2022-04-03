@@ -1,7 +1,7 @@
 package com.vem.atsecserver.service.rawproduct;
 
+import com.vem.atsecserver.entity.rawproduct.EnumLocationType;
 import com.vem.atsecserver.entity.rawproduct.Location;
-import com.vem.atsecserver.entity.rawproduct.TissueType;
 
 import java.util.List;
 
@@ -19,4 +19,6 @@ public interface LocationService {
     Location delete(Long id);
 
     Location findLocationById(Long id);
+
+    List<Location> getLocationsByType(EnumLocationType valueOf);
 }

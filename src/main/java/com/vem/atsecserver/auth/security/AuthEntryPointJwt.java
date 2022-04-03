@@ -1,7 +1,6 @@
 package com.vem.atsecserver.auth.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -17,14 +16,13 @@ import java.io.IOException;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Slf4j
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthEntryPointJwt.class);
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-        LOGGER.error("Responding with unauthorized error. Message - {}", authException.getMessage());
+        log.error("Responding with unauthorized error. Message - {}", authException.getMessage());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }
 }

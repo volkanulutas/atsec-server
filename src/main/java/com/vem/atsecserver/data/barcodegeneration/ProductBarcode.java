@@ -1,11 +1,6 @@
 package com.vem.atsecserver.data.barcodegeneration;
 
-import com.vem.atsecserver.entity.rawproduct.Donor;
-import com.vem.atsecserver.entity.sales.Customer;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author volkanulutas

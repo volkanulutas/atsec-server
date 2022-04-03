@@ -1,9 +1,9 @@
 package com.vem.atsecserver.service;
 
-import com.vem.atsecserver.entity.file.EnumFileDBType;
-import com.vem.atsecserver.entity.file.File;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import com.vem.atsecserver.repository.FileDBRepository;
+import com.vem.atsecserver.entity.report.rawproduct.EnumRawProductFileDBType;
+import com.vem.atsecserver.entity.report.rawproduct.RawProductFile;
+import com.vem.atsecserver.repository.file.rawproduct.RawProductFileDBRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,27 +19,27 @@ import java.util.stream.Stream;
 @Service
 public class FileServiceImpl implements FileService {
     @Autowired
-    private FileDBRepository fileDBRepository;
+    private RawProductFileDBRepository fileDBRepository;
 
     @Override
-    public File store(MultipartFile file, EnumFileDBType fileType,  RawProduct rawProduct) throws IOException {
+    public RawProductFile store(MultipartFile file, EnumRawProductFileDBType fileType, RawProduct rawProduct) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        File FileDB = new File(fileName, fileType, file.getContentType(), file.getBytes(), rawProduct);
+        RawProductFile FileDB = new RawProductFile(fileName, fileType, file.getContentType(), file.getBytes(), rawProduct);
         return fileDBRepository.save(FileDB);
     }
 
     @Override
-    public File getFile(Long id) {
+    public RawProductFile getFile(Long id) {
         return fileDBRepository.findById(id).get();
     }
 
     @Override
-    public Stream<File> getAllFilesByFileType(EnumFileDBType fileDBType) {
+    public Stream<RawProductFile> getAllFilesByFileType(EnumRawProductFileDBType fileDBType) {
         return fileDBRepository.findByFileDBType(fileDBType).stream();
     }
 
     @Override
-    public Stream<File> getAllFilesByRawProduct(RawProduct rawProduct) {
+    public Stream<RawProductFile> getAllFilesByRawProduct(RawProduct rawProduct) {
         return fileDBRepository.findByRawProduct(rawProduct);
     }
 }

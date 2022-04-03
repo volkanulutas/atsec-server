@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Tree" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f6e4db4-9f8f-4ffe-9759-6e1fd142f492">
+    <property name="template.type" value="columnar"/>
+
+    <style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+    <style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+    <style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+            <style mode="Opaque" backcolor="#F0EFEF"/>
+        </conditionalStyle>
+    </style>
+    <field name="donorId" class="java.lang.String">
+    </field>
+    <field name="donorInstitute" class="java.lang.String">
+    </field>
+    <field name="tissueType" class="java.lang.String">
+    </field>
+    <field name="issueTissueDate" class="java.lang.String">
+    </field>
+    <field name="arrivalDate" class="java.lang.String">
+    </field>
+    <field name="location" class="java.lang.String">
+    </field>
+    <field name="checkedOutBy" class="java.lang.String">
+    </field>
+    <field name="status" class="java.lang.String">
+    </field>
+
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band height="160" splitType="Stretch">
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="0" width="132" height="20" forecolor="#000000" uuid="77787bb3-7e49-496d-a9ed-aa61967a2010"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Gönderen Kurum No:]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="0" width="338" height="18" uuid="479135f0-274e-4790-8163-ef4561b37aa6"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{donorInstitute}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="20" width="132" height="20" forecolor="#000000" uuid="4e77059c-80bb-4560-af6f-1c81cc644eaf"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Donör ID]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="20" width="338" height="18" uuid="dd4d3d5c-9081-4351-9079-ac478e13c452"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false" isItalic="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{donorId}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="40" width="132" height="20" forecolor="#000000" uuid="a6aa9e37-5a45-4e6e-bcfa-1e5dae994ab6"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Doku Tipi]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="40" width="338" height="18" uuid="f33a1f6f-6594-4b07-8709-2490760cf35d"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{tissueType}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="60" width="132" height="20" forecolor="#000000" uuid="7a660a2b-58dc-48bb-a8d0-2b2a998b3a34"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Doku Çıkarım Tarihi]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="60" width="338" height="18" uuid="44d4ae3b-b285-452a-a448-70333a73cbf7"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{issueTissueDate}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="80" width="132" height="20" forecolor="#000000" uuid="126218fe-cdb3-40de-8eb5-e3aaa1d5f64a"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true" isItalic="false"/>
+                </textElement>
+                <text><![CDATA[Merkeze Geliş Tarihi]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="80" width="338" height="18" uuid="1557df0e-1413-4988-bfb0-d13a7c3ea1be"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{arrivalDate}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="100" width="132" height="20" forecolor="#000000" uuid="f8312fdd-9d19-4e95-be15-26dd88b60ae5"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Karantina Depo Lokasyonu:]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="100" width="338" height="18" uuid="050aeea7-40fa-4300-99a9-56e6404b300a"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{location}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="120" width="132" height="20" forecolor="#000000" uuid="f5b874de-61f0-4954-be7a-5d68fe628fdc"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Dokuyu Teslim Alan Kişi:]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="120" width="338" height="18" uuid="57d68e51-5e04-4657-90ff-5f70d94785eb"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{checkedOutBy}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="Column header" positionType="Float" x="79" y="140" width="132" height="20" forecolor="#000000" uuid="16680ebe-c5bd-44f0-ad65-e3baf722f21c"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Durumu:]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="Detail" positionType="Float" x="215" y="140" width="338" height="18" uuid="785b5115-b708-4d2f-938b-ee4d3e68b618"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

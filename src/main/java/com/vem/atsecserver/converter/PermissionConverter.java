@@ -2,21 +2,19 @@ package com.vem.atsecserver.converter;
 
 import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.payload.user.PermissionRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * @author volkanulutas
  * @since 01.01.2021
  */
+@Slf4j
 @Component
 public class PermissionConverter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PermissionConverter.class);
-
     public Permission toEntity(PermissionRequest request) {
         if (request == null) {
-            LOGGER.error("Error is occurred while converting permission.");
+            log.error("Error is occurred while converting permission.");
             return null;
         }
         Permission entity = new Permission();
@@ -32,7 +30,7 @@ public class PermissionConverter {
 
     public PermissionRequest toRequest(Permission entity) {
         if (entity == null) {
-            LOGGER.error("Error is occurred while converting permission.");
+            log.error("Error is occurred while converting permission.");
             return null;
         }
         PermissionRequest request = new PermissionRequest();
@@ -40,7 +38,7 @@ public class PermissionConverter {
         request.setName(entity.getName());
         request.setDefinition(entity.getDefinition());
         request.setMenu(entity.getMenu());
-        request.setDeleted(entity.getDeleted());
+        request.setDeleted(entity.isDeleted());
         return request;
     }
 }

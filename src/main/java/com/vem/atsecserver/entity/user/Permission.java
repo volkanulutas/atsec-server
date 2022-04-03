@@ -1,5 +1,9 @@
 package com.vem.atsecserver.entity.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -7,6 +11,9 @@ import java.util.Collection;
  * @author volkanulutas
  * @since 01.01.2021
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "Permission")
 public class Permission {
@@ -27,63 +34,11 @@ public class Permission {
     private Collection<Role> roles;
 
     @Column
-    private Boolean deleted;
-
-    public Permission() {
-        // Default constructor.
-    }
+    private boolean deleted;
 
     public Permission(String name, String definition, String menu) {
         this.name = name;
         this.definition = definition;
         this.menu = menu;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getMenu() {
-        return menu;
-    }
-
-    public void setMenu(String menu) {
-        this.menu = menu;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
     }
 }

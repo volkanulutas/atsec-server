@@ -4,8 +4,7 @@ import com.vem.atsecserver.entity.user.Permission;
 import com.vem.atsecserver.entity.user.Role;
 import com.vem.atsecserver.entity.user.User;
 import com.vem.atsecserver.repository.user.RoleRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +17,9 @@ import java.util.stream.Collectors;
  * @author volkanulutas
  * @since 01.01.2021
  */
+@Slf4j
 @Service
 public class RoleServiceImpl implements RoleService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
-
     private final static String ADMIN_ROLE = "ADMIN_ROLE";
 
     @Autowired
@@ -69,7 +67,7 @@ public class RoleServiceImpl implements RoleService {
 
             return byId.get();
         } else {
-            LOGGER.error("Role does not found with id: {}", id);
+            log.error("Role does not found with id: {}", id);
         }
         return null;
     }

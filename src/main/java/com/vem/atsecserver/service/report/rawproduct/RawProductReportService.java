@@ -22,12 +22,14 @@ public class RawProductReportService {
     @Autowired
     private RawProductService rawProductService;
 
-    public void exportReport(long rawProductId) throws FileNotFoundException, JRException {
+    public byte[] exportReport(long rawProductId) throws FileNotFoundException, JRException {
         RawProduct rawProduct = rawProductService.getRawProductById(rawProductId);
+        return exportReport(rawProduct);
+    }
 
+    public byte[] exportReport(RawProduct rawProduct) throws FileNotFoundException, JRException {
         RawProductReport report = new RawProductReport();
         report.setDonorId(rawProduct.getDonor().getCode());
-        report.setDonorInstitute(rawProduct.getDonorInstitute().getName());
         report.setTissueType(rawProduct.getTissueType().getName());
         report.setIssueTissueDate(rawProduct.getIssueTissueDate() + "");
         report.setArrivalDate(rawProduct.getArrivalDate() + ""); // TODO: date i string e donustur
@@ -46,7 +48,7 @@ public class RawProductReportService {
 
         byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
 
-
-        JasperExportManager.exportReportToPdfFile(jasperPrint, "/Users/volkanulutas/Documents/report/report.pdf");
+        return bytes;
+        // JasperExportManager.exportReportToPdfFile(jasperPrint, "/Users/volkanulutas/Documents/report/report.pdf");
     }
 }

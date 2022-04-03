@@ -29,8 +29,18 @@ public class RawProductServiceImpl implements RawProductService {
         entity.setStatus(parameter.getStatus());
         entity.setTissueType(parameter.getTissueType());
         entity.setDonor(parameter.getDonor());
-        entity.setDonorInstitute(parameter.getDonorInstitute());
+        entity.setResponsible(parameter.getResponsible());
+        entity.setFiles(parameter.getFiles());
+        // entity.setCheckedOutBy(parameter.getCheckedOutBy()); // TODO:
+        entity.setDefinition(parameter.getDefinition());
+        entity.setDoctorName(parameter.getDoctorName());
         entity.setDeleted(false);
+        entity.setFiles(parameter.getFiles());
+        entity.setTissueCarryCase(parameter.getTissueCarryCase());
+        entity.setSterialBag(parameter.getSterialBag());
+        entity.setDataLogger(parameter.getDataLogger());
+        entity.setTemperature(parameter.getTemperature());
+
         return rawProductRepository.save(entity);
     }
 
@@ -45,8 +55,13 @@ public class RawProductServiceImpl implements RawProductService {
             entity.setInformation(parameter.getInformation());
             entity.setStatus(parameter.getStatus());
             entity.setTissueType(parameter.getTissueType());
-            entity.setDonorInstitute(parameter.getDonorInstitute());
+            entity.setFiles(parameter.getFiles());
             entity.setDeleted(false);
+
+            entity.setTissueCarryCase(parameter.getTissueCarryCase());
+            entity.setSterialBag(parameter.getSterialBag());
+            entity.setDataLogger(parameter.getDataLogger());
+            entity.setTemperature(parameter.getTemperature());
             return rawProductRepository.save(entity);
         }
         return null;
@@ -56,9 +71,10 @@ public class RawProductServiceImpl implements RawProductService {
     public List<RawProduct> getAllRawProducts() {
         return rawProductRepository.findAll().stream()
                 .filter(e -> !e.getDeleted()
-                        && (e.getStatus() !=null && !e.getStatus().equals(EnumRawProductStatus.PRE_PROCESSING) )
-                        && (e.getStatus() !=null && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE)))
-                .collect(Collectors.toList());
+                        && (e.getStatus() != null && !e.getStatus().equals(EnumRawProductStatus.PRE_PROCESSING))
+                        && (e.getStatus() != null && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE))
+                        && (e.getStatus() != null && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE)))
+                        .collect(Collectors.toList());
     }
 
     @Override

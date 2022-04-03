@@ -1,16 +1,23 @@
 package com.vem.atsecserver.entity.product;
 
 import com.vem.atsecserver.entity.rawproduct.Donor;
+import com.vem.atsecserver.entity.rawproduct.Location;
+import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.entity.sales.Customer;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * @author volkanulutas
  * @since 25.12.2020
  */
+@NoArgsConstructor
+@Data
 @Entity(name = "Product")
 @Table(name = "Product")
 public class Product implements Serializable {
@@ -20,12 +27,27 @@ public class Product implements Serializable {
     private Long id;
 
     @Column
-    private EnumProductStatus status;
+    private EnumProductStatus status; // TODO: Daha sonra sil productStatusDates de var bu bilgi
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<ProductStatusDate> productStatusDates;
 
     @ElementCollection(targetClass = EnumProductPreProcessingType.class)
     @CollectionTable
     @Enumerated(EnumType.STRING)
     private List<EnumProductPreProcessingType> preProcessingType;
+
+    @ElementCollection(targetClass = EnumProductFormType.class)
+    @CollectionTable
+    @Enumerated(EnumType.STRING)
+    @Column
+    private List<EnumProductFormType> productFormType;
+
+    @ElementCollection(targetClass = EnumProductGranulationType.class)
+    @CollectionTable
+    @Enumerated(EnumType.STRING)
+    @Column
+    private List<EnumProductGranulationType> granulationType;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
@@ -46,92 +68,14 @@ public class Product implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private Collection<ProductFile> files;
+
+    @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     @Column
     private boolean deleted;
-
     // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
-
-    public Product() {
-        // default constructor.
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public EnumProductStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(EnumProductStatus status) {
-        this.status = status;
-    }
-
-    public List<EnumProductPreProcessingType> getPreProcessingType() {
-        return preProcessingType;
-    }
-
-    public void setPreProcessingType(List<EnumProductPreProcessingType> preProcessingType) {
-        this.preProcessingType = preProcessingType;
-    }
-
-    public EnumProductType getType() {
-        return type;
-    }
-
-    public void setType(EnumProductType type) {
-        this.type = type;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public String getInformation() {
-        return information;
-    }
-
-    public void setInformation(String information) {
-        this.information = information;
-    }
-
-    public String getSecCode() {
-        return secCode;
-    }
-
-    public void setSecCode(String secCode) {
-        this.secCode = secCode;
-    }
-
-    public Donor getDonor() {
-        return donor;
-    }
-
-    public void setDonor(Donor donor) {
-        this.donor = donor;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 }

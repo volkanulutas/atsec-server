@@ -20,6 +20,11 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
 
     @Override
+    public Boolean isExistByIdentityNumber(String identityNumber) {
+        return customerRepository.findByIdentityNumber(identityNumber)!=null;
+    }
+
+    @Override
     public Customer create(Customer customerRequest) {
         Customer customer = new Customer();
         customer.setName(customerRequest.getName());
@@ -51,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll().stream().filter(e -> !e.getDeleted()).collect(Collectors.toList());
+        return customerRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
     }
 
     @Override

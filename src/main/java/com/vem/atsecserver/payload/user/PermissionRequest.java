@@ -1,6 +1,9 @@
 package com.vem.atsecserver.payload.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,6 +14,9 @@ import java.util.Collection;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class PermissionRequest {
     @NotNull
     private Long id;
@@ -26,54 +32,5 @@ public class PermissionRequest {
 
     private String definition;
 
-    private Boolean isDeleted;
-
-    public PermissionRequest() {
-        // Default constructor.
-    }
-
-    public PermissionRequest(String name, String definition) {
-        this.name = name;
-        this.definition = definition;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMenu() {
-        return menu;
-    }
-
-    public void setMenu(String menu) {
-        this.menu = menu;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public Boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
+    private boolean isDeleted;
 }

@@ -1,15 +1,12 @@
 package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.RawProductConverter;
-import com.vem.atsecserver.entity.file.EnumFileDBType;
-import com.vem.atsecserver.entity.file.File;
-import com.vem.atsecserver.entity.rawproduct.Donor;
-import com.vem.atsecserver.entity.rawproduct.DonorInstitute;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
+import com.vem.atsecserver.entity.report.rawproduct.EnumRawProductFileDBType;
+import com.vem.atsecserver.entity.report.rawproduct.RawProductFile;
 import com.vem.atsecserver.payload.auth.response.ApiResponse;
 import com.vem.atsecserver.payload.exception.ResourceNotFoundException;
-import com.vem.atsecserver.payload.file.FileRequest;
 import com.vem.atsecserver.payload.file.FileResponse;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
 import com.vem.atsecserver.service.FileService;
@@ -18,17 +15,14 @@ import com.vem.atsecserver.service.rawproduct.DonorInstituteService;
 import com.vem.atsecserver.service.rawproduct.DonorService;
 import com.vem.atsecserver.service.rawproduct.RawProductService;
 import com.vem.atsecserver.service.report.rawproduct.RawProductReportService;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,14 +43,13 @@ import java.util.stream.Collectors;
  * @author volkanulutas
  * @since 25.12.2020
  */
+@Slf4j
 @RestController
 @Transactional
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/api/rawproduct")
 // @Secured("RAWPRODUCT_PAGE_PERMISSION")
 public class RawProductController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RawProductController.class);
-
     @Autowired
     private RawProductService rawProductService;
 
@@ -83,13 +77,13 @@ public class RawProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RawProductRequest> getRawProductById(@PathVariable("id") Long id) {
+    public ResponseEntity<RawProductRequest> getRawProductById(@PathVariable("id") Long id) throws ParseException {
         return ResponseEntity.ok(Optional.ofNullable(rawProductConverter.toRequest(rawProductService.findRawProductById(id)))
                 .orElseThrow(() -> new ResourceNotFoundException("Raw Product not exists with id", id + "")));
     }
 
     @GetMapping(value = "/", produces = "application/json")
-    public List<RawProductRequest> getAllProducts() {
+    public List<RawProductRequest> getAllProducts() throws ParseException {
         List<RawProductRequest> result = new ArrayList<>();
         List<RawProduct> all = rawProductService.getAllRawProducts();
         for (RawProduct product : all) {
@@ -99,9 +93,9 @@ public class RawProductController {
     }
 
     @GetMapping(value = "/rejectarchives", produces = "application/json")
-    public List<RawProductRequest> getRejectArchivesRawProducts() {
+    public List<RawProductRequest> getRejectArchivesRawProducts() throws ParseException {
         List<RawProductRequest> result = new ArrayList<>();
-        List<RawProduct> all = rawProductService.getRawProductsByStatus(EnumRawProductStatus.MEDICAL_WASTE);
+        List<RawProduct> all = rawProductService.getRawProductsByStatus(EnumRawProductStatus.REJECT);
         for (RawProduct product : all) {
             result.add(rawProductConverter.toRequest(product));
         }
@@ -109,18 +103,30 @@ public class RawProductController {
     }
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
-    public RawProductRequest create(@RequestBody RawProductRequest productRequest) {
+    public RawProductRequest create(@RequestBody RawProductRequest productRequest) throws ParseException {
+        System.out.println("---------------------");
+        System.out.println("request: " + productRequest);
         RawProduct entity = rawProductConverter.toEntity(productRequest);
+        System.out.println("converter: " + entity);
         entity = rawProductService.create(entity);
+        System.out.println("entity: " + entity);
         RawProductRequest rawProductRequest = rawProductConverter.toRequest(entity);
-        System.err.println(rawProductRequest.getId());
+        System.out.println(rawProductRequest.getId());
+        System.out.println("---------------------");
         return rawProductRequest;
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public RawProductRequest update(/*@Valid*/ @RequestBody RawProductRequest productRequest) {
-        RawProduct product = rawProductService.update(rawProductConverter.toEntity(productRequest));
-        return rawProductConverter.toRequest(product);
+    public RawProductRequest update(/*@Valid*/ @RequestBody RawProductRequest productRequest) throws ParseException {
+        System.out.println("---------------------");
+        System.out.println("request: " + productRequest.toString());
+        RawProduct rawProductRequest = rawProductConverter.toEntity(productRequest);
+        System.out.println("converter: " + rawProductRequest);
+        RawProduct product = rawProductService.update(rawProductRequest);
+        System.out.println("entity: " + product);
+        RawProductRequest rawProductRequest1 = rawProductConverter.toRequest(product);
+        System.out.println("---------------------");
+        return rawProductRequest1;
     }
 
     @DeleteMapping(value = "/{id}")
@@ -136,15 +142,15 @@ public class RawProductController {
 
     @PostMapping("/upload")
     public ResponseEntity<FileResponse> uploadFile2(@RequestParam("file") MultipartFile file,
-                                                   @RequestParam("fileType") String fileTypeStr,
-                                                   @RequestParam("rawProductId") String rawProductId) {
+                                                    @RequestParam("fileType") String fileTypeStr,
+                                                    @RequestParam("rawProductId") String rawProductId) {
         try {
             System.err.println("Filllleeeee");
-            EnumFileDBType fileType = EnumFileDBType.find(fileTypeStr);
+            EnumRawProductFileDBType fileType = EnumRawProductFileDBType.find(fileTypeStr);
 
             RawProduct rawProductById = rawProductService.getRawProductById(Long.parseLong(rawProductId));
 
-            File dbFile = fileService.store(file, fileType, rawProductById);
+            RawProductFile dbFile = fileService.store(file, fileType, rawProductById);
 
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
@@ -157,8 +163,7 @@ public class RawProductController {
                     fileDownloadUri,
                     dbFile.getType(),
                     dbFile.getData().length,
-                    "Dosya başaralı bir şekilde yüklendi.",
-                    dbFile.getFileDBType().getName());
+                    "Dosya başaralı bir şekilde yüklendi.");
 
             System.err.println("Dosya yükleme basarili.");
             return ResponseEntity.status(HttpStatus.OK).body(fileResponse);
@@ -170,7 +175,7 @@ public class RawProductController {
 
     @GetMapping("/getFiles/{fileType}")
     public ResponseEntity<List<FileResponse>> getListFiles(@PathVariable("fileType") String fileTypeStr) {
-        EnumFileDBType fileType = EnumFileDBType.findByName(fileTypeStr);
+        EnumRawProductFileDBType fileType = EnumRawProductFileDBType.findByName(fileTypeStr);
         List<FileResponse> files = fileService.getAllFilesByFileType(fileType).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
@@ -182,8 +187,7 @@ public class RawProductController {
                     dbFile.getName(),
                     fileDownloadUri,
                     dbFile.getType(),
-                    dbFile.getData().length, "",
-                    dbFile.getFileDBType().getName());
+                    dbFile.getData().length, "");
         }).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(files);
@@ -206,8 +210,7 @@ public class RawProductController {
                         dbFile.getName(),
                         fileDownloadUri,
                         dbFile.getType(),
-                        dbFile.getData().length, "",
-                        dbFile.getFileDBType().getName());
+                        dbFile.getData().length, "");
             }).collect(Collectors.toList());
 
             return ResponseEntity.status(HttpStatus.OK).body(files);
@@ -222,7 +225,7 @@ public class RawProductController {
     @ResponseBody
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
-        File fileDB = fileService.getFile(id);
+        RawProductFile fileDB = fileService.getFile(id);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
@@ -255,4 +258,5 @@ public class RawProductController {
                 new InputStreamResource(pdfFile), headers, HttpStatus.OK);
         return response;
     }
+
 }

@@ -9,7 +9,8 @@ import java.util.List;
  * @since 01.01.2021
  */
 public interface DonorService {
-    Boolean existsByCode(String code);
+
+    Donor findByCitizenNumber(String citizenshipNumber);
 
     Donor create(Donor donorRequest);
 
@@ -17,9 +18,9 @@ public interface DonorService {
 
     List<Donor> getAllDonors();
 
-    Donor delete(Long id);
+    boolean delete(Long id);
+
+    Donor findDonorById(Long id);
 
     Donor findDonorByCode(String code);
-
-    Donor findDonorById(long parseLong);
 }

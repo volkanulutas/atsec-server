@@ -5,11 +5,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
 import com.vem.atsecserver.data.barcodegeneration.ProductBarcode;
-import com.vem.atsecserver.entity.product.EnumProductType;
-import com.vem.atsecserver.entity.product.Product;
-import com.vem.atsecserver.entity.rawproduct.Donor;
-import com.vem.atsecserver.entity.sales.Customer;
-import com.vem.atsecserver.entity.sales.EnumCustomerType;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
@@ -96,7 +91,7 @@ public class SecBarcodeGeneratorService2 {
     }
 
     private static JasperReport getJasperReport() throws FileNotFoundException, JRException {
-        File template = ResourceUtils.getFile("classpath:reportProduct.jrxml");
+        File template = ResourceUtils.getFile("classpath:reportRawProduct.jrxml");
         return JasperCompileManager.compileReport(template.getAbsolutePath());
     }
 
