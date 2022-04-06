@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum EnumPackingProductSize {
     AT300100("AT300100","0,25 - 1 mm", "0,5 cc"),
-    AT300101("AT300101,","0,25 - 1 mm", "1 cc"),
+    AT300101("AT300101","0,25 - 1 mm", "1 cc"),
     AT300102("AT300102","0,25 - 1 mm", "2 cc"),
     AT300103("AT300104","0,25 - 1 mm", "3 cc"),
     AT300104("AT300104","0,25 - 1 mm", "4 cc"),

@@ -1,8 +1,7 @@
 package com.vem.atsecserver.entity.auth;
 
 import com.vem.atsecserver.entity.user.User;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,8 +11,11 @@ import java.util.UUID;
  * @author volkanulutas
  * @since 01.01.2021
  */
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 public class ConfirmationToken {
 	

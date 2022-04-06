@@ -7,13 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import sun.misc.ClassLoaderUtil;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
 
@@ -51,11 +55,10 @@ public class CityDistrictService {
 
     public void initialize() {
         try {
-            InputStream inputStream = this.getClass().getResourceAsStream("/city.xml");
-
+            String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("city.xml")).getPath();
+            InputStream inputStream = new FileInputStream(filePath);
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(inputStream);
             doc.getDocumentElement().normalize();
@@ -70,16 +73,12 @@ public class CityDistrictService {
                     List<District> districtList = new ArrayList<>();
                     for (int j = 0; j < element.getElementsByTagName("DISTRICT").getLength(); j++) {
                         String[] districts = element.getElementsByTagName("DISTRICT").item(j).getTextContent().split("\n");
-
                         District district = new District();
                         district.setDistrictName(districts[2]);
-
                         districtList.add(district);
                     }
-
                     CityDistrictService.add(cityName, districtList);
                 }
-
             }
         } catch (Exception ex) {
             log.error("Dosya okunamadi ", ex);

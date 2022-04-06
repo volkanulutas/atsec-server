@@ -1,7 +1,6 @@
 package com.vem.atsecserver.entity.sales;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -9,8 +8,11 @@ import javax.persistence.*;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "Customer")
 public class Customer {

@@ -6,6 +6,9 @@ import com.vem.atsecserver.repository.PackingProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,13 +24,15 @@ public class PackingProductServiceImpl implements PackingProductService {
 
     @Override
     public PackingProduct create(PackingProduct packingProduct) {
+        System.err.println("PackingProduct: " + packingProduct.toString());
         PackingProduct product = new PackingProduct();
         product.setDonor(packingProduct.getDonor());
         product.setPackingProductCode(packingProduct.getPackingProductCode());
-        product.setLot(packingProduct.getLot());
         product.setPartitionId(packingProduct.getPartitionId());
         product.setGamaDate(packingProduct.getGamaDate());
         product.setSize(packingProduct.getSize());
+        product.setLot(packingProduct.getLot());
+
         return packingProductRepository.save(product);
     }
 
@@ -53,7 +58,6 @@ public class PackingProductServiceImpl implements PackingProductService {
     public List<PackingProduct> getAllPackingProducts() {
         return packingProductRepository.findAll().stream().filter(e -> !e.isDeleted()).collect(Collectors.toList());
     }
-
 
     @Override
     public PackingProduct delete(Long id) {

@@ -2,8 +2,7 @@ package com.vem.atsecserver.entity.pool;
 
 import com.vem.atsecserver.entity.rawproduct.EnumPoolStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,8 +12,9 @@ import java.util.List;
  * @author volkanulutas
  * @since 12.12.2020
  */
-@NoArgsConstructor
-@Data
+@Getter
+@Setter
+@Builder
 @Entity(name = "Pool")
 @Table(name = "Pool")
 public class Pool implements Serializable {

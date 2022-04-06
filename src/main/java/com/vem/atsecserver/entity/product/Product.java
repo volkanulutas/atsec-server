@@ -4,8 +4,7 @@ import com.vem.atsecserver.entity.rawproduct.Donor;
 import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.entity.sales.Customer;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,8 +15,11 @@ import java.util.List;
  * @author volkanulutas
  * @since 25.12.2020
  */
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Entity(name = "Product")
 @Table(name = "Product")
 public class Product implements Serializable {

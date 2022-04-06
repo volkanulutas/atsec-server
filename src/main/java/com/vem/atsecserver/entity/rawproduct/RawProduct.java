@@ -2,6 +2,8 @@ package com.vem.atsecserver.entity.rawproduct;
 
 import com.vem.atsecserver.entity.report.rawproduct.RawProductFile;
 import com.vem.atsecserver.entity.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,8 @@ import java.util.List;
  * @since 12.12.2020
  */
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Table(name = "rawproduct")
 @Entity

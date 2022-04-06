@@ -3,7 +3,10 @@ package com.vem.atsecserver.converter;
 import com.vem.atsecserver.entity.packingproduct.PackingProduct;
 import com.vem.atsecserver.payload.packingproduct.PackingProductRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.text.ParseException;
 
 /**
  * @author volkanulutas
@@ -13,11 +16,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class PackingProductConverter {
 
+    @Autowired
+    private DonorConverter donorConverter;
 
-    public PackingProduct toEntity(PackingProductRequest source) {
+
+    public PackingProduct toEntity(PackingProductRequest source) throws ParseException {
         PackingProduct target = new PackingProduct();
         target.setPackingProductCode(source.getPackingProductCode());
-        target.setDonor(source.getDonor());
+        target.setDonor( donorConverter.toEntity(source.getDonor()));
         target.setId(source.getId());
         target.setGamaDate(source.getGamaDate());
         target.setSize(source.getSize());
@@ -27,10 +33,10 @@ public class PackingProductConverter {
        return target;
     }
 
-    public PackingProductRequest toRequest(PackingProduct source){
+    public PackingProductRequest toRequest(PackingProduct source) throws ParseException {
         PackingProductRequest target = new PackingProductRequest();
         target.setPackingProductCode(source.getPackingProductCode());
-        target.setDonor(source.getDonor());
+        target.setDonor(donorConverter.toRequest(source.getDonor()));
         target.setId(source.getId());
         target.setGamaDate(source.getGamaDate());
         target.setSize(source.getSize());

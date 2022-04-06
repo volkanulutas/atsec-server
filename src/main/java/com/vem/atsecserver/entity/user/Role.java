@@ -1,8 +1,6 @@
 package com.vem.atsecserver.entity.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -11,9 +9,11 @@ import java.util.Collection;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "Role")
 public class Role {

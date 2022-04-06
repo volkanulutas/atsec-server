@@ -1,11 +1,12 @@
 package com.vem.atsecserver.entity.city;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 @Data
 @Entity(name = "District")
 @Table(name = "District")

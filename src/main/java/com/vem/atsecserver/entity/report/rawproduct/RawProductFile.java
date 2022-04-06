@@ -1,13 +1,14 @@
 package com.vem.atsecserver.entity.report.rawproduct;
 
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "file")
 public class RawProductFile {

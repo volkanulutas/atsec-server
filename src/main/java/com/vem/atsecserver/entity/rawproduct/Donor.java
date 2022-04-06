@@ -1,7 +1,6 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,8 +10,11 @@ import java.util.List;
  * @author volkanulutas
  * @since 12.12.2020
  */
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity(name = "Donor")
 @Table(name = "Donor")
 public class Donor implements Serializable {

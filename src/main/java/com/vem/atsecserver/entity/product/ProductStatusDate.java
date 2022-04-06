@@ -1,12 +1,14 @@
 package com.vem.atsecserver.entity.product;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name = "ProductStatusDate")
 @Table(name = "ProductStatusDate")
 public class ProductStatusDate {

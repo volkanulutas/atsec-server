@@ -2,6 +2,7 @@ package com.vem.atsecserver.payload.packingproduct;
 
 import com.vem.atsecserver.entity.packingproduct.EnumPackingProductSize;
 import com.vem.atsecserver.entity.rawproduct.Donor;
+import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class PackingProductRequest {
 
     private long packingProductCode;
 
-    private Donor donor;
+    private DonorRequest donor;
 
     private int partitionId;
 

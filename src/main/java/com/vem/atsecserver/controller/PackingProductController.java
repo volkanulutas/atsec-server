@@ -71,7 +71,7 @@ public class PackingProductController {
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> update(/*@Valid*/ @RequestBody PackingProductRequest productRequest) {
+    public ResponseEntity<?> update(/*@Valid*/ @RequestBody PackingProductRequest productRequest) throws ParseException {
         System.err.println(productRequest.toString());
         System.err.println("update");
         PackingProduct product = packingProductService.update(packingProductConverter.toEntity(productRequest));

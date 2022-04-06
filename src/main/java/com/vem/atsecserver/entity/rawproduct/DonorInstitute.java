@@ -1,7 +1,6 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,8 +9,11 @@ import java.util.List;
  * @author volkanulutas
  * @since 25.12.2020
  */
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Builder
 @Entity(name = "Donor_Institute")
 @Table(name = "Donor_Institute")
 public class DonorInstitute {

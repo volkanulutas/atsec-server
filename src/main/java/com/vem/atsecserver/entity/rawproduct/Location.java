@@ -1,7 +1,6 @@
 package com.vem.atsecserver.entity.rawproduct;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -9,8 +8,11 @@ import javax.persistence.*;
  * @author volkanulutas
  * @since 02.01.2021
  */
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "Location")
 public class Location {
