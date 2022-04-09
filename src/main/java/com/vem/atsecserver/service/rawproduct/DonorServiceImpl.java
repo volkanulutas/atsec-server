@@ -70,9 +70,7 @@ public class DonorServiceImpl implements DonorService {
         if (donor != null) {
             donor.setDeleted(false);
             donor.setId(donorRequest.getId());
-            System.err.println("update");
             donor.setCode(donorRequest.getCode());
-            // donor.setRegisteredDate(System.currentTimeMillis());
             donor.setDonorInstitute(donor.getDonorInstitute());
             donor.setAddress(donorRequest.getAddress());
             donor.setBloodTestPdfFile(donorRequest.getBloodTestPdfFile());
@@ -93,7 +91,7 @@ public class DonorServiceImpl implements DonorService {
             donor.setTelephone(donorRequest.getTelephone());
             return donorRepository.save(donor);
         }
-        return null;
+        return donor;
     }
 
     @Override

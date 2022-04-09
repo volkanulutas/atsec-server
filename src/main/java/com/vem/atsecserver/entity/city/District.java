@@ -7,7 +7,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "District")
 @Table(name = "District")
 public class District {

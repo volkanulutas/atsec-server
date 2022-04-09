@@ -58,9 +58,6 @@ public class DonorConverter {
         } catch (Exception ex) {
             log.error("hata olustu setTissueNumber");
         }
-        if (request.getId() != null) {
-            entity.setId(request.getId());
-        }
         if (request.getProducts() != null) {
             entity.setRawProducts(request.getProducts());
         }

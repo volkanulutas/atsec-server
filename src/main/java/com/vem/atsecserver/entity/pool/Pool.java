@@ -15,6 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "Pool")
 @Table(name = "Pool")
 public class Pool implements Serializable {

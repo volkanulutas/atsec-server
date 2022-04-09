@@ -30,15 +30,18 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role create(Role roleRequest) {
-        Role role = new Role(roleRequest.getName(), roleRequest.getDefinition());
-
-        List<Permission> permissionList = new ArrayList<>();
-        for (Permission p :roleRequest.getPermissions()) {
-          permissionList.add(  permissionService.findPermissionByName(p.getName()));
+        Role byName = roleRepository.findByName(roleRequest.getName());
+        if (byName == null) {
+            Role role = new Role(roleRequest.getName(), roleRequest.getDefinition());
+            List<Permission> permissionList = new ArrayList<>();
+            for (Permission p : roleRequest.getPermissions()) {
+                permissionList.add(permissionService.findPermissionByName(p.getName()));
+            }
+            role.setPermissions(permissionList);
+            role.setDeleted(false);
+            return roleRepository.save(role);
         }
-        role.setPermissions(permissionList);
-        role.setDeleted(false);
-        return roleRepository.save(role);
+        return byName;
     }
 
     @Override

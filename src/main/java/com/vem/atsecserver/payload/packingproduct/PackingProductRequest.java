@@ -14,13 +14,13 @@ public class PackingProductRequest {
 
     private Long id;
 
-    private EnumPackingProductSize size; // TODO: Daha sonra sil productStatusDates de var bu bilgi
+    private String size;
+
+    private String packingProductCode;
 
     private String lot;
 
-    private long gamaDate;
-
-    private long packingProductCode;
+    private String date;
 
     private DonorRequest donor;
 

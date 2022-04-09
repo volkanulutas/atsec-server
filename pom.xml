@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.vemco.atsec</groupId>
 	<artifactId>atsec-server</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.8-SNAPSHOT</version>
 	<name>atsec-server</name>
 	<description>Sec Management Server</description>
 	<packaging>jar</packaging>
@@ -92,14 +92,11 @@
 			<artifactId>jasperreports</artifactId>
 			<version>6.16.0</version>
 		</dependency>
-
-
-                <dependency>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
@@ -120,9 +117,6 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
-
-
-
 	<build>
 		<plugins>
 			<plugin>

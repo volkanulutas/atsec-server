@@ -22,12 +22,16 @@ public class DonorInstituteServiceImpl implements DonorInstituteService {
 
     @Override
     public DonorInstitute create(DonorInstitute request) {
-        DonorInstitute donorInstitute = new DonorInstitute();
-        donorInstitute.setName(request.getName());
-        donorInstitute.setCode(request.getCode());
-        donorInstitute.setDeleted(false);
-        // donorInstitute.setRawProducts(); // TODO:
-        return donorInstituteRepository.save(donorInstitute);
+        DonorInstitute byCode = donorInstituteRepository.findByCode(request.getCode());
+        if (byCode == null) {
+            DonorInstitute donorInstitute = new DonorInstitute();
+            donorInstitute.setName(request.getName());
+            donorInstitute.setCode(request.getCode());
+            donorInstitute.setDeleted(false);
+            // donorInstitute.setRawProducts(); // TODO:
+            return donorInstituteRepository.save(donorInstitute);
+        }
+        return byCode;
     }
 
     @Override

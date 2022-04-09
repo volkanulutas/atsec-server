@@ -3,12 +3,11 @@ package com.vem.atsecserver.entity.product;
 import lombok.*;
 
 import javax.persistence.*;
-
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity(name = "ProductStatusDate")
 @Table(name = "ProductStatusDate")
 public class ProductStatusDate {

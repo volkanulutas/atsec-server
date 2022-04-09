@@ -18,8 +18,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "Product")
 @Table(name = "Product")
 public class Product implements Serializable {

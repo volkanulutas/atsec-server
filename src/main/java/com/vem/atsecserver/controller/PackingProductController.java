@@ -38,13 +38,13 @@ public class PackingProductController {
     private PackingProductConverter packingProductConverter;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PackingProductRequest> getProductById(@PathVariable("id") Long id) throws ParseException {
+    public ResponseEntity<PackingProductRequest> getPackingProductById(@PathVariable("id") Long id) throws ParseException {
         return ResponseEntity.ok(Optional.ofNullable(packingProductConverter.toRequest(packingProductService.findProductById(id)))
                 .orElseThrow(() -> new ResourceNotFoundException("Product not exists with id", id + "")));
     }
 
     @GetMapping(value = "/", produces = "application/json")
-    public List<PackingProductRequest> getAllProducts() throws ParseException {
+    public List<PackingProductRequest> getAllPackingProducts() throws ParseException {
         List<PackingProductRequest> result = new ArrayList<>();
         List<PackingProduct> all = packingProductService.getAllPackingProducts();
         for (PackingProduct product : all) {
@@ -60,11 +60,9 @@ public class PackingProductController {
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().path("/{productId}")
                     .buildAndExpand(product.getId()).toUri();
-            System.err.println("basari");
             return ResponseEntity.created(location)
                     .body(new ApiResponse(true, "Product created successfully."));
         } catch (Exception ex) {
-            System.err.println("Hata");
             log.error("Hata oluştu: ", ex);
         }
         return ResponseEntity.noContent().build();

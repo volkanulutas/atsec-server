@@ -34,8 +34,6 @@ import java.util.List;
 @Component
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
 
-    boolean alreadySetup = false;
-
     @Autowired
     private UserService userService;
 
@@ -72,9 +70,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
-        if (alreadySetup)
+        Role isExist = roleService.findRoleByName("ROLE_ADMIN");
+        if (isExist != null) {
             return;
+        }
 
         /*
         Permission readPrivilege
@@ -195,7 +194,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         donor2 = donorService.create(donor2);
 
         RawProduct raw1 = new RawProduct();
-        raw1.setId(System.currentTimeMillis());
+        // raw1.setId(System.currentTimeMillis());
         raw1.setDefinition("Açıklama");
         raw1.setStatus(EnumRawProductStatus.ACCEPTED);
         raw1.setInformation("Ek Bilgiler");
@@ -221,7 +220,6 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         customer.setDeleted(false);
         customer = customerService.create(customer);
 
-
         Product product = new Product();
         product.setDeleted(false);
         // product.setDonor(donor1);
@@ -233,19 +231,12 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         product.setType(EnumProductType.NONE);
         product.setType(EnumProductType.NONE);
         product.setDefinition("Ürün 1");
-        product.setStatus(EnumProductStatus.PRE_PROCESSING);
+        product.setStatus(EnumProductStatus.PRE_PACKING); // TODO: volkan PRE_PROCESSING olarak değiştir
         product.setInformation("Ürün Bilgisi");
         product.setDonor(donor1);
         product = productService.create(product);
 
         cityDistrictService.initialize();
-        /*
-        CityEntity entity = new CityEntity();
-        entity.setName("Ankara");
-        entity.setDistrictEntities(Arrays.asList(new DistrictEntity("Çankaya")));
-        cityDistrictService.save(entity);
-*/
-        alreadySetup = true;
     }
 
     @Transactional

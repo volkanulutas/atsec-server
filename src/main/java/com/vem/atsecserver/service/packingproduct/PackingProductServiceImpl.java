@@ -6,9 +6,6 @@ import com.vem.atsecserver.repository.PackingProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,12 +24,10 @@ public class PackingProductServiceImpl implements PackingProductService {
         System.err.println("PackingProduct: " + packingProduct.toString());
         PackingProduct product = new PackingProduct();
         product.setDonor(packingProduct.getDonor());
-        product.setPackingProductCode(packingProduct.getPackingProductCode());
         product.setPartitionId(packingProduct.getPartitionId());
-        product.setGamaDate(packingProduct.getGamaDate());
+        product.setDate(packingProduct.getDate());
         product.setSize(packingProduct.getSize());
         product.setLot(packingProduct.getLot());
-
         return packingProductRepository.save(product);
     }
 
@@ -44,10 +39,9 @@ public class PackingProductServiceImpl implements PackingProductService {
             PackingProduct product = new PackingProduct();
             product.setId(packingProduct.getId());
             product.setDonor(packingProduct.getDonor());
-            product.setPackingProductCode(packingProduct.getPackingProductCode());
             product.setLot(packingProduct.getLot());
             product.setPartitionId(packingProduct.getPartitionId());
-            product.setGamaDate(packingProduct.getGamaDate());
+            product.setDate(packingProduct.getDate());
             product.setSize(packingProduct.getSize());
             packingProductRepository.save(packingProduct);
         }

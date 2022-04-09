@@ -26,15 +26,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer create(Customer customerRequest) {
-        Customer customer = new Customer();
-        customer.setName(customerRequest.getName());
-        customer.setCustomerType(customerRequest.getCustomerType());
-        customer.setAddress(customerRequest.getAddress());
-        customer.setDefinition(customerRequest.getDefinition());
-        customer.setDeleted(false);
-        customer.setIdentityNumber(customerRequest.getIdentityNumber());
-        customer.setTelephone(customerRequest.getTelephone());
-        return customerRepository.save(customer);
+        Customer byIdentityNumber = customerRepository.findByIdentityNumber(customerRequest.getIdentityNumber());
+        if(byIdentityNumber == null){
+            Customer customer = new Customer();
+            customer.setName(customerRequest.getName());
+            customer.setCustomerType(customerRequest.getCustomerType());
+            customer.setAddress(customerRequest.getAddress());
+            customer.setDefinition(customerRequest.getDefinition());
+            customer.setDeleted(false);
+            customer.setIdentityNumber(customerRequest.getIdentityNumber());
+            customer.setTelephone(customerRequest.getTelephone());
+            return customerRepository.save(customer);
+        }
+        return byIdentityNumber;
     }
 
     @Override

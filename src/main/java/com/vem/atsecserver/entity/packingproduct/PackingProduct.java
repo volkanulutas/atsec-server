@@ -15,7 +15,6 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString // TODO: remove
 @Entity(name = "PackingProduct")
 @Table(name = "PackingProduct")
 public class PackingProduct implements Serializable {
@@ -25,16 +24,13 @@ public class PackingProduct implements Serializable {
     private Long id;
 
     @Column
-    private EnumPackingProductSize size; // TODO: Daha sonra sil productStatusDates de var bu bilgi
+    private EnumPackingProductSize size;
 
     @Column
     private String lot;
 
     @Column
-    private long gamaDate;
-
-    @Column
-    private long packingProductCode;
+    private long date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Donor donor;
