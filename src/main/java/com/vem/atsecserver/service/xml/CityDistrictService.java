@@ -5,8 +5,10 @@ import com.vem.atsecserver.entity.city.City;
 import com.vem.atsecserver.repository.city.CityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,8 +57,11 @@ public class CityDistrictService {
 
     public void initialize() {
         try {
-            String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("city.xml")).getPath();
-            InputStream inputStream = new FileInputStream(filePath);
+
+            String data = "";
+            ClassPathResource cpr = new ClassPathResource("city.xml");
+            // String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("city.xml")).getPath();
+            InputStream inputStream = cpr.getInputStream();
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
