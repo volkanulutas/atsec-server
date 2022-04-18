@@ -95,7 +95,7 @@ public class ProductController {
         productBarcode.setDonorId(product.getDonor().getCode());
         productBarcode.setDefinition(product.getDefinition());
         productBarcode.setSecCode(product.getSecCode());
-        productBarcode.setId(product.getId());
+        // productBarcode.setId(product.getId());
         try {
             barcode = secBarcodeGeneratorService.createBarcode(productBarcode);
         } catch (Exception ex) {

@@ -64,8 +64,8 @@ public class RawProductConverter {
         if (request.getStatusName() != null) {
             entity.setStatus(EnumRawProductStatus.findByName(request.getStatusName()));
         }
-        if (request.getResponsible() != null) {
-            entity.setResponsible(request.getResponsible());
+        if (request.getResponsibleSigner() != null) {
+            entity.setResponsibleSigner(request.getResponsibleSigner());
         }
         if (request.getDeleted() != null) {
             entity.setDeleted(request.getDeleted());
@@ -95,8 +95,8 @@ public class RawProductConverter {
         if (entity.getTissueType() != null) {
             request.setTissueType(tissueConverter.toRequest(entity.getTissueType()));
         }
-        if (entity.getResponsible() != null) {
-            request.setResponsible(entity.getResponsible());
+        if (entity.getResponsibleSigner() != null) {
+            request.setResponsibleSigner(entity.getResponsibleSigner());
         }
         if (entity.getTissueCarryCase() != null) {
             request.setTissueCarryCase(entity.getTissueCarryCase());

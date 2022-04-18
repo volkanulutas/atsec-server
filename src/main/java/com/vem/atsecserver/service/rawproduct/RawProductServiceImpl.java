@@ -29,7 +29,7 @@ public class RawProductServiceImpl implements RawProductService {
         entity.setStatus(parameter.getStatus());
         entity.setTissueType(parameter.getTissueType());
         entity.setDonor(parameter.getDonor());
-        entity.setResponsible(parameter.getResponsible());
+        entity.setResponsibleSigner(parameter.getResponsibleSigner());
         entity.setFiles(parameter.getFiles());
         // entity.setCheckedOutBy(parameter.getCheckedOutBy()); // TODO:
         entity.setDefinition(parameter.getDefinition());

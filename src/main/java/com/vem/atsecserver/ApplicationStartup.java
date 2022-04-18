@@ -70,6 +70,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
+        cityDistrictService.initialize();
         Role isExist = roleService.findRoleByName("ROLE_ADMIN");
         if (isExist != null) {
             return;
@@ -201,7 +203,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         raw1.setDoctorName("doctor1");
         raw1.setLocation(locationNormal_1);
         raw1.setDoctorName("Orhan Yıldız");
-        raw1.setResponsible("İmzalayıcı");
+        raw1.setResponsibleSigner("İmzalayıcı");
         raw1.setTissueType(tissueType1);
         raw1.setArrivalDate(System.currentTimeMillis());
         raw1.setIssueTissueDate(System.currentTimeMillis());
@@ -231,12 +233,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         product.setType(EnumProductType.NONE);
         product.setType(EnumProductType.NONE);
         product.setDefinition("Ürün 1");
-        product.setStatus(EnumProductStatus.PRE_PACKING); // TODO: volkan PRE_PROCESSING olarak değiştir
+        product.setStatus(EnumProductStatus.PRE_PROCESSING);
         product.setInformation("Ürün Bilgisi");
         product.setDonor(donor1);
         product = productService.create(product);
-
-        cityDistrictService.initialize();
     }
 
     @Transactional

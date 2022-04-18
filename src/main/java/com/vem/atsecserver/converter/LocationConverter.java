@@ -18,9 +18,6 @@ public class LocationConverter {
             return null;
         }
         Location entity = new Location();
-        if (request.getId() != null) {
-            entity.setId(request.getId());
-        }
         entity.setDeleted(request.getDeleted());
         entity.setName(request.getName());
         entity.setDefinition(request.getDefinition());

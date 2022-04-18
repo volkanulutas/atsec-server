@@ -27,7 +27,7 @@ public class RawProduct implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Donor donor;
 
     @OneToOne(targetEntity = TissueType.class, fetch = FetchType.EAGER)
@@ -38,13 +38,14 @@ public class RawProduct implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private DonorInstitute donorInstitute;
     */
+
     @Column
     private long issueTissueDate; // Doku çıkarım tarihi
 
     @Column
     private long arrivalDate; // Merkeze geliş tarihi
 
-    @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -59,8 +60,8 @@ public class RawProduct implements Serializable {
     private EnumRawProductStatus status;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="file_id")
-    private List <RawProductFile> files;
+    @JoinColumn(name = "file_id")
+    private List<RawProductFile> files;
 
     @Column
     private String definition;
@@ -69,7 +70,7 @@ public class RawProduct implements Serializable {
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
     @Column
-    private String responsible;
+    private String responsibleSigner;
 
     @Column
     private Boolean tissueCarryCase;

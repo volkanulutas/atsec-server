@@ -69,7 +69,6 @@ public class DonorServiceImpl implements DonorService {
         Donor donor = findByCitizenNumber(donorRequest.getCitizenshipNumber());
         if (donor != null) {
             donor.setDeleted(false);
-            donor.setId(donorRequest.getId());
             donor.setCode(donorRequest.getCode());
             donor.setDonorInstitute(donor.getDonorInstitute());
             donor.setAddress(donorRequest.getAddress());
@@ -88,7 +87,6 @@ public class DonorServiceImpl implements DonorService {
             if (donor.getRawProducts() != null) {
                 donor.setRawProducts(donorRequest.getRawProducts());
             }
-            donor.setTelephone(donorRequest.getTelephone());
             return donorRepository.save(donor);
         }
         return donor;

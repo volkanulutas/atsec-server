@@ -104,28 +104,19 @@ public class RawProductController {
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public RawProductRequest create(@RequestBody RawProductRequest productRequest) throws ParseException {
-        System.out.println("---------------------");
-        System.out.println("request: " + productRequest);
+        System.err.println("create-rawproduct");
         RawProduct entity = rawProductConverter.toEntity(productRequest);
-        System.out.println("converter: " + entity);
         entity = rawProductService.create(entity);
-        System.out.println("entity: " + entity);
         RawProductRequest rawProductRequest = rawProductConverter.toRequest(entity);
-        System.out.println(rawProductRequest.getId());
-        System.out.println("---------------------");
         return rawProductRequest;
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public RawProductRequest update(/*@Valid*/ @RequestBody RawProductRequest productRequest) throws ParseException {
-        System.out.println("---------------------");
-        System.out.println("request: " + productRequest.toString());
+        System.err.println("update-rawproduct");
         RawProduct rawProductRequest = rawProductConverter.toEntity(productRequest);
-        System.out.println("converter: " + rawProductRequest);
         RawProduct product = rawProductService.update(rawProductRequest);
-        System.out.println("entity: " + product);
         RawProductRequest rawProductRequest1 = rawProductConverter.toRequest(product);
-        System.out.println("---------------------");
         return rawProductRequest1;
     }
 

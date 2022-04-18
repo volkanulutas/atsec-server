@@ -36,7 +36,7 @@ public class RawProductRequest implements Serializable {
 
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
-    private String responsible;
+    private String responsibleSigner;
 
     private Boolean deleted;
 

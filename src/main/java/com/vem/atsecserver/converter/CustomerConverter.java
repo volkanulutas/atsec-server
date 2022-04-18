@@ -27,9 +27,6 @@ public class CustomerConverter {
         entity.setCustomerType(EnumCustomerType.findByName(request.getCustomerType())); // Bireysel, Firma etc.
         entity.setDefinition(request.getDefinition());
         entity.setAddress(request.getAddress());
-        if (request.getId() != null) {
-            entity.setId(request.getId());
-        }
         return entity;
     }
 

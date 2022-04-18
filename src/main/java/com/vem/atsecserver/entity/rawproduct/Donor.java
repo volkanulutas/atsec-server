@@ -22,10 +22,10 @@ public class Donor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = false, length = 13)
+    @Column(length = 13)
     private String code; // Filled by DonorCode.class
 
-    @Column(unique = false, length = 11)
+    @Column(length = 11)
     private String citizenshipNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)

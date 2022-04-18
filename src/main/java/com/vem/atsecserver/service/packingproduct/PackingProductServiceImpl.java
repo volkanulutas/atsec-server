@@ -37,7 +37,7 @@ public class PackingProductServiceImpl implements PackingProductService {
         PackingProduct packingProduct = byId.get();
         if (byId.isPresent()) {
             PackingProduct product = new PackingProduct();
-            product.setId(packingProduct.getId());
+            // product.setId(packingProduct.getId());
             product.setDonor(packingProduct.getDonor());
             product.setLot(packingProduct.getLot());
             product.setPartitionId(packingProduct.getPartitionId());
