@@ -45,7 +45,7 @@ public class RawProduct implements Serializable {
     @Column
     private long arrivalDate; // Merkeze geliş tarihi
 
-    @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Location.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 

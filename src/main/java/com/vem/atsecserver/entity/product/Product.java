@@ -73,7 +73,7 @@ public class Product implements Serializable {
     @OneToMany(fetch = FetchType.LAZY)
     private Collection<ProductFile> files;
 
-    @OneToOne(targetEntity = Location.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = Location.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
