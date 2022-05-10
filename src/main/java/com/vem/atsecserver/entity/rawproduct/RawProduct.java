@@ -34,10 +34,12 @@ public class RawProduct implements Serializable {
     @JoinColumn(name = "tissue_type_id")
     private TissueType tissueType;
 
-    /*
-    @ManyToOne(fetch = FetchType.EAGER)
-    private DonorInstitute donorInstitute;
-    */
+    @OneToOne(targetEntity = Location.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @Column
+    private EnumRawProductStatus status;
 
     @Column
     private long issueTissueDate; // Doku çıkarım tarihi
@@ -45,19 +47,12 @@ public class RawProduct implements Serializable {
     @Column
     private long arrivalDate; // Merkeze geliş tarihi
 
-    @OneToOne(targetEntity = Location.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
-    private Location location;
-
     @Column
     private String doctorName;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "secuser_id")
     private User checkedOutBy;
-
-    @Column
-    private EnumRawProductStatus status;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")

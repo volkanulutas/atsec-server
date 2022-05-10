@@ -1,6 +1,7 @@
 package com.vem.atsecserver.controller;
 
 import com.vem.atsecserver.converter.RawProductConverter;
+import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.entity.report.rawproduct.EnumRawProductFileDBType;
@@ -11,6 +12,7 @@ import com.vem.atsecserver.payload.file.FileResponse;
 import com.vem.atsecserver.payload.rawproduct.RawProductRequest;
 import com.vem.atsecserver.service.FileService;
 import com.vem.atsecserver.service.barcodegeneration.SecBarcodeGeneratorService;
+import com.vem.atsecserver.service.product.ProductService;
 import com.vem.atsecserver.service.rawproduct.DonorInstituteService;
 import com.vem.atsecserver.service.rawproduct.DonorService;
 import com.vem.atsecserver.service.rawproduct.RawProductService;
@@ -115,8 +117,8 @@ public class RawProductController {
     public RawProductRequest update(/*@Valid*/ @RequestBody RawProductRequest productRequest) throws ParseException {
         System.err.println("update-rawproduct");
         RawProduct rawProductRequest = rawProductConverter.toEntity(productRequest);
-        RawProduct product = rawProductService.update(rawProductRequest);
-        RawProductRequest rawProductRequest1 = rawProductConverter.toRequest(product);
+        RawProduct rawProduct = rawProductService.update(rawProductRequest);
+        RawProductRequest rawProductRequest1 = rawProductConverter.toRequest(rawProduct);
         return rawProductRequest1;
     }
 

@@ -28,6 +28,9 @@ public class Product implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Donor donor;
+
     @Column
     private EnumProductStatus status; // TODO: Daha sonra sil productStatusDates de var bu bilgi
 
@@ -64,8 +67,6 @@ public class Product implements Serializable {
     // @Column(unique = true) // TODO:
     private String secCode;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Donor donor;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;

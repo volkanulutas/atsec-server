@@ -1,8 +1,11 @@
 package com.vem.atsecserver.service.rawproduct;
 
+import com.vem.atsecserver.entity.product.EnumProductStatus;
+import com.vem.atsecserver.entity.product.Product;
 import com.vem.atsecserver.entity.rawproduct.EnumRawProductStatus;
 import com.vem.atsecserver.entity.rawproduct.RawProduct;
 import com.vem.atsecserver.repository.rawproduct.RawProductRepository;
+import com.vem.atsecserver.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ import java.util.stream.Collectors;
 public class RawProductServiceImpl implements RawProductService {
     @Autowired
     private RawProductRepository rawProductRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public RawProduct create(RawProduct parameter) {
@@ -47,6 +53,7 @@ public class RawProductServiceImpl implements RawProductService {
     @Override
     public RawProduct update(RawProduct parameter) {
         Optional<RawProduct> byId = rawProductRepository.findById(parameter.getId());
+        RawProduct rawProduct = null;
         if (byId.isPresent()) {
             RawProduct entity = byId.get();
             entity.setIssueTissueDate(parameter.getIssueTissueDate());
@@ -62,9 +69,17 @@ public class RawProductServiceImpl implements RawProductService {
             entity.setSterialBag(parameter.getSterialBag());
             entity.setDataLogger(parameter.getDataLogger());
             entity.setTemperature(parameter.getTemperature());
-            return rawProductRepository.save(entity);
+            rawProduct = rawProductRepository.save(entity);
+
+
+            if (EnumRawProductStatus.PRE_PROCESSING.equals(rawProduct.getStatus())) {
+                Product productEntity = new Product();
+                productEntity.setDonor(rawProduct.getDonor());
+                productEntity.setStatus(EnumProductStatus.PRE_PROCESSING);
+                productService.create(productEntity);
+            }
         }
-        return null;
+        return rawProduct;
     }
 
     @Override
@@ -74,7 +89,7 @@ public class RawProductServiceImpl implements RawProductService {
                         && (e.getStatus() != null && !e.getStatus().equals(EnumRawProductStatus.PRE_PROCESSING))
                         && (e.getStatus() != null && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE))
                         && (e.getStatus() != null && !e.getStatus().equals(EnumRawProductStatus.MEDICAL_WASTE)))
-                        .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     @Override
