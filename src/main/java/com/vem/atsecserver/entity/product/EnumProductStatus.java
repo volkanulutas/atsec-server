@@ -11,7 +11,7 @@ public enum EnumProductStatus {
 
     FREEZING_1_ACCEPTED("Dondurma 1 Sonrası"),
 
-    COURSE_GRINDING_ACCEPTED("Öğütme (Course) Sonrası"),
+    // COURSE_GRINDING_ACCEPTED("Öğütme (Course) Sonrası"), // silinecek
 
     FREEZING_2_ACCEPTED("Dondurma 2 Sonrası"),
 

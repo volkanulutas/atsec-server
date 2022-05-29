@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author volkanulutas
@@ -54,14 +55,22 @@ public class PackingProductController {
     }
 
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> create(/*@Valid*/ @RequestBody PackingProductRequest productRequest) {
+    public ResponseEntity<?> create(/*@Valid*/ @RequestBody List<PackingProductRequest> productRequestList) {
+        System.out.println("Packing Product Create");
         try {
-            PackingProduct product = packingProductService.create(packingProductConverter.toEntity(productRequest));
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/{productId}")
-                    .buildAndExpand(product.getId()).toUri();
-            return ResponseEntity.created(location)
-                    .body(new ApiResponse(true, "Product created successfully."));
+            List<PackingProductRequest> result = new ArrayList<>();
+            for (PackingProductRequest request : productRequestList) {
+                for (int i = 0; i < request.getPackingProductItem().length(); i++) {
+                    PackingProduct packingProduct = packingProductConverter.toEntity(request);
+
+                    UUID uuid = UUID.randomUUID();
+
+                    packingProduct.setSerialNumber(packingProduct.getDonor().getCode() + "_" + uuid.toString());
+                    PackingProduct product = packingProductService.create(packingProduct);
+                    result.add(packingProductConverter.toRequest(product));
+                }
+            }
+            return ResponseEntity.ok(result);
         } catch (Exception ex) {
             log.error("Hata oluştu: ", ex);
         }
@@ -69,16 +78,19 @@ public class PackingProductController {
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<?> update(/*@Valid*/ @RequestBody PackingProductRequest productRequest) throws ParseException {
-        System.err.println(productRequest.toString());
-        System.err.println("update");
-        PackingProduct product = packingProductService.update(packingProductConverter.toEntity(productRequest));
-        System.err.println(product.toString());
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{productId}")
-                .buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Product updated successfully."));
+    public ResponseEntity<?> update(/*@Valid*/ @RequestBody List<PackingProductRequest> productRequestList) throws ParseException {
+        System.out.println("Packing Product Update");
+        try {
+            List<PackingProductRequest> result = new ArrayList<>();
+            for (PackingProductRequest request : productRequestList) {
+                PackingProduct product = packingProductService.create(packingProductConverter.toEntity(request));
+                result.add(packingProductConverter.toRequest(product));
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception ex) {
+            log.error("Hata oluştu: ", ex);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{id}")
@@ -89,7 +101,7 @@ public class PackingProductController {
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Product deleted successfully."));
+                .body(new ApiResponse(true, "Packing Product deleted successfully."));
     }
 
     @GetMapping(value = "/packingproductsize", produces = "application/json")

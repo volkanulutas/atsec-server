@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -14,17 +16,17 @@ public class PackingProductRequest {
 
     private Long id;
 
-    private String size;
+    private String packingProductItem;
 
-    private String packingProductCode;
+    private String packingProduct;
+
+    private String number;
+
+    private DonorRequest donor;
 
     private String lot;
 
     private String date;
-
-    private DonorRequest donor;
-
-    private int partitionId;
 
     private boolean deleted;
 }

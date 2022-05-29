@@ -1,5 +1,6 @@
 package com.vem.atsecserver.payload.product;
 
+import com.vem.atsecserver.entity.product.EnumProductStatus;
 import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import com.vem.atsecserver.payload.sales.CustomerRequest;

@@ -129,6 +129,8 @@ public class ProductController {
         System.err.println(productRequest.toString());
         System.err.println("update");
         Product product = productService.update(productConverter.toEntity(productRequest));
+
+
         System.err.println(product.toString());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{productId}")

@@ -3,6 +3,7 @@ package com.vem.atsecserver.service.packingproduct;
 import com.vem.atsecserver.converter.PackingProductConverter;
 import com.vem.atsecserver.entity.packingproduct.PackingProduct;
 import com.vem.atsecserver.repository.PackingProductRepository;
+import com.vem.atsecserver.service.rawproduct.DonorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,18 @@ public class PackingProductServiceImpl implements PackingProductService {
     @Autowired
     private PackingProductConverter packingProductConverter;
 
+    @Autowired
+    private DonorService donorService;
+
     @Override
     public PackingProduct create(PackingProduct packingProduct) {
         System.err.println("PackingProduct: " + packingProduct.toString());
         PackingProduct product = new PackingProduct();
-        product.setDonor(packingProduct.getDonor());
-        product.setPartitionId(packingProduct.getPartitionId());
+        product.setDonor(donorService.findDonorByCode(packingProduct.getDonor().getCode()));
         product.setDate(packingProduct.getDate());
-        product.setSize(packingProduct.getSize());
+        product.setSerialNumber(packingProduct.getSerialNumber());
+        product.setPackingProduct(packingProduct.getPackingProduct());
+        product.setPackingProductItem(packingProduct.getPackingProductItem());
         product.setLot(packingProduct.getLot());
         return packingProductRepository.save(product);
     }
@@ -40,9 +45,10 @@ public class PackingProductServiceImpl implements PackingProductService {
             // product.setId(packingProduct.getId());
             product.setDonor(packingProduct.getDonor());
             product.setLot(packingProduct.getLot());
-            product.setPartitionId(packingProduct.getPartitionId());
+            product.setSerialNumber(packingProduct.getSerialNumber());
             product.setDate(packingProduct.getDate());
-            product.setSize(packingProduct.getSize());
+            product.setPackingProduct(packingProduct.getPackingProduct());
+            product.setPackingProductItem(packingProduct.getPackingProductItem());
             packingProductRepository.save(packingProduct);
         }
         return null;

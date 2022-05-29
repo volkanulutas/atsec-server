@@ -1,9 +1,7 @@
 package com.vem.atsecserver;
 
-import com.vem.atsecserver.entity.product.EnumProductPreProcessingType;
-import com.vem.atsecserver.entity.product.EnumProductStatus;
-import com.vem.atsecserver.entity.product.EnumProductType;
-import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.packingproduct.EnumPackingProductSize;
+import com.vem.atsecserver.entity.product.*;
 import com.vem.atsecserver.entity.rawproduct.*;
 import com.vem.atsecserver.entity.sales.Customer;
 import com.vem.atsecserver.entity.sales.EnumCustomerType;
@@ -20,9 +18,11 @@ import com.vem.atsecserver.service.xml.CityDistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;

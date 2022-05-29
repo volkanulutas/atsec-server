@@ -1,5 +1,6 @@
 package com.vem.atsecserver.converter;
 
+import com.vem.atsecserver.entity.packingproduct.EnumPackingProductSize;
 import com.vem.atsecserver.entity.product.*;
 import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.entity.sales.Customer;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -113,7 +115,6 @@ public class ProductConverter {
             System.err.println("Hata cevirme");
         }
         return null;
-
     }
 
     public ProductRequest toRequest(Product entity) throws ParseException {

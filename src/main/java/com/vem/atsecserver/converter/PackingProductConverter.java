@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author volkanulutas
@@ -28,9 +30,9 @@ public class PackingProductConverter {
         target.setDonor(donorConverter.toEntity(source.getDonor()));
         target.setId(source.getId());
         target.setDate(Long.parseLong(source.getDate()));
-        target.setSize(EnumPackingProductSize.valueOf(source.getSize()));
+        target.setPackingProduct(EnumPackingProductSize.valueOf(source.getPackingProduct()));
+        target.setPackingProductItem(Integer.parseInt(source.getPackingProductItem()));
         target.setLot(source.getLot());
-        target.setPartitionId(source.getPartitionId());
         target.setDeleted(source.isDeleted());
         return target;
     }
@@ -43,10 +45,9 @@ public class PackingProductConverter {
         target.setId(source.getId());
         String dateText = simpleDateFormat.format(source.getDate());
         target.setDate(dateText);
-        target.setSize(source.getSize().getSize());
-        target.setPackingProductCode(source.getSize().getCode());
+        target.setPackingProduct(source.getPackingProduct().getCode());
+        target.setPackingProductItem(source.getPackingProductItem() + "");
         target.setLot(source.getLot());
-        target.setPartitionId(source.getPartitionId());
         target.setDeleted(source.isDeleted());
         return target;
     }

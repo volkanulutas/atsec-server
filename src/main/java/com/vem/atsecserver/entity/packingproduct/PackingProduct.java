@@ -23,8 +23,14 @@ public class PackingProduct implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(unique = true)
+    private String serialNumber;
+
     @Column
-    private EnumPackingProductSize size;
+    private EnumPackingProductSize packingProduct;
+
+    @Column
+    private int packingProductItem;
 
     @Column
     private String lot;
@@ -34,9 +40,6 @@ public class PackingProduct implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Donor donor;
-
-    @Column
-    private int partitionId;
 
     @Column
     private boolean deleted;
