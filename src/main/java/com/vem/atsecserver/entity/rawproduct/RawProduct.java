@@ -2,10 +2,7 @@ package com.vem.atsecserver.entity.rawproduct;
 
 import com.vem.atsecserver.entity.report.rawproduct.RawProductFile;
 import com.vem.atsecserver.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +18,7 @@ import java.util.List;
 @Data
 @Table(name = "rawproduct")
 @Entity
+@ToString
 public class RawProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,7 +63,8 @@ public class RawProduct implements Serializable {
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
     @Column
-    private String responsibleSigner;
+    private String signerInfo
+            ;
 
     @Column
     private Boolean tissueCarryCase;

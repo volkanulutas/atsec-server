@@ -10,11 +10,11 @@ import java.util.List;
 public enum EnumWashingType {
     MK_SOLUTION("Defatting İçin Solüsyon Hazırlama"),
     SONICATOR_1("Sonicatör 35 Derece 1.Saat"),
-    MK_WASHING_1("Solüsyonla Yıkama 1"),
+    MK_WASHING_1("Ultrasonik Banyo 1"),
     SONICATOR_2("Sonicatör 35 Derece 2.Saat"),
-    MK_WASHING_2("Solüsyonla Yıkama 2"),
+    MK_WASHING_2("Ultrasonik Banyo 2"),
     SONICATOR_3("Sonicatör 35 Derece 3.Saat"),
-    MK_WASHING_3("Solüsyonla Yıkama 3"),
+    MK_WASHING_3("Ultrasonik Banyo 3"),
     IZOTONIC_WASHING_1("İzotonik Yıkama 1"),
     IZOTONIC_WASHING_2("İzotonik Yıkama 2"),
     IZOTONIC_WASHING_3("İzotonik Yıkama 3");

@@ -1,7 +1,9 @@
 package com.vem.atsecserver.service.product;
 
 import com.vem.atsecserver.entity.product.EnumProductStatus;
+import com.vem.atsecserver.entity.product.PreProcessingType;
 import com.vem.atsecserver.entity.product.Product;
+import com.vem.atsecserver.entity.product.ProductStatusDate;
 import com.vem.atsecserver.entity.report.product.EnumProductFileDBType;
 import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.repository.product.ProductRepository;
@@ -37,11 +39,17 @@ public class ProductServiceImpl implements ProductService {
         product.setSecCode(productPar.getSecCode());
         product.setStatus(productPar.getStatus());
         product.setType(productPar.getType());
-        product.setPreProcessingType(productPar.getPreProcessingType());
+        for (PreProcessingType pre : productPar.getPreProcessingTypes()) {
+            product.addPreProcessingType(pre);
+        }
         product.setDonor(productPar.getDonor());
         product.setCustomer(productPar.getCustomer());
         product.setDeleted(false);
-        product.setProductStatusDates(productPar.getProductStatusDates());
+        if (productPar.getProductStatusDates() != null) {
+            for (ProductStatusDate status : productPar.getProductStatusDates()) {
+                product.addProductStatusDates(status);
+            }
+        }
         byte[] file = null;
         try {
             file = productReportService.exportReport(product);
@@ -72,11 +80,25 @@ public class ProductServiceImpl implements ProductService {
             product.setSecCode(productPar.getSecCode());
             product.setStatus(productPar.getStatus());
             product.setType(productPar.getType());
-            product.setPreProcessingType(productPar.getPreProcessingType());
+            if(productPar.getPreProcessingTypes() != null){
+                if(product.getPreProcessingTypes() != null){
+                    product.getPreProcessingTypes().clear();
+                }
+                for (PreProcessingType pre : productPar.getPreProcessingTypes()) {
+                    product.addPreProcessingType(pre);
+                }
+            }
             product.setDonor(product.getDonor());
             product.setCustomer(productPar.getCustomer());
             product.setDeleted(false);
-            product.setProductStatusDates(productPar.getProductStatusDates());
+            if (productPar.getProductStatusDates() != null) {
+                if (product.getProductStatusDates() != null) {
+                    product.getProductStatusDates().clear();
+                }
+                for (ProductStatusDate statusDate : productPar.getProductStatusDates()) {
+                    product.addProductStatusDates(statusDate);
+                }
+            }
             product.setLocation(productPar.getLocation());
             return productRepository.save(product);
         }

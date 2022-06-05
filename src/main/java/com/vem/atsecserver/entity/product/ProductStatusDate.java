@@ -25,6 +25,7 @@ public class ProductStatusDate {
     @Column
     private long processDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="product_id", nullable=false)
     private Product product;
 }

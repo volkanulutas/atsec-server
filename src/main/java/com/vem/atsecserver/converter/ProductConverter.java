@@ -4,6 +4,7 @@ import com.vem.atsecserver.entity.packingproduct.EnumPackingProductSize;
 import com.vem.atsecserver.entity.product.*;
 import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.entity.sales.Customer;
+import com.vem.atsecserver.payload.product.PreProcessingTypeRequest;
 import com.vem.atsecserver.payload.product.ProductFileRequest;
 import com.vem.atsecserver.payload.product.ProductRequest;
 import com.vem.atsecserver.payload.product.ProductStatusDateRequest;
@@ -46,6 +47,9 @@ public class ProductConverter {
     @Autowired
     private LocationConverter locationConverter;
 
+    @Autowired
+    private PreProcessingTypeConverter preProcessingTypeConverter;
+
     public Product toEntity(ProductRequest request) {
         if (request == null) {
             log.error("Error is occurred while converting product.");
@@ -72,16 +76,17 @@ public class ProductConverter {
                 }
             }
             product.setGranulationType(granulationTypes);
-            product.setId(request.getId());
             product.setType(EnumProductType.findByName(request.getType()));
             product.setStatus(EnumProductStatus.findByName(request.getStatus()));
-            List<EnumProductPreProcessingType> preProcessingTypeList = product.getPreProcessingType();
-            if (preProcessingTypeList == null) {
-                preProcessingTypeList = new ArrayList<>();
+            List<PreProcessingTypeRequest> preProcessingTypes = request.getPreProcessingTypes();
+            if (preProcessingTypes != null) {
+                for (PreProcessingTypeRequest preProcessingType : preProcessingTypes) {
+                    product.addPreProcessingType(preProcessingTypeConverter.toEntity(preProcessingType));
+                }
             }
-            if (request.getPreProcessingType() != null) {
-                for (String preProcessingStr : request.getPreProcessingType()) {
-                    preProcessingTypeList.add(EnumProductPreProcessingType.findByName(preProcessingStr));
+            if(request.getProductStatusDateRequests() != null){
+                for (ProductStatusDateRequest data : request.getProductStatusDateRequests()) {
+                    product.addProductStatusDates(productStatusDateConverter.toEntity(data));
                 }
             }
             product.setSecCode(request.getSecCode());
@@ -101,15 +106,7 @@ public class ProductConverter {
                 files.add(productFileConverter.toEntity(fileRequest));
             }
             product.setFiles(files);
-
-            List<ProductStatusDate> productStatusDates = new ArrayList<>();
-            for (ProductStatusDateRequest data : request.getProductStatusDateRequests()) {
-                productStatusDates.add(productStatusDateConverter.toEntity(data));
-            }
-
             product.setLocation(locationConverter.toEntity(request.getLocation()));
-
-            product.setProductStatusDates(productStatusDates);
             return product;
         } catch (Exception ex) {
             System.err.println("Hata cevirme");
@@ -150,11 +147,17 @@ public class ProductConverter {
         }
         request.setSecCode(entity.getSecCode());
 
-        List<String> preProcessingList = new ArrayList<>();
-        for (EnumProductPreProcessingType preProcessingType : entity.getPreProcessingType()) {
-            preProcessingList.add(preProcessingType.getName());
+
+        List<PreProcessingType> preProcessingTypes = entity.getPreProcessingTypes();
+        List<PreProcessingTypeRequest> targetPreProcessingType = new ArrayList<>();
+        if (preProcessingTypes != null) {
+            for (PreProcessingType pre : preProcessingTypes) {
+                if(pre.getPreProcessingType() != null) {
+                    targetPreProcessingType.add(preProcessingTypeConverter.toRequest(pre));
+                }
+            }
         }
-        request.setPreProcessingType(preProcessingList);
+        request.setPreProcessingTypes(targetPreProcessingType);
         request.setDefinition(entity.getDefinition());
         request.setInformation(entity.getInformation());
         request.setDeleted(entity.isDeleted());

@@ -127,11 +127,8 @@ public class ProductController {
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> update(/*@Valid*/ @RequestBody ProductRequest productRequest) {
         System.err.println(productRequest.toString());
-        System.err.println("update");
-        Product product = productService.update(productConverter.toEntity(productRequest));
-
-
-        System.err.println(product.toString());
+        Product productPar = productConverter.toEntity(productRequest);
+        Product product = productService.update(productPar);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{productId}")
                 .buildAndExpand(product.getId()).toUri();

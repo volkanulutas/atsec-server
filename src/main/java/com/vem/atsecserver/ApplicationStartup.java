@@ -1,6 +1,5 @@
 package com.vem.atsecserver;
 
-import com.vem.atsecserver.entity.packingproduct.EnumPackingProductSize;
 import com.vem.atsecserver.entity.product.*;
 import com.vem.atsecserver.entity.rawproduct.*;
 import com.vem.atsecserver.entity.sales.Customer;
@@ -18,11 +17,9 @@ import com.vem.atsecserver.service.xml.CityDistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -203,7 +200,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         raw1.setDoctorName("doctor1");
         raw1.setLocation(locationNormal_1);
         raw1.setDoctorName("Orhan Yıldız");
-        raw1.setResponsibleSigner("İmzalayıcı");
+        raw1.setSignerInfo("İmzalayıcı");
         raw1.setTissueType(tissueType1);
         raw1.setArrivalDate(System.currentTimeMillis());
         raw1.setIssueTissueDate(System.currentTimeMillis());
@@ -224,10 +221,11 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
         Product product = new Product();
         product.setDeleted(false);
-        // product.setDonor(donor1);
-        product.setPreProcessingType(Arrays.asList(EnumProductPreProcessingType.CUTTING,
-                EnumProductPreProcessingType.TAKING_CARTILAGE,
-                EnumProductPreProcessingType.WASHING));
+
+        product.addPreProcessingType(new PreProcessingType(EnumProductPreProcessingType.CUTTING, System.currentTimeMillis()));
+        product.addPreProcessingType(new PreProcessingType(EnumProductPreProcessingType.TAKING_CARTILAGE, System.currentTimeMillis()));
+        product.addPreProcessingType(new PreProcessingType(EnumProductPreProcessingType.WASHING, System.currentTimeMillis()));
+
         product.setCustomer(customer);
         product.setSecCode("1");
         product.setType(EnumProductType.NONE);

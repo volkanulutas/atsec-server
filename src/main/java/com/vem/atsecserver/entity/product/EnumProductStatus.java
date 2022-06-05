@@ -13,7 +13,7 @@ public enum EnumProductStatus {
 
     // COURSE_GRINDING_ACCEPTED("Öğütme (Course) Sonrası"), // silinecek
 
-    FREEZING_2_ACCEPTED("Dondurma 2 Sonrası"),
+    GRANULATION_AFTER("Öğütme Sonrası"),
 
     DEFATTING_ACCEPTED("Defatting Sonrası"), // -> Sterilazasyon
 
@@ -21,7 +21,7 @@ public enum EnumProductStatus {
 
     STERILIZATION_ACCEPTED("Kimyasal Sterilizasyon"),
 
-    DRYING("Kurutma"),
+    STERILIZATION_AFTER("Kimyasal Sterilizasyon Sonrası"),
 
     DETERMINATION_OF_MOISTURE("Nem Tayini"),
 

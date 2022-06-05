@@ -3,6 +3,7 @@ package com.vem.atsecserver.payload.rawproduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class RawProductRequest implements Serializable {
     @NotNull
     private Long id;
@@ -36,15 +38,15 @@ public class RawProductRequest implements Serializable {
 
     private String information; // NOTE: recall prosedüründe kullanılabilir.
 
-    private String responsibleSigner;
+    private String signerInfo;
 
-    private Boolean deleted;
+    private boolean deleted;
 
-    private Boolean tissueCarryCase;
+    private boolean tissueCarryCase;
 
-    private Boolean sterialBag;
+    private boolean sterialBag;
 
-    private Boolean dataLogger;
+    private boolean dataLogger;
 
     private int temperature;
 }

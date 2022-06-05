@@ -1,6 +1,7 @@
 package com.vem.atsecserver.payload.product;
 
 import com.vem.atsecserver.entity.product.EnumProductStatus;
+import com.vem.atsecserver.entity.product.PreProcessingType;
 import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import com.vem.atsecserver.payload.rawproduct.LocationRequest;
 import com.vem.atsecserver.payload.sales.CustomerRequest;
@@ -34,7 +35,7 @@ public class ProductRequest {
 
     private String type;
 
-    private List<String> preProcessingType;
+    private List<PreProcessingTypeRequest> preProcessingTypes;
 
     private String definition;
 

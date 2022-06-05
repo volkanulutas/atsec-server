@@ -115,7 +115,7 @@ public class RawProductController {
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public RawProductRequest update(/*@Valid*/ @RequestBody RawProductRequest productRequest) throws ParseException {
-        System.err.println("update-rawproduct");
+        System.err.println("request: " + productRequest.toString());
         RawProduct rawProductRequest = rawProductConverter.toEntity(productRequest);
         RawProduct rawProduct = rawProductService.update(rawProductRequest);
         RawProductRequest rawProductRequest1 = rawProductConverter.toRequest(rawProduct);

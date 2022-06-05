@@ -4,10 +4,12 @@ import com.vem.atsecserver.entity.rawproduct.Donor;
 import com.vem.atsecserver.entity.rawproduct.Location;
 import com.vem.atsecserver.entity.report.product.ProductFile;
 import com.vem.atsecserver.entity.sales.Customer;
+import com.vem.atsecserver.payload.product.PreProcessingTypeRequest;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -35,13 +37,12 @@ public class Product implements Serializable {
     @Column
     private EnumProductStatus status; // TODO: Daha sonra sil productStatusDates de var bu bilgi
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<ProductStatusDate> productStatusDates;
 
-    @ElementCollection(targetClass = EnumProductPreProcessingType.class)
-    @CollectionTable
-    @Enumerated(EnumType.STRING)
-    private List<EnumProductPreProcessingType> preProcessingType;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreProcessingType> preProcessingTypes;
 
     @ElementCollection(targetClass = EnumProductFormType.class)
     @CollectionTable
@@ -81,5 +82,20 @@ public class Product implements Serializable {
 
     @Column
     private boolean deleted;
-    // NOTE: product group a ihtiyaç var mı? Yok bu ihtiyaç ProductStatus ve donorID ile sağlanır.
+
+    public void addPreProcessingType(PreProcessingType preProcessingType) {
+        if (preProcessingTypes == null) {
+            preProcessingTypes = new ArrayList<>();
+        }
+        preProcessingType.setProduct(this);
+        preProcessingTypes.add(preProcessingType);
+    }
+
+    public void addProductStatusDates(ProductStatusDate productStatusDate) {
+        if (this.productStatusDates == null) {
+            this.productStatusDates = new ArrayList<>();
+        }
+        productStatusDate.setProduct(this);
+        this.productStatusDates.add(productStatusDate);
+    }
 }

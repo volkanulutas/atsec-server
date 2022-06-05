@@ -35,7 +35,7 @@ public class RawProductServiceImpl implements RawProductService {
         entity.setStatus(parameter.getStatus());
         entity.setTissueType(parameter.getTissueType());
         entity.setDonor(parameter.getDonor());
-        entity.setResponsibleSigner(parameter.getResponsibleSigner());
+        entity.setSignerInfo(parameter.getSignerInfo());
         entity.setFiles(parameter.getFiles());
         // entity.setCheckedOutBy(parameter.getCheckedOutBy()); // TODO:
         entity.setDefinition(parameter.getDefinition());
@@ -61,6 +61,7 @@ public class RawProductServiceImpl implements RawProductService {
             entity.setLocation(parameter.getLocation());
             entity.setInformation(parameter.getInformation());
             entity.setStatus(parameter.getStatus());
+            entity.setSignerInfo(parameter.getSignerInfo());
             entity.setTissueType(parameter.getTissueType());
             entity.setFiles(parameter.getFiles());
             entity.setDeleted(false);

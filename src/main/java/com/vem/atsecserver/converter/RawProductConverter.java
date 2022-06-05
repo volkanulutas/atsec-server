@@ -64,12 +64,14 @@ public class RawProductConverter {
         if (request.getStatusName() != null) {
             entity.setStatus(EnumRawProductStatus.findByName(request.getStatusName()));
         }
-        if (request.getResponsibleSigner() != null) {
-            entity.setResponsibleSigner(request.getResponsibleSigner());
+        if (request.getSignerInfo() != null) {
+            entity.setSignerInfo(request.getSignerInfo());
         }
-        if (request.getDeleted() != null) {
-            entity.setDeleted(request.getDeleted());
-        }
+        entity.setDeleted(request.isDeleted());
+        entity.setDataLogger(request.isDataLogger());
+        entity.setTissueCarryCase(request.isTissueCarryCase());
+        entity.setSterialBag(request.isSterialBag());
+        entity.setTemperature(request.getTemperature());
         return entity;
     }
 
@@ -95,8 +97,8 @@ public class RawProductConverter {
         if (entity.getTissueType() != null) {
             request.setTissueType(tissueConverter.toRequest(entity.getTissueType()));
         }
-        if (entity.getResponsibleSigner() != null) {
-            request.setResponsibleSigner(entity.getResponsibleSigner());
+        if (entity.getSignerInfo() != null) {
+            request.setSignerInfo(entity.getSignerInfo());
         }
         if (entity.getTissueCarryCase() != null) {
             request.setTissueCarryCase(entity.getTissueCarryCase());
@@ -112,7 +114,7 @@ public class RawProductConverter {
         }
 
         request.setDefinition(entity.getDefinition());
-        request.setDeleted(request.getDeleted());
+        request.setDeleted(request.isDeleted());
         return request;
     }
 }
