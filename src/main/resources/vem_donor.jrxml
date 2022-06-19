@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BarbecueReport" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="50" bottomMargin="50" uuid="1d7cf054-80bc-4b63-933e-e2f7736c3e3f">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <parameter name="Code" class="java.lang.String">
+        <defaultValueExpression><![CDATA["01234567890"]]></defaultValueExpression>
+    </parameter>
+    <field name="donorCode" class="java.lang.String"/>
+    <field name="status" class="java.lang.String"/>
+    <title>
+        <band height="742">
+            <line>
+                <reportElement x="0" y="0" width="515" height="1" uuid="6ef683b5-e354-4fe0-a9df-8ac96bd9082a"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="10" width="515" height="30" uuid="e2e11563-7a3c-41c0-a934-bf0fa76d505d"/>
+                <textElement textAlignment="Center">
+                    <font size="22"/>
+                </textElement>
+                <text><![CDATA[ATSEC]]></text>
+            </staticText>
+            <line>
+                <reportElement x="10" y="50" width="515" height="1" uuid="2cbe2296-fd78-4c14-b8db-f188eedbc5f6"/>
+            </line>
+            <textField>
+                <reportElement x="260" y="80" width="100" height="30" uuid="65b5a136-1872-4e38-9cee-ce0b547ae777"/>
+                <textFieldExpression><![CDATA[$F{donorCode}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="160" y="80" width="100" height="30" uuid="4d3b5389-7037-4f38-9921-b463d25cbf20"/>
+                <text><![CDATA[Donor Id:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="160" y="110" width="100" height="30" uuid="8e7cba25-3c1c-494d-998d-2960858f0c31"/>
+                <text><![CDATA[Durumu:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="260" y="110" width="100" height="30" uuid="67656a6e-f27b-4af8-9ffa-866925b79535"/>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+</jasperReport>
