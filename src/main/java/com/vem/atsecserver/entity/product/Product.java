@@ -31,7 +31,7 @@ public class Product implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Donor donor;
 
     @Column

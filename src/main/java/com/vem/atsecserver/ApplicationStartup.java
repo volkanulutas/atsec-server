@@ -235,6 +235,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         product.setInformation("Ürün Bilgisi");
         product.setDonor(donor1);
         product = productService.create(product);
+        System.out.println("");
     }
 
     @Transactional

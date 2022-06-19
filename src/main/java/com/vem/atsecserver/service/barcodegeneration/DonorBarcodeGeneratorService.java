@@ -6,10 +6,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
 import com.vem.atsecserver.data.barcodegeneration.DonorBarcode;
 import com.vem.atsecserver.data.barcodegeneration.ProductBarcode;
-import com.vem.atsecserver.payload.rawproduct.DonorRequest;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -28,29 +26,11 @@ import java.util.Map;
  * @since 12.12.2020
  */
 @Service
-public class SecBarcodeGeneratorService2 {
-
-    public static void generateCode128BarcodeImage(String barcodeText) throws IOException {
-        /*
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-
-        Path path = FileSystems.getDefault().getPath(filePath);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-        ZxingBarcodeGenerator.generateCode128BarcodeImage(barcode);
-        */
-        Code128Writer barcodeWriter = new Code128Writer();
-        BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.CODE_128, 300, 150);
-
-        // MatrixToImageWriter.toBufferedImage(bitMatrix);
-        Path path = FileSystems.getDefault().getPath("./MyQRCode.png");
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-    }
-
+public class DonorBarcodeGeneratorService {
     // name and destination of output file e.g. "report.pdf"
     private static String destFileName = "report.pdf";
 
-    public byte[] createBarcode(ProductBarcode productBarcode) throws FileNotFoundException, JRException {
+    public byte[] createBarcode(DonorBarcode donorBarcode) throws FileNotFoundException, JRException {
         System.out.println("generating jasper report...");
 
         // 1. compile template ".jrxml" file
@@ -58,9 +38,8 @@ public class SecBarcodeGeneratorService2 {
 
         // 2. parameters "empty"
         Map<String, Object> parameters = getParameters();
-
         // 3. datasource "java object"
-        JRDataSource dataSource = getDataSource(productBarcode);
+        JRDataSource dataSource = getDataSource(donorBarcode);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         byte[] file = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -77,15 +56,12 @@ public class SecBarcodeGeneratorService2 {
         // 2. parameters "empty"
         Map<String, Object> parameters = getParameters();
 
-        ProductBarcode product = new ProductBarcode();
-        product.setCustomerId("1");
-        product.setDefinition("product açıklaması");
-        product.setDonorId("2");
-        product.setSecCode("3232");
-        product.setStatus("status");
+        DonorBarcode donorBarcode = new DonorBarcode();
+        donorBarcode.setDonorCode("1");
+        donorBarcode.setStatus("Ön İşlem");
 
         // 3. datasource "java object"
-        JRDataSource dataSource = getDataSource(product);
+        JRDataSource dataSource = getDataSource(donorBarcode);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
@@ -93,7 +69,7 @@ public class SecBarcodeGeneratorService2 {
     }
 
     private static JasperReport getJasperReport() throws FileNotFoundException, JRException {
-        File template = ResourceUtils.getFile("classpath:reportRawProduct.jrxml");
+        File template = ResourceUtils.getFile("classpath:vem_donor.jrxml");
         return JasperCompileManager.compileReport(template.getAbsolutePath());
     }
 
@@ -103,17 +79,10 @@ public class SecBarcodeGeneratorService2 {
         return parameters;
     }
 
-    private static JRDataSource getDataSource(ProductBarcode productBarcode) {
-        List<ProductBarcode> products = new LinkedList<>();
-        // products.add(productBarcode);
-        ProductBarcode product = new ProductBarcode();
-        product.setCustomerId("1");
-        product.setDefinition("product açıklaması");
-        product.setDonorId("2");
-        product.setSecCode("3232");
-        product.setStatus("status");
-        products.add(product);
-        return new JRBeanCollectionDataSource(products);
+    private static JRDataSource getDataSource(DonorBarcode donorBarcode) {
+        List<DonorBarcode> donorBarcodeList = new LinkedList<>();
+        donorBarcodeList.add(donorBarcode);
+        return new JRBeanCollectionDataSource(donorBarcodeList);
     }
 
 /*

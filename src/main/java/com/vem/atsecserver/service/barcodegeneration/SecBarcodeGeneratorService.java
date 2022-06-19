@@ -84,7 +84,7 @@ public class SecBarcodeGeneratorService {
     }
 
     private static JasperReport getJasperReport() throws FileNotFoundException, JRException {
-        File template = ResourceUtils.getFile("classpath:report.jrxml");
+        File template = ResourceUtils.getFile("classpath:country.jrxml");
         return JasperCompileManager.compileReport(template.getAbsolutePath());
     }
 

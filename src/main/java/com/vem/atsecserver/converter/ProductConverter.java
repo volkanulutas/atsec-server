@@ -60,6 +60,8 @@ public class ProductConverter {
             if (request.getId() != null) {
                 product.setId(request.getId());
             }
+
+            product.setDonor(donorConverter.toEntity(request.getDonor()));
             List<EnumProductFormType> productFormTypes = new ArrayList<>();
             if (request.getProductFormType() != null) {
                 for (String val : request.getProductFormType()) {
@@ -84,7 +86,7 @@ public class ProductConverter {
                     product.addPreProcessingType(preProcessingTypeConverter.toEntity(preProcessingType));
                 }
             }
-            if(request.getProductStatusDateRequests() != null){
+            if (request.getProductStatusDateRequests() != null) {
                 for (ProductStatusDateRequest data : request.getProductStatusDateRequests()) {
                     product.addProductStatusDates(productStatusDateConverter.toEntity(data));
                 }
@@ -102,10 +104,12 @@ public class ProductConverter {
             }
             product.setDeleted(request.isDeleted());
             List<ProductFile> files = new ArrayList<>();
-            for (ProductFileRequest fileRequest : request.getFiles()) {
-                files.add(productFileConverter.toEntity(fileRequest));
+            if (request.getFiles() != null) {
+                for (ProductFileRequest fileRequest : request.getFiles()) {
+                    files.add(productFileConverter.toEntity(fileRequest));
+                }
+                product.setFiles(files);
             }
-            product.setFiles(files);
             product.setLocation(locationConverter.toEntity(request.getLocation()));
             return product;
         } catch (Exception ex) {
@@ -152,7 +156,7 @@ public class ProductConverter {
         List<PreProcessingTypeRequest> targetPreProcessingType = new ArrayList<>();
         if (preProcessingTypes != null) {
             for (PreProcessingType pre : preProcessingTypes) {
-                if(pre.getPreProcessingType() != null) {
+                if (pre.getPreProcessingType() != null) {
                     targetPreProcessingType.add(preProcessingTypeConverter.toRequest(pre));
                 }
             }

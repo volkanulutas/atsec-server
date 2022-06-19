@@ -32,22 +32,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product create(Product productPar) {
         Product product = new Product();
-        product.setProductFormType(productPar.getProductFormType());
+        if (productPar.getProductFormType() != null) {
+            product.setProductFormType(productPar.getProductFormType());
+        }
         product.setGranulationType(productPar.getGranulationType());
         product.setDefinition(productPar.getDefinition());
         product.setInformation(productPar.getInformation());
         product.setSecCode(productPar.getSecCode());
         product.setStatus(productPar.getStatus());
         product.setType(productPar.getType());
-        for (PreProcessingType pre : productPar.getPreProcessingTypes()) {
-            product.addPreProcessingType(pre);
+        if (productPar.getPreProcessingTypes() != null) {
+            for (PreProcessingType pre : productPar.getPreProcessingTypes()) {
+                product.addPreProcessingType(pre);
+            }
         }
         product.setDonor(productPar.getDonor());
         product.setCustomer(productPar.getCustomer());
         product.setDeleted(false);
         if (productPar.getProductStatusDates() != null) {
-            for (ProductStatusDate status : productPar.getProductStatusDates()) {
-                product.addProductStatusDates(status);
+            if (productPar.getProductStatusDates() != null) {
+                for (ProductStatusDate status : productPar.getProductStatusDates()) {
+                    product.addProductStatusDates(status);
+                }
             }
         }
         byte[] file = null;
@@ -80,8 +86,8 @@ public class ProductServiceImpl implements ProductService {
             product.setSecCode(productPar.getSecCode());
             product.setStatus(productPar.getStatus());
             product.setType(productPar.getType());
-            if(productPar.getPreProcessingTypes() != null){
-                if(product.getPreProcessingTypes() != null){
+            if (productPar.getPreProcessingTypes() != null) {
+                if (product.getPreProcessingTypes() != null) {
                     product.getPreProcessingTypes().clear();
                 }
                 for (PreProcessingType pre : productPar.getPreProcessingTypes()) {

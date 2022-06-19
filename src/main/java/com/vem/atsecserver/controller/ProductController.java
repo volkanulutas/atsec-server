@@ -110,6 +110,8 @@ public class ProductController {
     @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> create(/*@Valid*/ @RequestBody ProductRequest productRequest) {
         try {
+            System.err.println("product: " + productRequest.toString());
+            productRequest.setStatus("Ön İşlem");
             Product product = productService.create(productConverter.toEntity(productRequest));
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().path("/{productId}")

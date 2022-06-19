@@ -8,6 +8,7 @@ import com.vem.atsecserver.payload.sales.CustomerRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Data
 public class ProductRequest {
     @NotNull
